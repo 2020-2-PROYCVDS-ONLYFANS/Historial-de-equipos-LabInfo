@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:shiro="http://shiro.apache.org/tags">
+
+<shiro:authenticated>#{loginController.afterLogin()}</shiro:authenticated>
+
+<f:view>
+    <h:form>
+        <tr>
+            <td><label>Username:</label></td>
+            <td><p:inputText value="#{loginController.username}"/></td>
+        </tr>
+        <tr>
+            <td><label>Password:</label></td>
+            <td><p:inputText type="password" value="#{loginController.password}"/></td>
+        </tr>
+        <tr>
+            <td><label>Remember me:</label></td>
+            <td><h:selectBooleanCheckbox value="#{loginController.rememberMe}"/></td>
+        </tr>
+        <tr>
+            <h:commandButton type="submit" action="#{loginController.afterLogin()}" actionListener="#{loginController.doLogin()}" value="Login"/>
+        </tr>
+    </h:form>
+    <h:outputText value="#{loginController.message}"/>
+</f:view>
+
+</html>

@@ -3,8 +3,8 @@ package edu.eci.cvds.model.guice;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
-import edu.eci.cvds.model.mybatis.MyBatisModuleFactory;
-import edu.eci.cvds.model.shiro.ShiroWebModuleImpl;
+import edu.eci.cvds.model.guice.mybatis.MyBatisModuleFactory;
+import edu.eci.cvds.model.guice.shiro.ShiroWebModuleImpl;
 import org.apache.shiro.guice.web.ShiroWebModule;
 
 import javax.servlet.ServletContext;

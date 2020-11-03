@@ -1,9 +1,7 @@
 package edu.eci.cvds.model.services;
 
+import edu.eci.cvds.model.guice.mybatis.MyBatisModuleFactory;
 import com.google.inject.Injector;
-import edu.eci.cvds.model.mybatis.MyBatisModuleFactory;
-
-import java.util.Optional;
 
 import static com.google.inject.Guice.createInjector;
 
@@ -11,7 +9,7 @@ public class LabInfoServicesFactory {
 
     private static final LabInfoServicesFactory instance = new LabInfoServicesFactory();
 
-    private static Optional<Injector> optionalInjector;
+    private Injector guiceInjector;
 
     private Injector getTestInjector() {
         return createInjector(
@@ -19,16 +17,14 @@ public class LabInfoServicesFactory {
         );
     }
 
-    private LabInfoServicesFactory(){
-        optionalInjector = Optional.empty();
-    }
+    private LabInfoServicesFactory(){ }
 
     public LabInfoServices getLabInfoServicesTesting() {
-        if (!optionalInjector.isPresent()) {
-            optionalInjector = Optional.of(getTestInjector());
+        if (guiceInjector == null) {
+            guiceInjector = getTestInjector();
         }
 
-        return optionalInjector.get().getInstance(LabInfoServices.class);
+        return guiceInjector.getInstance(LabInfoServices.class);
     }
 
     public static LabInfoServicesFactory getInstance() {

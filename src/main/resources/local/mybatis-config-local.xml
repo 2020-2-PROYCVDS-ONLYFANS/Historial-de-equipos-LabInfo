@@ -6,6 +6,11 @@
 <configuration>
     <properties resource="local/config-local.properties"/>
 
+    <typeAliases>
+        <typeAlias type="edu.eci.cvds.model.entities.User" alias="User"/>
+        <typeAlias type="edu.eci.cvds.model.entities.Role" alias="Role"/>
+    </typeAliases>
+
     <environments default="local">
         <environment id="local">
             <transactionManager type="JDBC"/>
@@ -17,4 +22,9 @@
             </dataSource>
         </environment>
     </environments>
+
+    <mappers>
+        <mapper resource="mappers/UserMapper.xml"/>
+        <mapper resource="mappers/RoleMapper.xml"/>
+    </mappers>
 </configuration>

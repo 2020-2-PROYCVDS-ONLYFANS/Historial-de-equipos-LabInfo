@@ -6,6 +6,14 @@
   <display-name>Historial equipos - LabInfo</display-name>
 
   <!-- Guice -->
+  <filter>
+    <filter-name>GuiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>GuiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <listener>
     <listener-class>edu.eci.cvds.model.guice.GuiceShiroMyBatisBootstrap</listener-class>
   </listener>
