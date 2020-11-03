@@ -2,6 +2,7 @@ package edu.eci.cvds.model.entities;
 
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class User {
 
     private long id;

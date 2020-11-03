@@ -25,7 +25,6 @@ public class LoginController {
     public LoginController() { }
 
     public void doLogin() {
-        LOGGER.info("doLogin - start");
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -48,23 +47,17 @@ public class LoginController {
                 ae.printStackTrace();
             }
         }
-        LOGGER.info("doLogin - currentUser.isAuthenticated() = " + currentUser.isAuthenticated());
-        LOGGER.info("doLogin - finish");
     }
 
     public void afterLogin() {
-        LOGGER.info("afterLogin - start");
         Subject currentUser = SecurityUtils.getSubject();
-        LOGGER.info("afterLogin - currentUser.isAuthenticated() = " + currentUser.isAuthenticated());
         if (currentUser.isAuthenticated()) {
-            LOGGER.info("afterLogin - if");
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("account");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        LOGGER.info("afterLogin - finish");
     }
 
     public String getUsername() {

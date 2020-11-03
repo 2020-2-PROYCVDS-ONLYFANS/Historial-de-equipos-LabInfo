@@ -8,6 +8,7 @@ import edu.eci.cvds.model.services.LabInfoServicesException;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("all")
 public class LabInfoServicesItemStub implements LabInfoServices {
 
     @Override

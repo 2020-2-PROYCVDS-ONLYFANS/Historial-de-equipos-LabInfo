@@ -1,13 +1,9 @@
 package edu.eci.cvds.model.dao.auth;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.dao.jdbc.JdbcServices;
-import edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper;
 import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
-import edu.eci.cvds.model.dao.shiro.AuthorizingRealmImpl;
 import edu.eci.cvds.model.entities.Role;
 import edu.eci.cvds.model.entities.User;
-import edu.eci.cvds.model.services.LabInfoServicesException;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -16,10 +12,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class AuthDAO {
 
@@ -32,7 +26,6 @@ public class AuthDAO {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(AuthDAO.class);
 
     public AuthenticationInfo fetchAuthenticationInfoByUsername(String username, String realmName) {
-        LOGGER.info("fetchAuthenticationInfoByUsername");
         try {
             User user = userMapper.loadByUsername(username);
             return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), realmName);
@@ -41,8 +34,7 @@ public class AuthDAO {
         }
     }
 
-    public AuthorizationInfo fetchAuthorizationInfoByUsername(String username, String realmName) {
-        LOGGER.info("fetchAuthorizationInfoByUsername");
+    public AuthorizationInfo fetchAuthorizationInfoByUsername(String username) {
         try {
             Set<Role> roles = userMapper.loadUserRolesByUsername(username);
             Set<String> roleNames = new HashSet<>();

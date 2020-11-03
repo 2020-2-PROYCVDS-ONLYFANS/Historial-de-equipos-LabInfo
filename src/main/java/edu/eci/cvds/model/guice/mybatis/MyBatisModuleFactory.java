@@ -32,7 +32,15 @@ public class MyBatisModuleFactory {
         };
     }
 
-    public XMLMyBatisModule getMyBatisModuleLocal() {
+    public XMLMyBatisModule getMyBatisDevModule() {
+        if (myBatisModule == null) {
+            myBatisModule = myBatisModule("development", "development/mybatis-config.xml");
+        }
+        return myBatisModule;
+    }
+
+    @SuppressWarnings("unused")
+    public XMLMyBatisModule getMyBatisLocalModule() {
         if (myBatisModule == null) {
             myBatisModule = myBatisModule("local", "local/mybatis-config-local.xml");
         }

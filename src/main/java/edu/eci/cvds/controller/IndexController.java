@@ -12,6 +12,7 @@ import java.io.IOException;
 @RequestScoped
 public class IndexController {
 
+    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
     public void redirectToHome() {

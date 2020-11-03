@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings("all")
 public class JdbcServices {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/labinfo";

@@ -7,6 +7,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public interface UserDAO {
 
     User loadByUsername(String username) throws PersistenceException;

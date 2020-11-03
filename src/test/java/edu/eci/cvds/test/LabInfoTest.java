@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 
+@SuppressWarnings("all")
 public class LabInfoTest {
 
     private SqlSession sqlSession;

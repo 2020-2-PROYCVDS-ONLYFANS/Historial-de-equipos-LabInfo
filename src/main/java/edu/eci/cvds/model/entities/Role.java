@@ -1,5 +1,6 @@
 package edu.eci.cvds.model.entities;
 
+@SuppressWarnings("unused")
 public class Role {
 
     private long id;

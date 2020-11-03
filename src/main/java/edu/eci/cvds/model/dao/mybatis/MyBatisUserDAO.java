@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class MyBatisUserDAO implements UserDAO {
 
+    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(UserDAO.class);
 
     @Inject

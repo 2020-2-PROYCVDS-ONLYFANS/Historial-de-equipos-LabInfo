@@ -6,6 +6,7 @@ import edu.eci.cvds.model.entities.User;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public interface LabInfoServices {
 
     User loadByUsername(String username) throws LabInfoServicesException;
