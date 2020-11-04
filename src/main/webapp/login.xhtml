@@ -8,7 +8,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:shiro="http://shiro.apache.org/tags">
 
-<shiro:authenticated>#{loginController.afterLogin()}</shiro:authenticated>
+<shiro:authenticated>#{loginController.redirectToAccount()}</shiro:authenticated>
+
 
 <f:view>
     <h:form>
@@ -25,7 +26,7 @@
             <td><h:selectBooleanCheckbox value="#{loginController.rememberMe}"/></td>
         </tr>
         <tr>
-            <h:commandButton type="submit" action="#{loginController.afterLogin()}" actionListener="#{loginController.doLogin()}" value="Login"/>
+            <h:commandButton type="submit" actionListener="#{loginController.doLogin()}" value="Login"/>
         </tr>
     </h:form>
     <h:outputText value="#{loginController.message}"/>

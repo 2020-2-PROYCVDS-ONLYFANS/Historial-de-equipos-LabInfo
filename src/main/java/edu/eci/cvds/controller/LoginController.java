@@ -22,8 +22,6 @@ public class LoginController {
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    public LoginController() { }
-
     public void doLogin() {
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
@@ -49,7 +47,7 @@ public class LoginController {
         }
     }
 
-    public void afterLogin() {
+    public void redirectToAccount() {
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
             try {
