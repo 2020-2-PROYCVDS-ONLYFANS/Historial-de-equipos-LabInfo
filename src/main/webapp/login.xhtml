@@ -8,28 +8,40 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:shiro="http://shiro.apache.org/tags">
 
-<shiro:authenticated>#{loginController.redirectToAccount()}</shiro:authenticated>
-
+<h:head>
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</h:head>
 
 <f:view>
+    <shiro:authenticated>
+        #{loginController.redirectToAccount()}
+    </shiro:authenticated>
+
     <h:form>
         <tr>
-            <td><label>Username:</label></td>
-            <td><p:inputText value="#{loginController.username}"/></td>
+            <td><p:outputLabel value="Username:"/></td>
+            <td><p:inputText value="#{loginController.username}"
+                             required="true"/></td>
         </tr>
         <tr>
-            <td><label>Password:</label></td>
-            <td><p:inputText type="password" value="#{loginController.password}"/></td>
+            <td><p:outputLabel value="Password:"/></td>
+            <td><p:inputText type="password" value="#{loginController.password}"
+                             required="true"/></td>
         </tr>
         <tr>
-            <td><label>Remember me:</label></td>
-            <td><h:selectBooleanCheckbox value="#{loginController.rememberMe}"/></td>
+            <td><p:outputLabel value="Remember me:"/></td>
+            <td><p:selectBooleanCheckbox value="#{loginController.rememberMe}"/></td>
         </tr>
         <tr>
-            <h:commandButton actionListener="#{loginController.doLogin()}" value="Login"/>
+            <td><p:commandButton actionListener="#{loginController.doLogin()}"
+                                 action="#{loginController.redirectToAccount()}"
+                                 update="message"
+                                 value="Login"/></td>
+
         </tr>
     </h:form>
-    <h:outputText value="#{loginController.message}"/>
+    <p:outputLabel id="message" value="#{loginController.message}"/>
 </f:view>
 
 </html>

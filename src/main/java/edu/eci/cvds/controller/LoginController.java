@@ -7,13 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.io.Serializable;
 
 @ManagedBean(name = "loginController", eager = true)
-@RequestScoped
-public class LoginController {
+@ViewScoped
+public class LoginController implements Serializable {
 
     private String username;
     private String password;
@@ -23,6 +24,7 @@ public class LoginController {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     public void doLogin() {
+        LOGGER.info("doLogin");
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -30,28 +32,25 @@ public class LoginController {
             try {
                 currentUser.login(token);
             } catch (UnknownAccountException uae) {
-                LOGGER.info("There is no user with username of " + token.getPrincipal());
                 message = "There is no user with username of " + token.getPrincipal();
             } catch (IncorrectCredentialsException ice) {
-                LOGGER.info("Password for account " + token.getPrincipal() + " was incorrect!");
                 message = "Password for account " + token.getPrincipal() + " was incorrect!";
             } catch (LockedAccountException lae) {
-                LOGGER.info("The account for username " + token.getPrincipal() + " is locked.  " +
-                        "Please contact your administrator to unlock it.");
                 message = "The account for username " + token.getPrincipal() + " is locked.  " +
                         "Please contact your administrator to unlock it.";
             } catch (AuthenticationException ae) {
                 message = "Pair username/password was incorrect!.";
-                ae.printStackTrace();
             }
         }
+        LOGGER.info(message);
     }
 
     public void redirectToAccount() {
+        LOGGER.info("redirectToAccount");
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("account");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("account/");
             } catch (IOException e) {
                 e.printStackTrace();
             }

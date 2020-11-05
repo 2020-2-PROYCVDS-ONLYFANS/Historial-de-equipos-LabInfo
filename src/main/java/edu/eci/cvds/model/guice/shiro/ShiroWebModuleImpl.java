@@ -71,7 +71,7 @@ public class ShiroWebModuleImpl extends ShiroWebModule {
         bind.to(DefaultWebSessionManager.class);
         bindConstant().annotatedWith(Names.named("shiro.globalSessionTimeout")).to(5000L);
         bindConstant().annotatedWith(Names.named("shiro.sessionIdUrlRewritingEnabled")).to(false);
-        bind(Cookie.class).toInstance(new SimpleCookie("rememberMe"));
+        bind(Cookie.class).toInstance(new SimpleCookie("REMEMBER_ME"));
     }
 
     @Override

@@ -23,15 +23,18 @@ public class AuthDAO {
     @Inject
     UserMapper userMapper;
 
+    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(AuthDAO.class);
 
     public AuthenticationInfo fetchAuthenticationInfoByUsername(String username, String realmName) {
         try {
             User user = userMapper.loadByUsername(username);
-            return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), realmName);
+            if (user != null) {
+                return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), realmName);
+            }
         } catch (PersistenceException e) {
             return null;
-        }
+        } return null;
     }
 
     public AuthorizationInfo fetchAuthorizationInfoByUsername(String username) {
@@ -39,8 +42,10 @@ public class AuthDAO {
             Set<Role> roles = userMapper.loadUserRolesByUsername(username);
             Set<String> roleNames = new HashSet<>();
 
-            for (Role role : roles) {
-                roleNames.add(role.getName());
+            if (roles != null) {
+                for (Role role : roles) {
+                    roleNames.add(role.getName());
+                }
             }
 
             return new SimpleAuthorizationInfo(roleNames);
