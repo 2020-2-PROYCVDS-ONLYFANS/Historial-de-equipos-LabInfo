@@ -1,6 +1,7 @@
 package edu.eci.cvds.model.services.impl;
 
 import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
 import edu.eci.cvds.model.entities.User;
 import edu.eci.cvds.model.services.LabInfoServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
@@ -17,7 +18,7 @@ public class LabInfoServicesItemStub implements LabInfoServices {
     }
 
     @Override
-    public void addRoleToUserByUsername(String username, String roleName) throws LabInfoServicesException {
+    public void addRoleToUserByUsername(String username, RoleName roleName) throws LabInfoServicesException {
 
     }
 
@@ -37,12 +38,12 @@ public class LabInfoServicesItemStub implements LabInfoServices {
     }
 
     @Override
-    public void registerRole(String roleName) throws LabInfoServicesException {
+    public void registerRole(RoleName roleName) throws LabInfoServicesException {
 
     }
 
     @Override
-    public Role loadByRoleName(String roleName) throws LabInfoServicesException {
+    public Role loadByRoleName(RoleName roleName) throws LabInfoServicesException {
         return null;
     }
 

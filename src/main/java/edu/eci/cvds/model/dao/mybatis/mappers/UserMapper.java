@@ -1,6 +1,7 @@
 package edu.eci.cvds.model.dao.mybatis.mappers;
 
 import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
 import edu.eci.cvds.model.entities.User;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.guice.transactional.Transactional;
@@ -15,7 +16,7 @@ public interface UserMapper {
     @Transactional
     void addRoleToUserByUsername(
             @Param("username") String username,
-            @Param("roleName") String roleName
+            @Param("roleName") RoleName roleName
     );
 
     List<User> loadAll();

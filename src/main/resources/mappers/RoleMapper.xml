@@ -12,7 +12,8 @@
 
     <select id="loadByRoleName" resultMap="RoleResultMap">
         SELECT
-            *
+            "name",
+            id
         FROM
             "ROLES"
         WHERE
@@ -21,6 +22,7 @@
 
     <resultMap id="RoleResultMap" type="Role">
         <id column="id" property="id"/>
-        <result column="name" property="name"/>
+        <result column="name" property="roleName"
+                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
     </resultMap>
 </mapper>

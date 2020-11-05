@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.UserDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
 import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
 import edu.eci.cvds.model.entities.User;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class MyBatisUserDAO implements UserDAO {
     }
 
     @Override
-    public void addRoleToUserByUsername(String username, String roleName) throws PersistenceException {
+    public void addRoleToUserByUsername(String username, RoleName roleName) throws PersistenceException {
         try {
             userMapper.addRoleToUserByUsername(username, roleName);
         } catch (PersistenceException e) {

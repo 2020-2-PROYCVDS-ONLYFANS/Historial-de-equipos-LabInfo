@@ -1,6 +1,7 @@
 package edu.eci.cvds.model.dao;
 
 import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
 import edu.eci.cvds.model.entities.User;
 import org.apache.ibatis.exceptions.PersistenceException;
 
@@ -12,7 +13,7 @@ public interface UserDAO {
 
     User loadByUsername(String username) throws PersistenceException;
 
-    void addRoleToUserByUsername(String username, String roleName) throws PersistenceException;
+    void addRoleToUserByUsername(String username, RoleName roleName) throws PersistenceException;
 
     List<User> loadAll() throws PersistenceException;
 

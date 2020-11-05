@@ -1,13 +1,15 @@
 package edu.eci.cvds.model.entities;
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public class Role {
+public class Role implements Serializable {
 
     private long id;
-    private String name;
+    private RoleName roleName;
 
-    public Role(String name) {
-        this.name = name;
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     public long getId() {
@@ -18,19 +20,19 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public RoleName getRoleName() {
+        return roleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name=" + roleName +
                 '}';
     }
 }

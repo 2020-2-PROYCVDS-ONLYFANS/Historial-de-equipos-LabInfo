@@ -11,6 +11,12 @@
         <typeAlias type="edu.eci.cvds.model.entities.Role" alias="Role"/>
     </typeAliases>
 
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
+                     javaType="edu.eci.cvds.model.entities.RoleName"
+                     jdbcType="VARCHAR"/>
+    </typeHandlers>
+
     <environments default="local">
         <environment id="local">
             <transactionManager type="JDBC"/>

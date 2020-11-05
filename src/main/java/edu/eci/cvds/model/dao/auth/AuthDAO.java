@@ -17,9 +17,6 @@ import java.util.Set;
 
 public class AuthDAO {
 
-    private static final String ROLE_USER = "ROLE_USER";
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
-
     @Inject
     UserMapper userMapper;
 
@@ -44,7 +41,7 @@ public class AuthDAO {
 
             if (roles != null) {
                 for (Role role : roles) {
-                    roleNames.add(role.getName());
+                    roleNames.add(role.getRoleName().toString());
                 }
             }
 
@@ -52,13 +49,5 @@ public class AuthDAO {
         } catch (PersistenceException e) {
             return null;
         }
-    }
-
-    public static String getRoleUser() {
-        return ROLE_USER;
-    }
-
-    public static String getRoleAdmin() {
-        return ROLE_ADMIN;
     }
 }

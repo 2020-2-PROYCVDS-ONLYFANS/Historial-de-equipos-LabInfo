@@ -1,9 +1,10 @@
 package edu.eci.cvds.model.entities;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @SuppressWarnings("unused")
-public class User {
+public class User implements Serializable {
 
     private long id;
     private String username;

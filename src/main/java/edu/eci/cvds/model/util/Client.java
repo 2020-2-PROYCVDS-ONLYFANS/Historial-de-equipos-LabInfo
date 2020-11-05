@@ -2,10 +2,18 @@ package edu.eci.cvds.model.util;
 
 import edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper;
 import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
+import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
+import edu.eci.cvds.model.entities.User;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class Client {

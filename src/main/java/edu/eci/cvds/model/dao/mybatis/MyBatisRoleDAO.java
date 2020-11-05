@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.RoleDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper;
 import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
 import org.apache.ibatis.exceptions.PersistenceException;
 
 public class MyBatisRoleDAO implements RoleDAO {
@@ -12,7 +13,7 @@ public class MyBatisRoleDAO implements RoleDAO {
     RoleMapper roleMapper;
 
     @Override
-    public void registerRole(String roleName) throws PersistenceException {
+    public void registerRole(RoleName roleName) throws PersistenceException {
         try {
             roleMapper.registerRole(roleName);
         } catch (PersistenceException e) {
@@ -21,7 +22,7 @@ public class MyBatisRoleDAO implements RoleDAO {
     }
 
     @Override
-    public Role loadByRoleName(String roleName) throws PersistenceException {
+    public Role loadByRoleName(RoleName roleName) throws PersistenceException {
         try {
             return roleMapper.loadByRoleName(roleName);
         } catch (PersistenceException e) {

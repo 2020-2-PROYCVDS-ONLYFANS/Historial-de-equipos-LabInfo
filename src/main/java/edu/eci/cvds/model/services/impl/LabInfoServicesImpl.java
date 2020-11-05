@@ -1,10 +1,10 @@
 package edu.eci.cvds.model.services.impl;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.dao.auth.AuthDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper;
 import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
 import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.RoleName;
 import edu.eci.cvds.model.entities.User;
 import edu.eci.cvds.model.services.LabInfoServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
@@ -32,7 +32,7 @@ public class LabInfoServicesImpl implements LabInfoServices {
     }
 
     @Override
-    public void addRoleToUserByUsername(String username, String roleName) throws LabInfoServicesException {
+    public void addRoleToUserByUsername(String username, RoleName roleName) throws LabInfoServicesException {
         try {
             userMapper.addRoleToUserByUsername(username, roleName);
         } catch (PersistenceException e) {
@@ -63,14 +63,14 @@ public class LabInfoServicesImpl implements LabInfoServices {
         try {
             user.setPassword(new Sha256Hash(user.getPassword()).toString()); // encrypting password
             userMapper.registerUser(user);
-            addRoleToUserByUsername(user.getUsername(), AuthDAO.getRoleUser());
+            addRoleToUserByUsername(user.getUsername(), RoleName.ROLE_USER);
         } catch (PersistenceException e) {
             throw new LabInfoServicesException("Fail to register user " + user.getName() + ".", e);
         }
     }
 
     @Override
-    public void registerRole(String roleName) throws LabInfoServicesException {
+    public void registerRole(RoleName roleName) throws LabInfoServicesException {
         try {
             roleMapper.registerRole(roleName);
         } catch (PersistenceException e) {
@@ -79,7 +79,7 @@ public class LabInfoServicesImpl implements LabInfoServices {
     }
 
     @Override
-    public Role loadByRoleName(String roleName) throws LabInfoServicesException {
+    public Role loadByRoleName(RoleName roleName) throws LabInfoServicesException {
         try {
             return roleMapper.loadByRoleName(roleName);
         } catch (PersistenceException e) {
