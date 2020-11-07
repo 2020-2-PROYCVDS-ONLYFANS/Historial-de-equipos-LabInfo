@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+    <h:outputLabel value="Hello, world"/>
+
+    <h:form>
+        <div class="ui-fluid">
+            <div class="p-field">
+                <p:outputLabel for="reference" value="Reference" />
+                <p:inputText id="reference" value="#{registerElementBean.reference}" />
+            </div>
+
+            <div class="p-field">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="type" value="Type:" />
+                    <p:selectOneRadio id="type" value="#{registerElementBean.type}" unselectable="true">
+                        <f:selectItem itemLabel="Computer Case" itemValue="#{registerElementBean.computerCase}" />
+                        <f:selectItem itemLabel="Monitor" itemValue="#{registerElementBean.monitor}" />
+                        <f:selectItem itemLabel="Keyboard" itemValue="#{registerElementBean.keyboard}" />
+                        <f:selectItem itemLabel="Mouse" itemValue="#{registerElementBean.mouse}" />
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </div>
+
+            <p:commandButton value="Register"
+                             actionListener="#{registerElementBean.register()}"
+                             action="#{registerElementBean.redirectToAdminPanel()}"/>
+        </div>
+    </h:form>
+</f:view>
+
+</html>

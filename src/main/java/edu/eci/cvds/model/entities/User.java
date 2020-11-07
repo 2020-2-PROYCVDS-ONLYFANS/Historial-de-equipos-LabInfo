@@ -1,5 +1,7 @@
 package edu.eci.cvds.model.entities;
 
+import edu.eci.cvds.model.entities.role.Role;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -13,6 +15,9 @@ public class User implements Serializable {
     private String name;
 
     private Set<Role> roles;
+
+    public User() {
+    }
 
     public User(String username, String email, String password, String name) {
         this.username = username;

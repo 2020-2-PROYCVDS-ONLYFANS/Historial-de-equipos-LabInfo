@@ -19,12 +19,12 @@ public class LabInfoServicesFactory {
 
     private LabInfoServicesFactory(){ }
 
-    public LabInfoServices getLabInfoServicesTesting() {
+    public AuthServices getLabInfoServicesTesting() {
         if (guiceInjector == null) {
             guiceInjector = getTestInjector();
         }
 
-        return guiceInjector.getInstance(LabInfoServices.class);
+        return guiceInjector.getInstance(AuthServices.class);
     }
 
     public static LabInfoServicesFactory getInstance() {

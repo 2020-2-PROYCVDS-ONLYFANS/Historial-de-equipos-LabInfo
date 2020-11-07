@@ -2,7 +2,7 @@ package edu.eci.cvds.model.dao.auth;
 
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
-import edu.eci.cvds.model.entities.Role;
+import edu.eci.cvds.model.entities.role.Role;
 import edu.eci.cvds.model.entities.User;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.shiro.authc.AuthenticationInfo;

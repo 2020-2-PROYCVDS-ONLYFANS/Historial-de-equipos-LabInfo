@@ -8,13 +8,21 @@
 
     <typeAliases>
         <typeAlias type="edu.eci.cvds.model.entities.User" alias="User"/>
-        <typeAlias type="edu.eci.cvds.model.entities.Role" alias="Role"/>
+        <typeAlias type="edu.eci.cvds.model.entities.role.Role" alias="Role"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementType" alias="ElementType"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.Element" alias="Element"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.ElementHistory" alias="ElementHistory"/>
+        <typeAlias type="edu.eci.cvds.model.entities.team.Team" alias="Team"/>
+        <typeAlias type="edu.eci.cvds.model.entities.team.TeamHistory" alias="TeamHistory"/>
     </typeAliases>
 
     <typeHandlers>
         <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
-                     javaType="edu.eci.cvds.model.entities.RoleName"
+                     javaType="edu.eci.cvds.model.entities.role.RoleName"
                      jdbcType="VARCHAR"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
+                     javaType="java.util.Date"
+                     jdbcType="TIMESTAMP"/>
     </typeHandlers>
 
     <environments default="local">
@@ -32,5 +40,9 @@
     <mappers>
         <mapper resource="mappers/UserMapper.xml"/>
         <mapper resource="mappers/RoleMapper.xml"/>
+        <mapper resource="mappers/ElementMapper.xml"/>
+        <mapper resource="mappers/ElementHistoryMapper.xml"/>
+        <mapper resource="mappers/TeamMapper.xml"/>
+        <mapper resource="mappers/ElementTypeMapper.xml"/>
     </mappers>
 </configuration>

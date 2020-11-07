@@ -5,7 +5,7 @@ import com.google.inject.binder.AnnotatedBindingBuilder;
 import com.google.inject.name.Names;
 import edu.eci.cvds.model.dao.auth.AuthDAO;
 import edu.eci.cvds.model.dao.shiro.AuthorizingRealmImpl;
-import edu.eci.cvds.model.entities.RoleName;
+import edu.eci.cvds.model.entities.role.RoleName;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.config.ConfigurationException;

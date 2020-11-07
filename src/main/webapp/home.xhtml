@@ -35,11 +35,11 @@
     <shiro:user>
         <h2>Roles</h2>
         <p>
-            <shiro:hasRole name="#{rolesController.roleAdmin}">
-                #{rolesController.roleAdmin}<br/>
+            <shiro:hasRole name="#{rolesBean.roleAdmin}">
+                #{rolesBean.roleAdmin}<br/>
             </shiro:hasRole>
-            <shiro:hasRole name="#{rolesController.roleUser}">
-                #{rolesController.roleUser}<br/>
+            <shiro:hasRole name="#{rolesBean.roleUser}">
+                #{rolesBean.roleUser}<br/>
             </shiro:hasRole>
         </p>
     </shiro:user>

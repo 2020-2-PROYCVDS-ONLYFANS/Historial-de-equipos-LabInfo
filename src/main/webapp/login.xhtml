@@ -15,33 +15,33 @@
 
 <f:view>
     <shiro:authenticated>
-        #{loginController.redirectToAccount()}
+        #{loginBean.redirectToAccount()}
     </shiro:authenticated>
 
     <h:form>
         <tr>
             <td><p:outputLabel value="Username:"/></td>
-            <td><p:inputText value="#{loginController.username}"
+            <td><p:inputText value="#{loginBean.username}"
                              required="true"/></td>
         </tr>
         <tr>
             <td><p:outputLabel value="Password:"/></td>
-            <td><p:inputText type="password" value="#{loginController.password}"
+            <td><p:inputText type="password" value="#{loginBean.password}"
                              required="true"/></td>
         </tr>
         <tr>
             <td><p:outputLabel value="Remember me:"/></td>
-            <td><p:selectBooleanCheckbox value="#{loginController.rememberMe}"/></td>
+            <td><p:selectBooleanCheckbox value="#{loginBean.rememberMe}"/></td>
         </tr>
         <tr>
-            <td><p:commandButton actionListener="#{loginController.doLogin()}"
-                                 action="#{loginController.redirectToAccount()}"
+            <td><p:commandButton actionListener="#{loginBean.doLogin()}"
+                                 action="#{loginBean.redirectToAccount()}"
                                  update="message"
                                  value="Login"/></td>
 
         </tr>
     </h:form>
-    <p:outputLabel id="message" value="#{loginController.message}"/>
+    <p:outputLabel id="message" value="#{loginBean.message}"/>
 </f:view>
 
 </html>

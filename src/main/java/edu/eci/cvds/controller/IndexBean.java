@@ -9,12 +9,12 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
 
-@ManagedBean(name = "indexController", eager = true)
+@ManagedBean(name = "indexBean", eager = true)
 @RequestScoped
-public class IndexController implements Serializable {
+public class IndexBean extends BasePageBean implements Serializable {
 
     @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(IndexBean.class);
 
     public void redirectToHome() {
         try {

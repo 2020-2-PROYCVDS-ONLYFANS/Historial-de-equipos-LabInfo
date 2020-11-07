@@ -1,10 +1,10 @@
 package edu.eci.cvds.model.guice.mybatis;
 
-import edu.eci.cvds.model.dao.RoleDAO;
-import edu.eci.cvds.model.dao.UserDAO;
-import edu.eci.cvds.model.dao.mybatis.MyBatisRoleDAO;
-import edu.eci.cvds.model.dao.mybatis.MyBatisUserDAO;
+import edu.eci.cvds.model.dao.*;
+import edu.eci.cvds.model.dao.mybatis.*;
+import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.LabInfoServices;
+import edu.eci.cvds.model.services.impl.AuthServicesImpl;
 import edu.eci.cvds.model.services.impl.LabInfoServicesImpl;
 import org.mybatis.guice.XMLMyBatisModule;
 import org.mybatis.guice.datasource.helper.JdbcHelper;
@@ -25,9 +25,14 @@ public class MyBatisModuleFactory {
                 setEnvironmentId(env);
                 setClassPathResource(pathResource);
 
+                bind(AuthServices.class).to(AuthServicesImpl.class);
                 bind(LabInfoServices.class).to(LabInfoServicesImpl.class);
                 bind(UserDAO.class).to(MyBatisUserDAO.class);
                 bind(RoleDAO.class).to(MyBatisRoleDAO.class);
+                bind(ElementDAO.class).to(MyBatisElementDAO.class);
+                bind(ElementHistoryDAO.class).to(MyBatisElementHistoryDAO.class);
+                bind(TeamDAO.class).to(MyBatisTeamDAO.class);
+                bind(ElementTypeDAO.class).to(MyBatisElementTypeDAO.class);
             }
         };
     }

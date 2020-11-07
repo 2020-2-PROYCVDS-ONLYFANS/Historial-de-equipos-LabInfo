@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper">
+    <insert id="registerElement">
+        INSERT INTO
+            "ELEMENTS" ("ELEMENT_TYPES_id", reference)
+        VALUES (
+            (
+                SELECT
+                    id
+                FROM
+                    "ELEMENT_TYPES"
+                WHERE
+                    "name" = #{name}
+            ),
+            #{reference}
+        );
+    </insert>
+
+    <select id="loadElementById" resultMap="ElementResultMap">
+        SELECT
+            e.id,
+            e.reference,
+            e.available,
+            e.discarded,
+            et.id AS "ELEMENT_TYPES_id",
+            et."name" AS "ELEMENT_TYPES_name"
+        FROM
+            "ELEMENTS" AS e
+                LEFT JOIN
+            "ELEMENT_TYPES" AS et ON et.id = e."ELEMENT_TYPES_id"
+        WHERE
+            e.id = #{id};
+    </select>
+
+    <resultMap id="ElementResultMap" type="Element">
+        <id column="id" property="id"/>
+        <result column="available" property="available"/>
+        <result column="discarded" property="discarded"/>
+        <result column="reference" property="reference"/>
+        <association property="type" javaType="ElementType"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementTypeMapper.ElementTypeResultMap"
+                     columnPrefix="ELEMENT_TYPES_"/>
+    </resultMap>
+</mapper>

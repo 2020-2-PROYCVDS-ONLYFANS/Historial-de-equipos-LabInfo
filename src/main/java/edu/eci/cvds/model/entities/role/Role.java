@@ -1,4 +1,4 @@
-package edu.eci.cvds.model.entities;
+package edu.eci.cvds.model.entities.role;
 
 import java.io.Serializable;
 
@@ -7,6 +7,9 @@ public class Role implements Serializable {
 
     private long id;
     private RoleName roleName;
+
+    public Role() {
+    }
 
     public Role(RoleName roleName) {
         this.roleName = roleName;

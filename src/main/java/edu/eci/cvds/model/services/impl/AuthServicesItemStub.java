@@ -1,16 +1,16 @@
 package edu.eci.cvds.model.services.impl;
 
-import edu.eci.cvds.model.entities.Role;
-import edu.eci.cvds.model.entities.RoleName;
+import edu.eci.cvds.model.entities.role.Role;
+import edu.eci.cvds.model.entities.role.RoleName;
 import edu.eci.cvds.model.entities.User;
-import edu.eci.cvds.model.services.LabInfoServices;
+import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
 
 import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("all")
-public class LabInfoServicesItemStub implements LabInfoServices {
+public class AuthServicesItemStub implements AuthServices {
 
     @Override
     public User loadByUsername(String username) throws LabInfoServicesException {

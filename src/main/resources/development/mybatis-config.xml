@@ -8,8 +8,28 @@
 
     <typeAliases>
         <typeAlias type="edu.eci.cvds.model.entities.User" alias="User"/>
-        <typeAlias type="edu.eci.cvds.model.entities.Role" alias="Role"/>
+        <typeAlias type="edu.eci.cvds.model.entities.role.Role" alias="Role"/>
+        <typeAlias type="edu.eci.cvds.model.entities.role.RoleName" alias="RoleName"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementType" alias="ElementType"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementTypeName" alias="ElementTypeName"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.Element" alias="Element"/>
+        <typeAlias type="edu.eci.cvds.model.entities.element.ElementHistory" alias="ElementHistory"/>
+        <typeAlias type="edu.eci.cvds.model.entities.team.Team" alias="Team"/>
+        <typeAlias type="edu.eci.cvds.model.entities.team.TeamHistory" alias="TeamHistory"/>
+        <typeAlias type="java.util.Date" alias="Date"/>
     </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
+                     javaType="RoleName"
+                     jdbcType="VARCHAR"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
+                     javaType="ElementTypeName"
+                     jdbcType="VARCHAR"/>
+        <typeHandler handler="org.apache.ibatis.type.DateTypeHandler"
+                     javaType="Date"
+                     jdbcType="TIMESTAMP"/>
+    </typeHandlers>
 
     <environments default="development">
         <environment id="development">
@@ -26,5 +46,9 @@
     <mappers>
         <mapper resource="mappers/UserMapper.xml"/>
         <mapper resource="mappers/RoleMapper.xml"/>
+        <mapper resource="mappers/ElementMapper.xml"/>
+        <mapper resource="mappers/ElementHistoryMapper.xml"/>
+        <mapper resource="mappers/TeamMapper.xml"/>
+        <mapper resource="mappers/ElementTypeMapper.xml"/>
     </mappers>
 </configuration>

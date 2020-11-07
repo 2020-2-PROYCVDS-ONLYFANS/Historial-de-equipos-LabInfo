@@ -22,7 +22,6 @@
 
     <resultMap id="RoleResultMap" type="Role">
         <id column="id" property="id"/>
-        <result column="name" property="roleName"
-                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="name" property="roleName" javaType="RoleName"/>
     </resultMap>
 </mapper>

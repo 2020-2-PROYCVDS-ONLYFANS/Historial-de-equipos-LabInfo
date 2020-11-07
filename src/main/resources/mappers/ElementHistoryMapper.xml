@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ElementHistoryMapper">
+    <insert id="addElementHistoryById">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "USERS_id", title)
+        VALUES (
+                #{elementId},
+                #{userId},
+                #{title}
+        );
+    </insert>
+
+    <insert id="addElementHistoryWithDetailById">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "USERS_id", title, detail)
+        VALUES (
+                #{elementId},
+                #{userId},
+                #{title},
+                #{detail}
+        );
+    </insert>
+
+    <insert id="addElementHistoryByReference">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "USERS_id", title)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   #{userId},
+                   #{title}
+               );
+    </insert>
+
+    <insert id="addElementHistoryByReferenceAndUsername">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "USERS_id", title)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title}
+               );
+    </insert>
+
+    <insert id="addElementHistoryWithDetailByReference">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   #{userId},
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
+    <select id="loadElementsHistory" resultMap="ElementHistoryResultMap">
+        SELECT
+            eh.id,
+            eh.title,
+            eh.detail,
+            eh."timestamp",
+            e.id AS "ELEMENTS_id",
+            e.reference AS "ELEMENTS_reference",
+            e.available AS "ELEMENTS_available",
+            e.discarded AS "ELEMENTS_discarded",
+            et.id AS "ELEMENTS_ELEMENT_TYPES_id",
+            et."name" AS "ELEMENTS_ELEMENT_TYPES_name",
+            u.id AS "USERS_id",
+            u.username AS "USERS_username",
+            u.email AS "USERS_email",
+            u."password" AS "USERS_password",
+            u."name" AS "USERS_name",
+            r.id AS "USERS_ROLE_id",
+            r."name" AS "USERS_ROLE_name"
+        FROM
+            "ELEMENTS_HISTORY" AS eh
+                LEFT JOIN
+            "ELEMENTS" AS e ON e.id = eh."ELEMENTS_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" AS et ON et.id = e."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "USERS" AS u ON u.id = eh."USERS_id"
+                LEFT JOIN
+            "USERS_ROLES" AS ur ON u.id = ur."USERS_id"
+                LEFT JOIN
+            "ROLES" AS r ON r.id = ur."ROLES_id";
+    </select>
+
+    <select id="loadElementHistoryById" resultMap="ElementHistoryResultMap">
+        SELECT
+            eh.id,
+            eh.title,
+            eh.detail,
+            eh."timestamp",
+            e.id AS "ELEMENTS_id",
+            e.reference AS "ELEMENTS_reference",
+            e.available AS "ELEMENTS_available",
+            e.discarded AS "ELEMENTS_discarded",
+            et.id AS "ELEMENTS_ELEMENT_TYPES_id",
+            et."name" AS "ELEMENTS_ELEMENT_TYPES_name",
+            u.id AS "USERS_id",
+            u.username AS "USERS_username",
+            u.email AS "USERS_email",
+            u."password" AS "USERS_password",
+            u."name" AS "USERS_name",
+            r.id AS "USERS_ROLE_id",
+            r."name" AS "USERS_ROLE_name"
+        FROM
+            "ELEMENTS_HISTORY" AS eh
+                LEFT JOIN
+            "ELEMENTS" AS e ON e.id = eh."ELEMENTS_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" AS et ON et.id = e."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "USERS" AS u ON u.id = eh."USERS_id"
+                LEFT JOIN
+            "USERS_ROLES" AS ur ON u.id = ur."USERS_id"
+                LEFT JOIN
+            "ROLES" AS r ON r.id = ur."ROLES_id"
+        WHERE
+            e.id = #{elementId};
+    </select>
+
+    <resultMap id="ElementHistoryResultMap" type="ElementHistory">
+        <id column="id" property="id"/>
+        <result column="timestamp" property="timestamp" javaType="Date"/>
+        <result column="title" property="title"/>
+        <result column="detail" property="detail"/>
+        <association property="element" javaType="Element"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
+                     columnPrefix="ELEMENTS_"/>
+        <association property="team" javaType="Team"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.TeamMapper.TeamResultMap"
+                     columnPrefix="TEAMS_"/>
+        <association property="user" javaType="User"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.UserMapper.UserResultMap"
+                     columnPrefix="USERS_"/>
+    </resultMap>
+</mapper>

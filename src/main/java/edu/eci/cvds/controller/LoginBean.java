@@ -12,16 +12,16 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
 
-@ManagedBean(name = "loginController", eager = true)
+@ManagedBean(name = "loginBean", eager = true)
 @ViewScoped
-public class LoginController implements Serializable {
+public class LoginBean extends BasePageBean implements Serializable {
 
     private String username;
     private String password;
     private boolean rememberMe;
     private String message;
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginBean.class);
 
     public void doLogin() {
         LOGGER.info("doLogin");

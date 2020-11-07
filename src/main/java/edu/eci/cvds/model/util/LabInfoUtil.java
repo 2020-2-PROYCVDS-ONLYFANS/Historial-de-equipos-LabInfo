@@ -13,7 +13,7 @@ public class LabInfoUtil {
         SqlSessionFactory sqlSessionFactory;
         InputStream inputStream;
         try {
-            inputStream = Resources.getResourceAsStream("local/mybatis-config-local.xml");
+            inputStream = Resources.getResourceAsStream("development/mybatis-config.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e.getCause());

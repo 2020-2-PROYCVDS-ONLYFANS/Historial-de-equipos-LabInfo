@@ -6,13 +6,13 @@
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.UserMapper">
     <select id="loadByUsername" resultMap="UserResultMap">
         SELECT
-            r."name" AS "ROLE_name",
-            r.id AS "ROLE_id",
             u.id,
             u.username,
             u.email,
             u."password",
-            u."name"
+            u."name",
+            r.id AS "ROLE_id",
+            r."name" AS "ROLE_name"
         FROM
             "USERS" AS u
                 LEFT JOIN
@@ -48,13 +48,13 @@
 
     <select id="loadAll" resultMap="UserResultMap">
         SELECT
-            r."name" AS "ROLE_name",
-            r.id AS "ROLE_id",
             u.id,
             u.username,
             u.email,
             u."password",
-            u."name"
+            u."name",
+            r.id AS "ROLE_id",
+            r."name" AS "ROLE_name"
         FROM
             "USERS" AS u
                 LEFT JOIN
@@ -66,8 +66,8 @@
     <select id="loadUserRolesByUsername"
             resultMap="edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper.RoleResultMap">
         SELECT
-            r."name",
-            r.id
+            r.id,
+            r."name"
         FROM
             "USERS" AS u
                 LEFT JOIN

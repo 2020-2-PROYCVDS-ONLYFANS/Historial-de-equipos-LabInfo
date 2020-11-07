@@ -1,19 +1,11 @@
 package edu.eci.cvds.model.util;
 
-import edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper;
-import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
-import edu.eci.cvds.model.entities.Role;
-import edu.eci.cvds.model.entities.RoleName;
-import edu.eci.cvds.model.entities.User;
+import edu.eci.cvds.model.dao.mybatis.mappers.*;
+import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("unused")
 public class Client {
@@ -26,8 +18,11 @@ public class Client {
 
         UserMapper userMapper = session.getMapper(UserMapper.class);
         RoleMapper roleMapper = session.getMapper(RoleMapper.class);
+        ElementTypeMapper elementTypeMapper = session.getMapper(ElementTypeMapper.class);
+        ElementMapper elementMapper = session.getMapper(ElementMapper.class);
+        ElementHistoryMapper elementHistoryMapper = session.getMapper(ElementHistoryMapper.class);
 
-
+        // code
 
         session.commit();
         session.close();

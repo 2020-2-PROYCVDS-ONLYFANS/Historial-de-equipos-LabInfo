@@ -1,99 +1,93 @@
 package edu.eci.cvds.model.services.impl;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper;
-import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
-import edu.eci.cvds.model.entities.Role;
-import edu.eci.cvds.model.entities.RoleName;
-import edu.eci.cvds.model.entities.User;
+import edu.eci.cvds.model.dao.ElementDAO;
+import edu.eci.cvds.model.dao.ElementHistoryDAO;
+import edu.eci.cvds.model.entities.element.ElementHistory;
+import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import edu.eci.cvds.model.services.LabInfoServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 
 import java.util.List;
-import java.util.Set;
 
 public class LabInfoServicesImpl implements LabInfoServices {
 
     @Inject
-    UserMapper userMapper;
+    ElementDAO elementDAO;
 
     @Inject
-    RoleMapper roleMapper;
+    ElementHistoryDAO elementHistoryDAO;
 
     @Override
-    public User loadByUsername(String username) throws LabInfoServicesException {
+    public void registerElement(ElementTypeName name, String reference) throws LabInfoServicesException {
         try {
-            return userMapper.loadByUsername(username);
+            elementDAO.registerElement(name, reference);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Not found user " + username + ".", e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void addRoleToUserByUsername(String username, RoleName roleName) throws LabInfoServicesException {
+    public void addElementHistoryById(long elementId, long userId, String title) throws LabInfoServicesException {
         try {
-            userMapper.addRoleToUserByUsername(username, roleName);
+            elementHistoryDAO.addElementHistoryById(elementId, userId, title);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fails to add role to user " + username + ".", e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<User> loadAll() throws LabInfoServicesException {
+    public void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail) throws LabInfoServicesException {
         try {
-            return userMapper.loadAll();
+            elementHistoryDAO.addElementHistoryWithDetailById(elementId, userId, title, detail);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fail to load users.", e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Set<Role> loadUserRolesByUsername(String username) throws LabInfoServicesException {
+    public void addElementHistoryByReference(String reference, long userId, String title) throws LabInfoServicesException {
         try {
-            return userMapper.loadUserRolesByUsername(username);
+            elementHistoryDAO.addElementHistoryByReference(reference, userId, title);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fail to load user roles for " + username, e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void registerUser(User user) throws LabInfoServicesException {
+    public void addElementHistoryByReferenceAndUsername(String reference, String username, String title) throws LabInfoServicesException {
         try {
-            user.setPassword(new Sha256Hash(user.getPassword()).toString()); // encrypting password
-            userMapper.registerUser(user);
-            addRoleToUserByUsername(user.getUsername(), RoleName.ROLE_USER);
+            elementHistoryDAO.addElementHistoryByReferenceAndUsername(reference, username, title);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fail to register user " + user.getName() + ".", e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void registerRole(RoleName roleName) throws LabInfoServicesException {
+    public void addElementHistoryWithDetailByReference(String reference, long userId, String title, String detail) throws LabInfoServicesException {
         try {
-            roleMapper.registerRole(roleName);
+            elementHistoryDAO.addElementHistoryWithDetailByReference(reference, userId, title, detail);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fail to register role " + roleName, e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Role loadByRoleName(RoleName roleName) throws LabInfoServicesException {
+    public List<ElementHistory> loadElementsHistory() throws LabInfoServicesException {
         try {
-            return roleMapper.loadByRoleName(roleName);
+            return elementHistoryDAO.loadElementsHistory();
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fail to load role " + roleName, e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void updatePassword(String username, String password) throws LabInfoServicesException {
+    public List<ElementHistory> loadElementHistoryById(long elementId) throws LabInfoServicesException {
         try {
-            password = new Sha256Hash(password).toString(); // encrypting password
-            userMapper.updatePassword(username, password);
+            return elementHistoryDAO.loadElementHistoryById(elementId);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException("Fail to update password.", e);
+            throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
 }

@@ -1,28 +1,26 @@
 package edu.eci.cvds.model.services;
 
-import edu.eci.cvds.model.entities.Role;
-import edu.eci.cvds.model.entities.RoleName;
-import edu.eci.cvds.model.entities.User;
+import edu.eci.cvds.model.entities.element.ElementHistory;
+import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("unused")
 public interface LabInfoServices {
 
-    User loadByUsername(String username) throws LabInfoServicesException;
+    void registerElement(ElementTypeName name, String reference) throws LabInfoServicesException;
 
-    void addRoleToUserByUsername(String username, RoleName roleName) throws LabInfoServicesException;
+    void addElementHistoryById(long elementId, long userId, String title) throws LabInfoServicesException;
 
-    List<User> loadAll() throws LabInfoServicesException;
+    void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail) throws LabInfoServicesException;
 
-    Set<Role> loadUserRolesByUsername(String username) throws LabInfoServicesException;
+    void addElementHistoryByReference(String reference, long userId, String title) throws LabInfoServicesException;
 
-    void registerUser(User user) throws LabInfoServicesException;
+    void addElementHistoryByReferenceAndUsername(String reference, String username, String title) throws LabInfoServicesException;
 
-    void registerRole(RoleName roleName) throws LabInfoServicesException;
+    void addElementHistoryWithDetailByReference(String reference, long userId, String title, String detail) throws LabInfoServicesException;
 
-    Role loadByRoleName(RoleName roleName) throws LabInfoServicesException;
+    List<ElementHistory> loadElementsHistory() throws LabInfoServicesException;
 
-    void updatePassword(String username, String password) throws LabInfoServicesException;
+    List<ElementHistory> loadElementHistoryById(long elementId) throws LabInfoServicesException;
 }
