@@ -84,6 +84,174 @@
                );
     </insert>
 
+    <insert id="addComputerCaseHistoryWithDetailByReferenceAndUsername">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           "ELEMENTS_computer_case_id" = (
+                               SELECT
+                                   id
+                               FROM
+                                   "ELEMENTS"
+                               WHERE
+                                   reference = #{reference}
+                           )
+                       AND
+                           discarded = FALSE
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
+    <insert id="addMonitorHistoryWithDetailByReferenceAndUsername">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           "ELEMENTS_computer_case_id" = (
+                               SELECT
+                                   id
+                               FROM
+                                   "ELEMENTS"
+                               WHERE
+                                   reference = #{reference}
+                           )
+                       AND
+                           discarded = FALSE
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
+    <insert id="addKeyboardHistoryWithDetailByReferenceAndUsername">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           "ELEMENTS_keyboard_id" = (
+                               SELECT
+                                   id
+                               FROM
+                                   "ELEMENTS"
+                               WHERE
+                                   reference = #{reference}
+                           )
+                       AND
+                           discarded = FALSE
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
+    <insert id="addMouseHistoryWithDetailByReferenceAndUsername">
+        INSERT INTO
+            "ELEMENTS_HISTORY" ("ELEMENTS_id", "COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           "ELEMENTS_mouse_id" = (
+                               SELECT
+                                   id
+                               FROM
+                                   "ELEMENTS"
+                               WHERE
+                                   reference = #{reference}
+                           )
+                       AND
+                           discarded = FALSE
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
     <select id="loadElementsHistory" resultMap="ElementHistoryResultMap">
         SELECT
             eh.id,
@@ -160,9 +328,9 @@
         <association property="element" javaType="Element"
                      resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
                      columnPrefix="ELEMENTS_"/>
-        <association property="team" javaType="Team"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.TeamMapper.TeamResultMap"
-                     columnPrefix="TEAMS_"/>
+        <association property="computer" javaType="Computer"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap"
+                     columnPrefix="COMPUTERS_"/>
         <association property="user" javaType="User"
                      resultMap="edu.eci.cvds.model.dao.mybatis.mappers.UserMapper.UserResultMap"
                      columnPrefix="USERS_"/>

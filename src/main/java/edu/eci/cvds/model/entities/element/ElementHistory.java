@@ -1,6 +1,6 @@
 package edu.eci.cvds.model.entities.element;
 
-import edu.eci.cvds.model.entities.team.Team;
+import edu.eci.cvds.model.entities.computer.Computer;
 import edu.eci.cvds.model.entities.User;
 
 import java.io.Serializable;
@@ -11,7 +11,7 @@ public class ElementHistory implements Serializable {
 
     private long id;
     private Element element;
-    private Team team;
+    private Computer computer;
     private User user;
     private Date timestamp;
     private String title;
@@ -36,12 +36,12 @@ public class ElementHistory implements Serializable {
         this.element = element;
     }
 
-    public Team getTeam() {
-        return team;
+    public Computer getTeam() {
+        return computer;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeam(Computer computer) {
+        this.computer = computer;
     }
 
     public User getUser() {
@@ -81,7 +81,7 @@ public class ElementHistory implements Serializable {
         return "ElementHistory{" +
                 "id=" + id +
                 ", element=" + element +
-                ", team=" + team +
+                ", team=" + computer +
                 ", user=" + user +
                 ", timestamp=" + timestamp +
                 ", title='" + title + '\'' +

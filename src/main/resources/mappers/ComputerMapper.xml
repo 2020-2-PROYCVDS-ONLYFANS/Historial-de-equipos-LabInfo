@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper">
+    <insert id="registerComputerWithReferences">
+        INSERT INTO "COMPUTERS"
+            (reference, "ELEMENTS_computer_case_id", "ELEMENTS_monitor_id", "ELEMENTS_keyboard_id", "ELEMENTS_mouse_id")
+        VALUES (
+                   #{computer},
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{computerCase}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{monitor}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{keyboard}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "ELEMENTS"
+                       WHERE
+                           reference = #{mouse}
+                   )
+               );
+    </insert>
+
+    <resultMap id="ComputerResultMap" type="Computer">
+        <id column="id" property="id"/>
+        <result column="reference" property="reference"/>
+        <result column="available" property="available"/>
+        <result column="discarded" property="discarded"/>
+        <association property="computerCase" javaType="Element"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
+                     columnPrefix="ELEMENTS_computer_case"/>
+        <association property="monitor" javaType="Element"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
+                     columnPrefix="ELEMENTS_monitor"/>
+        <association property="keyboard" javaType="Element"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
+                     columnPrefix="ELEMENTS_keyboard"/>
+        <association property="mouse" javaType="Element"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
+                     columnPrefix="ELEMENTS_mouse"/>
+    </resultMap>
+</mapper>

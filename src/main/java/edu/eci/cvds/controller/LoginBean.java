@@ -10,11 +10,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.io.Serializable;
 
 @ManagedBean(name = "loginBean", eager = true)
 @ViewScoped
-public class LoginBean extends BasePageBean implements Serializable {
+public class LoginBean extends BasePageBean {
 
     private String username;
     private String password;

@@ -7,7 +7,17 @@ import org.apache.ibatis.exceptions.PersistenceException;
 @SuppressWarnings("unused")
 public interface ElementDAO {
 
-    void registerElement(ElementTypeName name, String reference) throws PersistenceException;
+    void registerElement(
+            ElementTypeName name, String reference)
+            throws PersistenceException;
 
-    Element loadElementById(long id) throws PersistenceException;
+    Element loadElementById(long id)
+            throws PersistenceException;
+
+    Element loadElementByReference(String reference)
+            throws PersistenceException;
+
+    void setAvailableByReference(
+            String reference, boolean available)
+            throws PersistenceException;
 }

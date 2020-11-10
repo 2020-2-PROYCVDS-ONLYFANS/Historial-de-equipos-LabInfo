@@ -10,13 +10,28 @@ public interface ElementHistoryDAO {
 
     void addElementHistoryById(long elementId, long userId, String title) throws PersistenceException;
 
-    void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail) throws PersistenceException;
+    void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail)
+            throws PersistenceException;
 
     void addElementHistoryByReference(String reference, long userId, String title) throws PersistenceException;
 
-    void addElementHistoryByReferenceAndUsername(String reference, String username, String title) throws PersistenceException;
+    void addElementHistoryByReferenceAndUsername(String reference, String username, String title)
+            throws PersistenceException;
 
-    void addElementHistoryWithDetailByReference(String reference, long userId, String title, String detail) throws PersistenceException;
+    void addElementHistoryWithDetailByReference(String reference, long userId, String title, String detail)
+            throws PersistenceException;
+
+    void addComputerCaseHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException;
+
+    void addMonitorHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException;
+
+    void addKeyboardHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException;
+
+    void addMouseHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException;
 
     List<ElementHistory> loadElementsHistory() throws PersistenceException;
 

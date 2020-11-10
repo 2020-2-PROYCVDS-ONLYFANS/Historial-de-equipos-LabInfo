@@ -36,6 +36,31 @@
             e.id = #{id};
     </select>
 
+    <select id="loadElementByReference" resultMap="ElementResultMap">
+        SELECT
+            e.id,
+            e.reference,
+            e.available,
+            e.discarded,
+            et.id AS "ELEMENT_TYPES_id",
+            et."name" AS "ELEMENT_TYPES_name"
+        FROM
+            "ELEMENTS" AS e
+                LEFT JOIN
+            "ELEMENT_TYPES" AS et ON et.id = e."ELEMENT_TYPES_id"
+        WHERE
+            e.reference = #{reference};
+    </select>
+    
+    <update id="setAvailableByReference">
+        UPDATE
+            "ELEMENTS"
+        SET
+            available = #{available}
+        WHERE
+            reference = #{reference}
+    </update>
+
     <resultMap id="ElementResultMap" type="Element">
         <id column="id" property="id"/>
         <result column="available" property="available"/>

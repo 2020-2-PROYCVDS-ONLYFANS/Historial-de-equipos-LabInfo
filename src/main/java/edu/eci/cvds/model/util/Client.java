@@ -21,8 +21,10 @@ public class Client {
         ElementTypeMapper elementTypeMapper = session.getMapper(ElementTypeMapper.class);
         ElementMapper elementMapper = session.getMapper(ElementMapper.class);
         ElementHistoryMapper elementHistoryMapper = session.getMapper(ElementHistoryMapper.class);
+        ComputerMapper computerMapper = session.getMapper(ComputerMapper.class);
 
-        // code
+        computerMapper.registerComputerWithReferences(
+                "computer", "computerCase", "monitor", "keyboard", "mouse");
 
         session.commit();
         session.close();

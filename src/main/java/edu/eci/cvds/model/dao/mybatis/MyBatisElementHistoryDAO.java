@@ -23,7 +23,8 @@ public class MyBatisElementHistoryDAO implements ElementHistoryDAO {
     }
 
     @Override
-    public void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail) throws PersistenceException {
+    public void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail)
+            throws PersistenceException {
         try {
             elementHistoryMapper.addElementHistoryWithDetailById(elementId, userId, title, detail);
         } catch (PersistenceException e) {
@@ -32,7 +33,8 @@ public class MyBatisElementHistoryDAO implements ElementHistoryDAO {
     }
 
     @Override
-    public void addElementHistoryByReference(String reference, long userId, String title) throws PersistenceException {
+    public void addElementHistoryByReference(String reference, long userId, String title)
+            throws PersistenceException {
         try {
             elementHistoryMapper.addElementHistoryByReference(reference, userId, title);
         } catch (PersistenceException e) {
@@ -41,7 +43,8 @@ public class MyBatisElementHistoryDAO implements ElementHistoryDAO {
     }
 
     @Override
-    public void addElementHistoryByReferenceAndUsername(String reference, String username, String title) throws PersistenceException {
+    public void addElementHistoryByReferenceAndUsername(String reference, String username, String title)
+            throws PersistenceException {
         try {
             elementHistoryMapper.addElementHistoryByReferenceAndUsername(reference, username, title);
         } catch (PersistenceException e) {
@@ -50,11 +53,56 @@ public class MyBatisElementHistoryDAO implements ElementHistoryDAO {
     }
 
     @Override
-    public void addElementHistoryWithDetailByReference(String reference, long userId, String title, String detail) throws PersistenceException {
+    public void addElementHistoryWithDetailByReference(String reference, long userId, String title, String detail)
+            throws PersistenceException {
         try {
             elementHistoryMapper.addElementHistoryWithDetailByReference(reference, userId, title, detail);
         } catch (PersistenceException e) {
             throw new PersistenceException("Fail to add element history with detail by reference.", e);
+        }
+    }
+
+    @Override
+    public void addComputerCaseHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException {
+        try {
+            elementHistoryMapper.addComputerCaseHistoryWithDetailByReferenceAndUsername(
+                    reference, username, title, detail);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to add computer case history with detail by reference and username.", e);
+        }
+    }
+
+    @Override
+    public void addMonitorHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException {
+        try {
+            elementHistoryMapper.addMonitorHistoryWithDetailByReferenceAndUsername(
+                    reference, username, title, detail);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to add computer case history with detail by reference and username.", e);
+        }
+    }
+
+    @Override
+    public void addKeyboardHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException {
+        try {
+            elementHistoryMapper.addKeyboardHistoryWithDetailByReferenceAndUsername(
+                    reference, username, title, detail);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to add computer case history with detail by reference and username.", e);
+        }
+    }
+
+    @Override
+    public void addMouseHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail) throws PersistenceException {
+        try {
+            elementHistoryMapper.addMouseHistoryWithDetailByReferenceAndUsername(
+                    reference, username, title, detail);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to add computer case history with detail by reference and username.", e);
         }
     }
 

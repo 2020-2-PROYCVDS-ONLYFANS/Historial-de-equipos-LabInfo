@@ -146,6 +146,12 @@
     </dependency>
     <!--  =================  -->
 
+    <dependency>
+      <groupId>com.flipkart.utils</groupId>
+      <artifactId>javatuples</artifactId>
+      <version>3.0</version>
+    </dependency>
+
 
     <!--  Test  -->
     <dependency>

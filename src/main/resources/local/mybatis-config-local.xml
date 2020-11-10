@@ -12,8 +12,8 @@
         <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementType" alias="ElementType"/>
         <typeAlias type="edu.eci.cvds.model.entities.element.Element" alias="Element"/>
         <typeAlias type="edu.eci.cvds.model.entities.element.ElementHistory" alias="ElementHistory"/>
-        <typeAlias type="edu.eci.cvds.model.entities.team.Team" alias="Team"/>
-        <typeAlias type="edu.eci.cvds.model.entities.team.TeamHistory" alias="TeamHistory"/>
+        <typeAlias type="edu.eci.cvds.model.entities.computer.Computer" alias="Team"/>
+        <typeAlias type="edu.eci.cvds.model.entities.computer.ComputerHistory" alias="TeamHistory"/>
     </typeAliases>
 
     <typeHandlers>

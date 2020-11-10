@@ -1,4 +1,4 @@
-package edu.eci.cvds.model.entities.team;
+package edu.eci.cvds.model.entities.computer;
 
 import edu.eci.cvds.model.entities.User;
 
@@ -6,16 +6,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 @SuppressWarnings("unused")
-public class TeamHistory implements Serializable {
+public class ComputerHistory implements Serializable {
 
     private long id;
-    private Team team;
+    private Computer computer;
     private User user;
     private Date timestamp;
     private String title;
     private String detail;
 
-    public TeamHistory() {
+    public ComputerHistory() {
     }
 
     public long getId() {
@@ -26,12 +26,12 @@ public class TeamHistory implements Serializable {
         this.id = id;
     }
 
-    public Team getTeam() {
-        return team;
+    public Computer getTeam() {
+        return computer;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeam(Computer computer) {
+        this.computer = computer;
     }
 
     public User getUser() {
@@ -70,7 +70,7 @@ public class TeamHistory implements Serializable {
     public String toString() {
         return "TeamHistory{" +
                 "id=" + id +
-                ", team=" + team +
+                ", team=" + computer +
                 ", user=" + user +
                 ", timestamp=" + timestamp +
                 ", title='" + title + '\'' +

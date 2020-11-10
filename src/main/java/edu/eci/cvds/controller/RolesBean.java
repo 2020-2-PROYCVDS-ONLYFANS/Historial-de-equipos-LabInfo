@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @ManagedBean(name = "rolesBean", eager = true)
 @RequestScoped
-public class RolesBean extends BasePageBean implements Serializable {
+public class RolesBean extends BasePageBean {
 
     private final RoleName roleUser = RoleName.ROLE_USER;
     private final RoleName roleAdmin = RoleName.ROLE_ADMIN;

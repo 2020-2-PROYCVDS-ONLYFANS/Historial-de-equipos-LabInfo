@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ComputerHistoryMapper">
+    <insert id="addComputerHistoryById">
+        INSERT INTO
+            "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title)
+        VALUES (
+                   #{computerId},
+                   #{userId},
+                   #{title}
+               );
+    </insert>
+
+    <insert id="addComputerHistoryWithDetailById">
+        INSERT INTO
+            "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   #{computerId},
+                   #{userId},
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
+    <insert id="addComputerHistoryByReference">
+        INSERT INTO
+            "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   #{userId},
+                   #{title}
+               );
+    </insert>
+
+    <insert id="addComputerHistoryByReferenceAndUsername">
+        INSERT INTO
+            "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title}
+               );
+    </insert>
+
+    <insert id="addComputerHistoryWithDetailByReference">
+        INSERT INTO
+            "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   #{userId},
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+
+    <insert id="addComputerHistoryWithDetailByReferenceAndUsername">
+        INSERT INTO
+            "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title, detail)
+        VALUES (
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "COMPUTERS"
+                       WHERE
+                           reference = #{reference}
+                   ),
+                   (
+                       SELECT
+                           id
+                       FROM
+                           "USERS"
+                       WHERE
+                           username = #{username}
+                   ),
+                   #{title},
+                   #{detail}
+               );
+    </insert>
+</mapper>
