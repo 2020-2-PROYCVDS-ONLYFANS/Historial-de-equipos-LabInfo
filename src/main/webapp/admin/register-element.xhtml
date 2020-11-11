@@ -4,15 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<f:view>
-    <h:outputLabel value="Hello, world"/>
+<h:head>
+    <title>Register element</title>
+</h:head>
 
+<f:view>
     <h:form>
-        <div class="ui-fluid">
+        <div class="ui-fluid" style="width: fit-content; margin: auto; padding: 1em;">
             <div class="p-field">
                 <p:outputLabel for="reference" value="Reference" />
                 <p:inputText id="reference" value="#{registerElementBean.reference}" />
@@ -35,6 +36,8 @@
                              action="#{registerElementBean.redirectToAdminPanel()}"/>
         </div>
     </h:form>
+    <br/><br/>
+    <p:linkButton href="../admin/" value="Volver"/>
 </f:view>
 
 </html>

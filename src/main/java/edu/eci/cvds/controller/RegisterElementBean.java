@@ -2,7 +2,7 @@ package edu.eci.cvds.controller;
 
 import com.google.inject.Inject;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
-import edu.eci.cvds.model.services.LabInfoServices;
+import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -13,12 +13,12 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
-@ManagedBean(name = "registerElementBean", eager = true)
+@ManagedBean(name = "registerElementBean")
 @ViewScoped
 public class RegisterElementBean extends BasePageBean {
 
     @Inject
-    LabInfoServices labInfoServices;
+    ElementServices elementServices;
 
     private ElementTypeName computerCase = ElementTypeName.ETN_COMPUTER_CASE;
     private ElementTypeName monitor = ElementTypeName.ETN_MONITOR;
@@ -33,15 +33,17 @@ public class RegisterElementBean extends BasePageBean {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterElementBean.class);
 
     public void register() {
+        LOGGER.info("register");
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            labInfoServices.registerElement(type, reference, username);
+            elementServices.registerElement(type, reference, username);
         } catch (LabInfoServicesException e) {
             e.printStackTrace();
         }
     }
 
     public void redirectToAdminPanel() {
+        LOGGER.info("redirectToAdminPanel");
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("../admin/");
         } catch (IOException e) {

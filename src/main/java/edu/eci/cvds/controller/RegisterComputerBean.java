@@ -1,7 +1,8 @@
 package edu.eci.cvds.controller;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.services.LabInfoServices;
+import edu.eci.cvds.model.services.ComputerServices;
+import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.javatuples.Pair;
@@ -12,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,10 @@ import java.util.List;
 public class RegisterComputerBean extends BasePageBean {
 
     @Inject
-    private LabInfoServices labInfoServices;
+    private ComputerServices computerServices;
+
+    @Inject
+    private ElementServices elementServices;
 
     private String computerCaseReference;
     private String monitorReference;
@@ -47,22 +52,25 @@ public class RegisterComputerBean extends BasePageBean {
         LOGGER.info("register");
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            labInfoServices.registerComputerWithReferences(
+            computerServices.registerComputerWithReferences(
                     computerReference, computerCaseReference, monitorReference, keyboardReference, mouseReference,
                     existsComputerCase, existsMonitor, existsKeyboard, existsMouse, username);
             addMessage("Done", "Computer successfully registered.");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.info("register - catch");
+            // e.printStackTrace();
             addMessage("System Error", "Please try again later.");
         }
     }
 
     public void addMessage(String summary, String detail) {
+        LOGGER.info("addMessage");
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public String buildMessage() {
+        LOGGER.info("buildMessage");
         if (!areSomeReferencesNull()) {
             Pair<Integer, String> messageAndCont = elementsMessageAndCont();
             LOGGER.info(messageAndCont.toString());
@@ -85,6 +93,7 @@ public class RegisterComputerBean extends BasePageBean {
     }
 
     private Pair<Integer, String> elementsMessageAndCont() {
+        LOGGER.info("elementsMessageAndCont");
         StringBuilder elementsMessage = new StringBuilder();
         List<String> elements = new ArrayList<>();
         int cont = 0;
@@ -123,33 +132,46 @@ public class RegisterComputerBean extends BasePageBean {
 
     public void askComputerCase() {
         try {
-            existsComputerCase = labInfoServices.loadElementByReference(computerCaseReference) != null;
+            existsComputerCase = elementServices.loadElementByReference(computerCaseReference) != null;
         } catch (LabInfoServicesException e) {
+            LOGGER.info("askComputerCase - catch");
             existsComputerCase = false;
         }
     }
 
     public void askMonitor() {
         try {
-            existsMonitor = labInfoServices.loadElementByReference(monitorReference) != null;
+            existsMonitor = elementServices.loadElementByReference(monitorReference) != null;
         } catch (LabInfoServicesException e) {
+            LOGGER.info("askMonitor - catch");
             existsMonitor = false;
         }
     }
 
     public void askKeyboard() {
         try {
-            existsKeyboard = labInfoServices.loadElementByReference(keyboardReference) != null;
+            existsKeyboard = elementServices.loadElementByReference(keyboardReference) != null;
         } catch (LabInfoServicesException e) {
+            LOGGER.info("askKeyboard - catch");
             existsKeyboard = false;
         }
     }
 
     public void askMouse() {
         try {
-            existsMouse = labInfoServices.loadElementByReference(mouseReference) != null;
+            existsMouse = elementServices.loadElementByReference(mouseReference) != null;
         } catch (LabInfoServicesException e) {
+            LOGGER.info("askMouse - catch");
             existsMouse = false;
+        }
+    }
+
+    public void redirectToAdmin() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("admin/");
+        } catch (IOException e) {
+            LOGGER.info("redirectToAdmin - catch");
+            // e.printStackTrace();
         }
     }
 

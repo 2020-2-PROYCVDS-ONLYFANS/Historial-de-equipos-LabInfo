@@ -3,7 +3,6 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
@@ -18,28 +17,28 @@
 
             <div class="ui-fluid" style="width: fit-content; margin: auto; padding: 1em;">
                 <div class="p-field" style="margin: 1em;">
-                    <p:outputLabel for="computerCase-reference" value="Computer Case Reference"/>
+                    <p:outputLabel for="computerCase-reference" value="Computer Case Reference:"/>
                     <p:inputText id="computerCase-reference" required="true"
                                  value="#{registerComputerBean.computerCaseReference}">
                         <p:ajax event="blur" listener="#{registerComputerBean.askComputerCase()}" update="confirm"/>
                     </p:inputText>
                 </div>
                 <div class="p-field" style="margin: 1em;">
-                    <p:outputLabel for="monitor-reference" value="Monitor Reference"/>
+                    <p:outputLabel for="monitor-reference" value="Monitor Reference:"/>
                     <p:inputText id="monitor-reference" required="true"
                                  value="#{registerComputerBean.monitorReference}">
                         <p:ajax event="blur" listener="#{registerComputerBean.askMonitor()}" update="confirm"/>
                     </p:inputText>
                 </div>
                 <div class="p-field" style="margin: 1em;">
-                    <p:outputLabel for="keyboard-reference" value="Keyboard Reference"/>
+                    <p:outputLabel for="keyboard-reference" value="Keyboard Reference:"/>
                     <p:inputText id="keyboard-reference" required="true"
                                  value="#{registerComputerBean.keyboardReference}">
                         <p:ajax event="blur" listener="#{registerComputerBean.askKeyboard()}" update="confirm"/>
                     </p:inputText>
                 </div>
                 <div class="p-field" style="margin: 1em;">
-                    <p:outputLabel for="mouse-reference" value="Mouse Reference"/>
+                    <p:outputLabel for="mouse-reference" value="Mouse Reference:"/>
                     <p:inputText id="mouse-reference" required="true"
                                  value="#{registerComputerBean.mouseReference}">
                         <p:ajax event="blur" listener="#{registerComputerBean.askMouse()}" update="confirm"/>
@@ -47,14 +46,14 @@
                 </div>
 
                 <div class="p-field" style="margin: 1em;">
-                    <p:outputLabel for="computer-reference" value="Computer Reference"/>
+                    <p:outputLabel for="computer-reference" value="Computer Reference:"/>
                     <p:inputText id="computer-reference" required="true"
                                  value="#{registerComputerBean.computerReference}">
                     </p:inputText>
                 </div>
 
                 <p:commandButton value="Register" update="messages" style="margin: 1em; width: min-content;"
-                                 action="#{registerComputerBean.register()}">
+                                 action="#{registerComputerBean.register()}" styleClass="ui-priority-primary">
                     <p:confirm icon="ui-icon-alert"/>
                 </p:commandButton>
 
@@ -66,7 +65,13 @@
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
                 </p:confirmDialog>
             </div>
+            <br/><br/>
+            <p:commandButton action="#{registerComputerBean.redirectToAdmin()}" value="Admin" update="@all"/>
+            <br/><br/>
+            <p:linkButton href="../admin/" value="Volver"/>
         </h:form>
+        <br/><br/>
+        <p:linkButton href="../admin/" value="Volver"/>
     </f:view>
 </h:body>
 

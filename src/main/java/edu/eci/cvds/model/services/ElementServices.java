@@ -1,13 +1,13 @@
 package edu.eci.cvds.model.services;
 
+import edu.eci.cvds.model.entities.computer.Computer;
 import edu.eci.cvds.model.entities.element.Element;
 import edu.eci.cvds.model.entities.element.ElementHistory;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
-public interface LabInfoServices {
+public interface ElementServices {
 
     void registerElement(ElementTypeName name, String reference, String username)
             throws LabInfoServicesException;
@@ -33,29 +33,23 @@ public interface LabInfoServices {
             throws LabInfoServicesException;
 
     void associateComputerCaseByReferenceAndUsername(
-            String reference, String username, String newComputer)
+            String reference, String username, Computer newComputer)
             throws LabInfoServicesException;
 
     void associateMonitorByReferenceAndUsername(
-            String reference, String username, String newComputer)
+            String reference, String username, Computer newComputer)
             throws LabInfoServicesException;
 
     void associateKeyboardByReferenceAndUsername(
-            String reference, String username, String newComputer)
+            String reference, String username, Computer newComputer)
             throws LabInfoServicesException;
 
     void associateMouseByReferenceAndUsername(
-            String reference, String username, String newComputer)
+            String reference, String username, Computer newComputer)
             throws LabInfoServicesException;
 
     List<ElementHistory> loadElementsHistory() throws LabInfoServicesException;
 
     List<ElementHistory> loadElementHistoryById(long elementId)
-            throws LabInfoServicesException;
-
-    void registerComputerWithReferences(
-            String computerCase, String monitor, String keyboard, String mouse,
-            String computer, boolean existsComputerCase, boolean existsMonitor,
-            boolean existsKeyboard, boolean existsMouse, String username)
             throws LabInfoServicesException;
 }

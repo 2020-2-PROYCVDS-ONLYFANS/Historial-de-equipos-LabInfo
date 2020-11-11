@@ -82,4 +82,18 @@ public class Computer implements Serializable {
     public void setDiscarded(boolean discarded) {
         this.discarded = discarded;
     }
+
+    @Override
+    public String toString() {
+        return "Computer{" +
+                "id=" + id +
+                ", reference='" + reference + '\'' +
+                ", computerCase=" + computerCase +
+                ", monitor=" + monitor +
+                ", keyboard=" + keyboard +
+                ", mouse=" + mouse +
+                ", available=" + available +
+                ", discarded=" + discarded +
+                '}';
+    }
 }

@@ -22,4 +22,13 @@ public class IndexBean extends BasePageBean {
             e.printStackTrace();
         }
     }
+
+    public void redirectToAccount() {
+        LOGGER.info("redirectToAccount");
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("account/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

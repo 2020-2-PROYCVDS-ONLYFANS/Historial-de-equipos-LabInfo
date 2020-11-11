@@ -3,9 +3,11 @@ package edu.eci.cvds.model.guice.mybatis;
 import edu.eci.cvds.model.dao.*;
 import edu.eci.cvds.model.dao.mybatis.*;
 import edu.eci.cvds.model.services.AuthServices;
-import edu.eci.cvds.model.services.LabInfoServices;
+import edu.eci.cvds.model.services.ComputerServices;
+import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.impl.AuthServicesImpl;
-import edu.eci.cvds.model.services.impl.LabInfoServicesImpl;
+import edu.eci.cvds.model.services.impl.ComputerServicesImpl;
+import edu.eci.cvds.model.services.impl.ElementServicesImpl;
 import org.mybatis.guice.XMLMyBatisModule;
 import org.mybatis.guice.datasource.helper.JdbcHelper;
 
@@ -26,7 +28,9 @@ public class MyBatisModuleFactory {
                 setClassPathResource(pathResource);
 
                 bind(AuthServices.class).to(AuthServicesImpl.class);
-                bind(LabInfoServices.class).to(LabInfoServicesImpl.class);
+                bind(ElementServices.class).to(ElementServicesImpl.class);
+                bind(ComputerServices.class).to(ComputerServicesImpl.class);
+
                 bind(UserDAO.class).to(MyBatisUserDAO.class);
                 bind(RoleDAO.class).to(MyBatisRoleDAO.class);
                 bind(ElementTypeDAO.class).to(MyBatisElementTypeDAO.class);
