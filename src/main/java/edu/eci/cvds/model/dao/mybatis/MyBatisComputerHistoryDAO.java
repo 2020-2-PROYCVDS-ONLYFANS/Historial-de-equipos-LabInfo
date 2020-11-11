@@ -4,11 +4,16 @@ import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.ComputerHistoryDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.ComputerHistoryMapper;
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyBatisComputerHistoryDAO implements ComputerHistoryDAO {
 
     @Inject
     ComputerHistoryMapper computerHistoryMapper;
+
+    @SuppressWarnings("unused")
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(MyBatisComputerHistoryDAO.class);
 
     @Override
     public void addComputerHistoryById(long computerId, long userId, String title) throws PersistenceException {
@@ -62,10 +67,12 @@ public class MyBatisComputerHistoryDAO implements ComputerHistoryDAO {
     @Override
     public void addComputerHistoryWithDetailByReferenceAndUsername(
             String reference, String username, String title, String detail) throws PersistenceException {
+        LOGGER.info("addComputerHistoryWithDetailByReferenceAndUsername");
         try {
             computerHistoryMapper.addComputerHistoryWithDetailByReferenceAndUsername(
                     reference, username, title, detail);
         } catch (PersistenceException e) {
+            LOGGER.info("addComputerHistoryWithDetailByReferenceAndUsername - catch");
             throw new PersistenceException("Fail to add computer history with detail by reference and username.", e);
         }
     }

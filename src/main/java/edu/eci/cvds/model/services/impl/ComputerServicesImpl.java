@@ -11,6 +11,8 @@ import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.LabInfoServicesException;
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ComputerServicesImpl implements ComputerServices {
 
@@ -28,6 +30,9 @@ public class ComputerServicesImpl implements ComputerServices {
 
     @Inject
     ElementHistoryDAO elementHistoryDAO;
+
+    @SuppressWarnings("unused")
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(ComputerServicesImpl.class);
 
     @Override
     public void registerComputerWithReferences(
@@ -130,10 +135,12 @@ public class ComputerServicesImpl implements ComputerServices {
     public void addComputerHistoryByReferenceAndUsername(
             String reference, String username, String title, String detail)
             throws LabInfoServicesException {
+        LOGGER.info("addComputerHistoryByReferenceAndUsername");
         try {
             computerHistoryDAO.addComputerHistoryWithDetailByReferenceAndUsername(
                     reference, username, title, detail);
         } catch (PersistenceException e) {
+            LOGGER.info("addComputerHistoryByReferenceAndUsername - catch");
             throw new LabInfoServicesException(e.getMessage(), e);
         }
     }

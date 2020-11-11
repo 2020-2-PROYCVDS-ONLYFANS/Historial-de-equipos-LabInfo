@@ -171,7 +171,7 @@ public class RegisterComputerBean extends BasePageBean {
             FacesContext.getCurrentInstance().getExternalContext().redirect("admin/");
         } catch (IOException e) {
             LOGGER.info("redirectToAdmin - catch");
-            // e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

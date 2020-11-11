@@ -28,8 +28,7 @@ public class ElementServicesImpl implements ElementServices {
     ComputerServices computerServices;
 
     @SuppressWarnings("unused")
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(ElementServicesImpl.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(ElementServicesImpl.class);
 
     @Override
     public void registerElement(
@@ -106,6 +105,47 @@ public class ElementServicesImpl implements ElementServices {
             elementHistoryDAO.addElementHistoryWithDetailByReference(
                     reference, userId, title, detail);
         } catch (PersistenceException e) {
+            throw new LabInfoServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void addElementHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail, ElementTypeName type)
+            throws LabInfoServicesException {
+        LOGGER.info("addElementHistoryWithDetailByReferenceAndUsername");
+        try {
+            switch (type) {
+                case ETN_COMPUTER_CASE:
+                    LOGGER.info("ETN_COMPUTER_CASE");
+                    elementHistoryDAO
+                            .addComputerCaseHistoryWithDetailByReferenceAndUsername(
+                                    reference, username, title, detail);
+                    break;
+
+                case ETN_MONITOR:
+                    LOGGER.info("ETN_MONITOR");
+                    elementHistoryDAO
+                            .addMonitorHistoryWithDetailByReferenceAndUsername(
+                                    reference, username, title, detail);
+                    break;
+
+                case ETN_KEYBOARD:
+                    LOGGER.info("ETN_KEYBOARD");
+                    elementHistoryDAO
+                            .addKeyboardHistoryWithDetailByReferenceAndUsername(
+                                    reference, username, title, detail);
+                    break;
+
+                case ETN_MOUSE:
+                    LOGGER.info("ETN_MOUSE");
+                    elementHistoryDAO
+                            .addMouseHistoryWithDetailByReferenceAndUsername(
+                                    reference, username, title, detail);
+                    break;
+            }
+        } catch (PersistenceException e) {
+            LOGGER.info("addElementHistoryWithDetailByReferenceAndUsername - catch");
             throw new LabInfoServicesException(e.getMessage(), e);
         }
     }

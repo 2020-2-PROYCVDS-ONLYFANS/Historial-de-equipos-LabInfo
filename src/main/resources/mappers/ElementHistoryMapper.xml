@@ -144,7 +144,7 @@
                        FROM
                            "COMPUTERS"
                        WHERE
-                           "ELEMENTS_computer_case_id" = (
+                           "ELEMENTS_monitor_id" = (
                                SELECT
                                    id
                                FROM

@@ -32,6 +32,10 @@ public interface ElementServices {
             String reference, long userId, String title, String detail)
             throws LabInfoServicesException;
 
+    void addElementHistoryWithDetailByReferenceAndUsername(
+            String reference, String username, String title, String detail, ElementTypeName type)
+            throws LabInfoServicesException;
+
     void associateComputerCaseByReferenceAndUsername(
             String reference, String username, Computer newComputer)
             throws LabInfoServicesException;

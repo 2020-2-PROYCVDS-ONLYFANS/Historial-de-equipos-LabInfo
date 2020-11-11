@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Register novelties</title>
+</h:head>
+
+<f:view>
+    <h:form>
+        <p:growl id="messages" showDetail="true"/>
+
+        <div class="ui-fluid" style="width: fit-content; margin: auto; padding: 1em;">
+            <div class="p-field" style="margin: 1em;">
+                <p:outputLabel for="reference" value="Reference:"/>
+                <p:inputText id="reference" required="true" value="#{registerNoveltyBean.reference}"/>
+            </div>
+
+            <div class="p-field">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="type" value="Type:" />
+                    <p:selectOneRadio id="type" value="#{registerNoveltyBean.type}" unselectable="true" required="true">
+                        <f:selectItem itemLabel="Computer" itemValue="computer"/>
+                        <f:selectItem itemLabel="Compute case" itemValue="computerCase"/>
+                        <f:selectItem itemLabel="Monitor" itemValue="monitor"/>
+                        <f:selectItem itemLabel="Keyboard" itemValue="keyboard"/>
+                        <f:selectItem itemLabel="Mouse" itemValue="mouse"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </div>
+
+            <div class="p-field" style="margin: 1em;">
+                <p:outputLabel for="title" value="Title:"/>
+                <p:inputText id="title" required="true" value="#{registerNoveltyBean.title}"/>
+            </div>
+
+            <div class="p-field" style="margin: 1em;">
+                <p:outputLabel for="detail" value="Detail:"/>
+                <p:inputText id="detail" required="true" value="#{registerNoveltyBean.detail}"/>
+            </div>
+
+            <p:commandButton value="Register" update="messages" style="margin: 1em; width: min-content;"
+                             action="#{registerNoveltyBean.register()}" styleClass="ui-priority-primary">
+                <p:confirm icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" header="Confirm">
+                <f:facet name="message">
+                    <h:outputText value="Are you sure?"/>
+                </f:facet>
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </p:confirmDialog>
+        </div>
+    </h:form>
+
+    <br/><br/>
+    <p:linkButton href="../admin/" value="Volver"/>
+</f:view>
+
+</html>
