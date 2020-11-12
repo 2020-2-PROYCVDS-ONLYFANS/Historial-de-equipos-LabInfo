@@ -5,10 +5,9 @@ import org.apache.ibatis.exceptions.PersistenceException;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
 public interface ElementHistoryDAO {
 
-    void addElementHistoryById(long elementId, long userId, String title) throws PersistenceException;
+    void addElementHistoryByIdAndUsername(long elementId, String username, String title) throws PersistenceException;
 
     void addElementHistoryWithDetailById(long elementId, long userId, String title, String detail)
             throws PersistenceException;

@@ -20,4 +20,8 @@ public interface ElementDAO {
     void setAvailableByReference(
             String reference, boolean available)
             throws PersistenceException;
+
+    void setDiscardedById(
+            long id, boolean discarded)
+            throws PersistenceException;
 }

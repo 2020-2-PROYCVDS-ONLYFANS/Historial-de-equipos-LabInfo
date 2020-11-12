@@ -14,7 +14,7 @@ public interface ElementServices {
 
     Element loadElementByReference(String reference) throws LabInfoServicesException;
 
-    void addElementHistoryById(long elementId, long userId, String title)
+    void addElementHistoryByIdAndUsername(long elementId, String username, String title)
             throws LabInfoServicesException;
 
     void addElementHistoryWithDetailById(
@@ -56,4 +56,6 @@ public interface ElementServices {
 
     List<ElementHistory> loadElementHistoryById(long elementId)
             throws LabInfoServicesException;
+
+    void discardElement(long elementId, String username) throws LabInfoServicesException;
 }

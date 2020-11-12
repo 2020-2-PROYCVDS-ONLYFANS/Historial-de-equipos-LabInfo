@@ -20,4 +20,9 @@ public interface ElementMapper {
     void setAvailableByReference(
             @Param("reference") String reference,
             @Param("available") boolean available);
+
+    @Transactional
+    void setDiscardedById(
+            @Param("id") long id,
+            @Param("discarded") boolean discarded);
 }

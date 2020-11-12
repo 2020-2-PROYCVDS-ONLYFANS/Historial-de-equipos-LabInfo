@@ -61,6 +61,15 @@
             reference = #{reference}
     </update>
 
+    <update id="setDiscardedById">
+        UPDATE
+            "ELEMENTS"
+        SET
+            discarded = #{discarded}
+        WHERE
+            id = #{id}
+    </update>
+
     <resultMap id="ElementResultMap" type="Element">
         <id column="id" property="id"/>
         <result column="available" property="available"/>

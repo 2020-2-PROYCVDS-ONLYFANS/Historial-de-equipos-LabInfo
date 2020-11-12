@@ -51,4 +51,13 @@ public class MyBatisElementDAO implements ElementDAO {
             throw new PersistenceException("Fail to set available by reference.", e);
         }
     }
+
+    @Override
+    public void setDiscardedById(long id, boolean discarded) throws PersistenceException {
+        try {
+            elementMapper.setDiscardedById(id, discarded);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to set discarded by id.", e);
+        }
+    }
 }

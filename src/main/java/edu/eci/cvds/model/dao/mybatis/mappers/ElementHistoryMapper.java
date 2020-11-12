@@ -9,8 +9,8 @@ import java.util.List;
 public interface ElementHistoryMapper {
 
     @Transactional
-    void addElementHistoryById(
-            @Param("elementId") long elementId, @Param("userId") long userId, @Param("title") String title);
+    void addElementHistoryByIdAndUsername(
+            @Param("elementId") long elementId, @Param("username") String username, @Param("title") String title);
 
     @Transactional
     void addElementHistoryWithDetailById(

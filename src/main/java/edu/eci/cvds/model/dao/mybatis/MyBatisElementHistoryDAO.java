@@ -5,6 +5,8 @@ import edu.eci.cvds.model.dao.ElementHistoryDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.ElementHistoryMapper;
 import edu.eci.cvds.model.entities.element.ElementHistory;
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -13,12 +15,22 @@ public class MyBatisElementHistoryDAO implements ElementHistoryDAO {
     @Inject
     ElementHistoryMapper elementHistoryMapper;
 
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(MyBatisElementHistoryDAO.class);
+
     @Override
-    public void addElementHistoryById(long elementId, long userId, String title) throws PersistenceException {
+    public void addElementHistoryByIdAndUsername(
+            long elementId, String username, String title)
+            throws PersistenceException {
         try {
-            elementHistoryMapper.addElementHistoryById(elementId, userId, title);
+            LOGGER.info("elementId = " + elementId);
+            LOGGER.info("username = " + username);
+            LOGGER.info("title = " + title);
+            elementHistoryMapper
+                    .addElementHistoryByIdAndUsername(
+                            elementId, username, title);
         } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to add element history by id.", e);
+            throw new PersistenceException("Fail to add element history by id and username.", e);
         }
     }
 

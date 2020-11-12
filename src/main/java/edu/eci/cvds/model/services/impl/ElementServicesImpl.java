@@ -54,10 +54,10 @@ public class ElementServicesImpl implements ElementServices {
     }
 
     @Override
-    public void addElementHistoryById(long elementId, long userId, String title)
+    public void addElementHistoryByIdAndUsername(long elementId, String username, String title)
             throws LabInfoServicesException {
         try {
-            elementHistoryDAO.addElementHistoryById(elementId, userId, title);
+            elementHistoryDAO.addElementHistoryByIdAndUsername(elementId, username, title);
         } catch (PersistenceException e) {
             throw new LabInfoServicesException(e.getMessage(), e);
         }
@@ -277,6 +277,16 @@ public class ElementServicesImpl implements ElementServices {
             throws LabInfoServicesException {
         try {
             return elementHistoryDAO.loadElementHistoryById(elementId);
+        } catch (PersistenceException e) {
+            throw new LabInfoServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void discardElement(long elementId, String username) throws LabInfoServicesException {
+        try {
+            elementDAO.setDiscardedById(elementId, true);
+            elementHistoryDAO.addElementHistoryByIdAndUsername(elementId, username, "Discarded");
         } catch (PersistenceException e) {
             throw new LabInfoServicesException(e.getMessage(), e);
         }
