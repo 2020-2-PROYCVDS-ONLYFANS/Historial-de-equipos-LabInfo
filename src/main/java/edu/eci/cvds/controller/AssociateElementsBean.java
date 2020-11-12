@@ -44,7 +44,7 @@ public class AssociateElementsBean extends BasePageBean {
             String username = SecurityUtils.getSubject().getPrincipal().toString();
             try {
                 Computer computer = computerServices.loadComputerByReference(computerReference);
-                if (computer != null) {
+                if (computer != null && computer.isAvailable()) {
                     switch (type) {
                         case ETN_COMPUTER_CASE:
                             LOGGER.info("ETN_COMPUTER_CASE");

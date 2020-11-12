@@ -160,6 +160,16 @@
             reference = #{computer};
     </update>
 
+    <update id="setDiscardedAndAvailableById">
+        UPDATE
+            "COMPUTERS"
+        SET
+            discarded = #{discarded},
+            available = #{available}
+        WHERE
+            id = #{id};
+    </update>
+
     <resultMap id="ComputerResultMap" type="Computer">
         <id column="id" property="id"/>
         <result column="reference" property="reference"/>

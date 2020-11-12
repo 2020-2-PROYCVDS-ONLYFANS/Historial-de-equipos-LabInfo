@@ -27,4 +27,9 @@ public interface ComputerServices {
     void addComputerHistoryByReferenceAndUsername(
             String reference, String username, String title, String detail)
             throws LabInfoServicesException;
+
+    void discardComputer(
+            Computer computer, String username, boolean discardComputerCase,
+            boolean discardMonitor, boolean discardKeyboard, boolean discardMouse)
+            throws LabInfoServicesException;
 }

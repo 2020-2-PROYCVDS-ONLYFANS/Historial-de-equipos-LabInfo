@@ -4,13 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ComputerHistoryMapper">
-    <insert id="addComputerHistoryById">
+    <insert id="addComputerHistoryByIdAndUsername">
         INSERT INTO
             "COMPUTERS_HISTORY" ("COMPUTERS_id", "USERS_id", title)
         VALUES (
-                   #{computerId},
-                   #{userId},
-                   #{title}
+                    #{computerId},
+                    (
+                        SELECT
+                            id
+                        FROM
+                            "USERS"
+                        WHERE
+                            username = #{username}
+                    ),
+                    #{title}
                );
     </insert>
 

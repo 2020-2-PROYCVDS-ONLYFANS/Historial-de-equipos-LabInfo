@@ -144,4 +144,71 @@ public class ComputerServicesImpl implements ComputerServices {
             throw new LabInfoServicesException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public void discardComputer(
+            Computer computer, String username, boolean discardComputerCase,
+            boolean discardMonitor, boolean discardKeyboard, boolean discardMouse)
+            throws LabInfoServicesException {
+        try {
+            if (discardComputerCase) {
+                elementDAO.setDiscardedById(
+                        computer.getComputerCase().getId(), true);
+                elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
+                        computer.getComputerCase().getReference(), username, 
+                        "Discarded", null);
+            } else {
+                elementDAO.setAvailableByReference(
+                        computer.getComputerCase().getReference(), true);
+                elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
+                        computer.getComputerCase().getReference(), username, "Unlinked", null);
+            }
+
+            if (discardMonitor) {
+                elementDAO.setDiscardedById(
+                        computer.getMonitor().getId(), true);
+                elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
+                        computer.getMonitor().getReference(), username,
+                        "Discarded", null);
+            } else {
+                elementDAO.setAvailableByReference(
+                        computer.getMonitor().getReference(), true);
+                elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
+                        computer.getMonitor().getReference(), username, "Unlinked", null);
+            }
+
+            if (discardKeyboard) {
+                elementDAO.setDiscardedById(
+                        computer.getKeyboard().getId(), true);
+                elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
+                        computer.getKeyboard().getReference(), username,
+                        "Discarded", null);
+            } else {
+                elementDAO.setAvailableByReference(
+                        computer.getKeyboard().getReference(), true);
+                elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
+                        computer.getKeyboard().getReference(), username, "Unlinked", null);
+            }
+
+            if (discardMouse) {
+                elementDAO.setDiscardedById(
+                        computer.getMouse().getId(), true);
+                elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
+                        computer.getMouse().getReference(), username,
+                        "Discarded", null);
+            } else {
+                elementDAO.setAvailableByReference(
+                        computer.getMouse().getReference(), true);
+                elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
+                        computer.getMouse().getReference(), username, "Unlinked", null);
+            }
+
+            computerDAO.setDiscardedAndAvailableById(
+                    computer.getId(), true, false);
+            computerHistoryDAO.addComputerHistoryByIdAndUsername(
+                    computer.getId(), username, "Discarded");
+        } catch (PersistenceException e) {
+            throw new LabInfoServicesException(e.getMessage(), e);
+        }
+    }
 }

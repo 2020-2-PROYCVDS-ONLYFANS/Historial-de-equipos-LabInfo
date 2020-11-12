@@ -16,11 +16,13 @@ public class MyBatisComputerHistoryDAO implements ComputerHistoryDAO {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(MyBatisComputerHistoryDAO.class);
 
     @Override
-    public void addComputerHistoryById(long computerId, long userId, String title) throws PersistenceException {
+    public void addComputerHistoryByIdAndUsername(
+            long computerId, String username, String title)
+            throws PersistenceException {
         try {
-            computerHistoryMapper.addComputerHistoryById(computerId, userId, title);
+            computerHistoryMapper.addComputerHistoryByIdAndUsername(computerId, username, title);
         } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to add computer history by id.", e);
+            throw new PersistenceException("Fail to add computer history by id and username.", e);
         }
     }
 

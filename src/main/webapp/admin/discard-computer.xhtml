@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Discard computer</title>
+</h:head>
+
+<f:view>
+    <h:form>
+        <p:growl id="messages" showDetail="true"/>
+
+        <div class="ui-fluid" style="width: fit-content; margin: auto; padding: 1em;">
+            <div class="p-field">
+                <p:outputLabel for="computerReference" value="Computer Reference:"/>
+                <p:inputText id="computerReference" required="true"
+                             value="#{discardComputerBean.computerReference}"/>
+            </div>
+
+            <div class="p-field">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="computerCase" value="Computer case:"/>
+                    <p:selectOneRadio id="computerCase" value="#{discardComputerBean.discardComputerCase}" unselectable="true">
+                        <f:selectItem itemLabel="Discard" itemValue="#{true}"/>
+                    </p:selectOneRadio>
+                    <p:outputLabel value="#{discardComputerBean.discardComputerCase}"/>
+                </h:panelGrid>
+            </div>
+
+            <div class="p-field">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="monitor" value="Monitor:"/>
+                    <p:selectOneRadio id="monitor" value="#{discardComputerBean.discardMonitor}" unselectable="true">
+                        <f:selectItem itemLabel="Discard" itemValue="#{true}"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </div>
+
+            <div class="p-field">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="keyboard" value="Keyboard:"/>
+                    <p:selectOneRadio id="keyboard" value="#{discardComputerBean.discardKeyboard}" unselectable="true">
+                        <f:selectItem itemLabel="Discard" itemValue="#{true}"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </div>
+
+            <div class="p-field">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="mouse" value="Mouse:"/>
+                    <p:selectOneRadio id="mouse" value="#{discardComputerBean.discardMouse}" unselectable="true">
+                        <f:selectItem itemLabel="Discard" itemValue="#{true}"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </div>
+
+            <p:commandButton value="Discard computer" update="messages" action="#{discardComputerBean.discardComputer()}">
+                <p:confirm icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" header="Confirm">
+                <f:facet name="message">
+                    <h:outputText value="Are you sure?"/>
+                </f:facet>
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </p:confirmDialog>
+        </div>
+    </h:form>
+</f:view>
+
+</html>

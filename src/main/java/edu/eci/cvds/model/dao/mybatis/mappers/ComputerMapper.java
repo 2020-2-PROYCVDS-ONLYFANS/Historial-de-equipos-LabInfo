@@ -25,8 +25,13 @@ public interface ComputerMapper {
     @Transactional
     void associateKeyboardByReference(
             @Param("computer") String computer, @Param("keyboard") String keyboard);
+
     @Transactional
     void associateMouseByReference(
             @Param("computer") String computer, @Param("mouse") String mouse);
 
+    @Transactional
+    void setDiscardedAndAvailableById(
+            @Param("id") long id, @Param("discarded") boolean discarded,
+            @Param("available") boolean available);
 }

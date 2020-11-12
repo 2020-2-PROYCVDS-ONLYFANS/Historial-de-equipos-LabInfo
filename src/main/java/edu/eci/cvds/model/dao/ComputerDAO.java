@@ -22,4 +22,6 @@ public interface ComputerDAO {
     void associateMouseByReference(String computer, String mouse)
             throws PersistenceException;
 
+    void setDiscardedAndAvailableById(long id, boolean discarded, boolean available)
+            throws PersistenceException;
 }

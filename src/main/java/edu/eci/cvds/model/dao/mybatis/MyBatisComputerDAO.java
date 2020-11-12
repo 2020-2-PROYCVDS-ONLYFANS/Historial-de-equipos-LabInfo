@@ -71,4 +71,13 @@ public class MyBatisComputerDAO implements ComputerDAO {
             throw new PersistenceException("Fail to associate mouse by reference.", e);
         }
     }
+
+    @Override
+    public void setDiscardedAndAvailableById(long id, boolean discarded, boolean available) throws PersistenceException {
+        try {
+            computerMapper.setDiscardedAndAvailableById(id, discarded, available);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to set discarded and available by id.", e);
+        }
+    }
 }

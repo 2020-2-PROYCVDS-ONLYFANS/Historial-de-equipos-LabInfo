@@ -4,7 +4,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 
 public interface ComputerHistoryDAO {
 
-    void addComputerHistoryById(long computerId, long userId, String title)
+    void addComputerHistoryByIdAndUsername(long computerId, String username, String title)
             throws PersistenceException;
 
     void addComputerHistoryWithDetailById(

@@ -6,8 +6,8 @@ import org.mybatis.guice.transactional.Transactional;
 public interface ComputerHistoryMapper {
 
     @Transactional
-    void addComputerHistoryById(
-            @Param("computerId") long computerId, @Param("userId") long userId, @Param("title") String title);
+    void addComputerHistoryByIdAndUsername(
+            @Param("computerId") long computerId, @Param("username") String username, @Param("title") String title);
 
     @Transactional
     void addComputerHistoryWithDetailById(
