@@ -10,14 +10,13 @@
         VALUES (#{name});
     </insert>
 
-    <select id="loadElementTypeByName" resultMap="ElementTypeResultMap">
+    <select id="getElementTypeIdByName" resultType="long">
         SELECT
-            "name",
             id
         FROM
             "ELEMENT_TYPES"
         WHERE
-            "name" = #{name}
+            "name" = #{name};
     </select>
 
     <resultMap id="ElementTypeResultMap" type="ElementType">

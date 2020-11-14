@@ -1,9 +1,10 @@
 package edu.eci.cvds.controller;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.entities.Computer;
+import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.ServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,28 +27,35 @@ public class DiscardComputerBean extends BasePageBean {
     @Inject
     private ComputerServices computerServices;
 
-    @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(DiscardComputerBean.class);
+    @Inject
+    private AuthServices authServices;
+
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(DiscardComputerBean.class);
 
     public void discardComputer() {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
             Computer computer = computerServices.loadComputerByReference(computerReference);
             if (!computer.isDiscarded()) {
-                computerServices.discardComputer(
-                        computer, username, discardComputerCase,
+                computerServices.discard(
+                        authServices.getUserIdByUsername(username), computer, discardComputerCase,
                         discardMonitor, discardKeyboard, discardMouse);
-                addMessage("Done!", "Computer discarded", FacesMessage.SEVERITY_INFO);
+                addMessage("Done!", "Computer discarded",
+                        FacesMessage.SEVERITY_INFO);
             } else {
-                addMessage("Error!", "Computer discarded already", FacesMessage.SEVERITY_ERROR);
+                addMessage("Error!", "Computer discarded already",
+                        FacesMessage.SEVERITY_ERROR);
             }
-        } catch (LabInfoServicesException e) {
+        } catch (ServicesException e) {
             e.printStackTrace();
-            addMessage("Fatal!", "Computer not exists", FacesMessage.SEVERITY_FATAL);
+            addMessage("Fatal!", "Computer not exists",
+                    FacesMessage.SEVERITY_FATAL);
         }
     }
 
-    public void addMessage(String summary, String detail, FacesMessage.Severity severity) {
+    public void addMessage(
+            String summary, String detail, FacesMessage.Severity severity) {
         LOGGER.info("addMessage");
         FacesMessage message = new FacesMessage(severity, summary, detail);
         FacesContext.getCurrentInstance().addMessage("elementMessage", message);

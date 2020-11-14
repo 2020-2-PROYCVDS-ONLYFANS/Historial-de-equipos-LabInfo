@@ -3,7 +3,7 @@ package edu.eci.cvds.controller;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.ElementServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.ServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
@@ -39,7 +39,6 @@ public class RegisterComputerBean extends BasePageBean {
 
     private String computerReference;
 
-    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterComputerBean.class);
 
     public String updateMessage() {
@@ -52,13 +51,18 @@ public class RegisterComputerBean extends BasePageBean {
         LOGGER.info("register");
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            computerServices.registerComputerWithReferences(
-                    computerReference, computerCaseReference, monitorReference, keyboardReference, mouseReference,
-                    existsComputerCase, existsMonitor, existsKeyboard, existsMouse, username);
+            LOGGER.info("register - try");
+            Pair<Boolean, String> computerCasePair = new Pair<>(existsComputerCase, computerCaseReference);
+            Pair<Boolean, String> monitorPair = new Pair<>(existsMonitor, monitorReference);
+            Pair<Boolean, String> keyboardPair = new Pair<>(existsKeyboard, keyboardReference);
+            Pair<Boolean, String> mousePair = new Pair<>(existsMouse, mouseReference);
+
+            computerServices.registerComputerByReferences(
+                    username, computerReference, computerCasePair, monitorPair, keyboardPair, mousePair);
+
             addMessage("Done", "Computer successfully registered.");
         } catch (Exception e) {
-            LOGGER.info("register - catch");
-            // e.printStackTrace();
+            e.printStackTrace();
             addMessage("System Error", "Please try again later.");
         }
     }
@@ -132,8 +136,8 @@ public class RegisterComputerBean extends BasePageBean {
 
     public void askComputerCase() {
         try {
-            existsComputerCase = elementServices.loadElementByReference(computerCaseReference) != null;
-        } catch (LabInfoServicesException e) {
+            existsComputerCase = elementServices.getElementByReference(computerCaseReference) != null;
+        } catch (ServicesException e) {
             LOGGER.info("askComputerCase - catch");
             existsComputerCase = false;
         }
@@ -141,8 +145,8 @@ public class RegisterComputerBean extends BasePageBean {
 
     public void askMonitor() {
         try {
-            existsMonitor = elementServices.loadElementByReference(monitorReference) != null;
-        } catch (LabInfoServicesException e) {
+            existsMonitor = elementServices.getElementByReference(monitorReference) != null;
+        } catch (ServicesException e) {
             LOGGER.info("askMonitor - catch");
             existsMonitor = false;
         }
@@ -150,8 +154,8 @@ public class RegisterComputerBean extends BasePageBean {
 
     public void askKeyboard() {
         try {
-            existsKeyboard = elementServices.loadElementByReference(keyboardReference) != null;
-        } catch (LabInfoServicesException e) {
+            existsKeyboard = elementServices.getElementByReference(keyboardReference) != null;
+        } catch (ServicesException e) {
             LOGGER.info("askKeyboard - catch");
             existsKeyboard = false;
         }
@@ -159,8 +163,8 @@ public class RegisterComputerBean extends BasePageBean {
 
     public void askMouse() {
         try {
-            existsMouse = elementServices.loadElementByReference(mouseReference) != null;
-        } catch (LabInfoServicesException e) {
+            existsMouse = elementServices.getElementByReference(mouseReference) != null;
+        } catch (ServicesException e) {
             LOGGER.info("askMouse - catch");
             existsMouse = false;
         }

@@ -1,37 +1,47 @@
 package edu.eci.cvds.model.dao.mybatis.mappers;
 
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.entities.Computer;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.guice.transactional.Transactional;
 
 public interface ComputerMapper {
 
     @Transactional
-    void registerComputerWithReferences(
-            @Param("computer") String computer, @Param("computerCase") String computerCase,
-            @Param("monitor") String monitor, @Param("keyboard") String keyboard,
-            @Param("mouse") String mouse);
+    void registerComputer(
+            @Param("reference") String reference, @Param("computerCaseId") Long computerCaseId,
+            @Param("monitorId") Long monitorId, @Param("keyboardId") Long keyboardId,
+            @Param("mouseId") Long mouseId);
 
-    Computer loadComputerByReference(@Param("reference") String reference);
+    Long getIdByReference(@Param("reference") String reference);
 
-    @Transactional
-    void associateComputerCaseByReference(
-            @Param("computer") String computer, @Param("computerCase") String computerCase);
+    Long getIdByComputerCaseId(@Param("id") Long id);
 
-    @Transactional
-    void associateMonitorByReference(
-            @Param("computer") String computer, @Param("monitor") String monitor);
+    Long getIdByMonitorId(@Param("id") Long id);
 
-    @Transactional
-    void associateKeyboardByReference(
-            @Param("computer") String computer, @Param("keyboard") String keyboard);
+    Long getIdByKeyboardId(@Param("id") Long id);
+
+    Long getIdByMouseId(@Param("id") Long id);
+
+    Computer getComputerByReference(@Param("reference") String reference);
 
     @Transactional
-    void associateMouseByReference(
-            @Param("computer") String computer, @Param("mouse") String mouse);
+    void setComputerCaseIdByIds(
+            @Param("computerId") Long id, @Param("computerCaseId") Long computerCaseId);
+
+    @Transactional
+    void setMonitorIdByIds(
+            @Param("computerId") Long id, @Param("monitorId") Long monitorId);
+
+    @Transactional
+    void setKeyboardIdByIds(
+            @Param("computerId") Long id, @Param("keyboardId") Long monitorId);
+
+    @Transactional
+    void setMouseIdByIds(
+            @Param("computerId") Long id, @Param("mouseId") Long mouseId);
 
     @Transactional
     void setDiscardedAndAvailableById(
-            @Param("id") long id, @Param("discarded") boolean discarded,
-            @Param("available") boolean available);
+            @Param("id") Long id, @Param("discarded") Boolean discarded,
+            @Param("available") Boolean available);
 }

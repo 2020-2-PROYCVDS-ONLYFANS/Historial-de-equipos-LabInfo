@@ -1,5 +1,6 @@
 package edu.eci.cvds.model.entities.computer;
 
+import edu.eci.cvds.model.entities.Computer;
 import edu.eci.cvds.model.entities.User;
 
 import java.io.Serializable;

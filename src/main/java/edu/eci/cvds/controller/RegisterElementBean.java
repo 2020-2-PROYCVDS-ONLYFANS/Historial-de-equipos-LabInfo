@@ -3,7 +3,7 @@ package edu.eci.cvds.controller;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import edu.eci.cvds.model.services.ElementServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.ServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,24 +20,20 @@ public class RegisterElementBean extends BasePageBean {
     @Inject
     ElementServices elementServices;
 
-    private ElementTypeName computerCase = ElementTypeName.ETN_COMPUTER_CASE;
-    private ElementTypeName monitor = ElementTypeName.ETN_MONITOR;
-    private ElementTypeName keyboard = ElementTypeName.ETN_KEYBOARD;
-    private ElementTypeName mouse = ElementTypeName.ETN_MOUSE;
-
-    private ElementTypeName type;
+    private ElementTypeName typeName;
 
     private String reference;
 
-    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterElementBean.class);
 
     public void register() {
         LOGGER.info("register");
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            elementServices.registerElement(type, reference, username);
-        } catch (LabInfoServicesException e) {
+            LOGGER.info("register - try");
+            elementServices.registerElement(typeName, reference, username);
+        } catch (ServicesException e) {
+            LOGGER.info("register - catch");
             e.printStackTrace();
         }
     }
@@ -45,50 +41,20 @@ public class RegisterElementBean extends BasePageBean {
     public void redirectToAdminPanel() {
         LOGGER.info("redirectToAdminPanel");
         try {
+            LOGGER.info("redirectToAdminPanel - try");
             FacesContext.getCurrentInstance().getExternalContext().redirect("../admin/");
         } catch (IOException e) {
+            LOGGER.info("redirectToAdminPanel - catch");
             e.printStackTrace();
         }
     }
 
-    public ElementTypeName getComputerCase() {
-        return computerCase;
+    public ElementTypeName getTypeName() {
+        return typeName;
     }
 
-    public void setComputerCase(ElementTypeName computerCase) {
-        this.computerCase = computerCase;
-    }
-
-    public ElementTypeName getMonitor() {
-        return monitor;
-    }
-
-    public void setMonitor(ElementTypeName monitor) {
-        this.monitor = monitor;
-    }
-
-    public ElementTypeName getKeyboard() {
-        return keyboard;
-    }
-
-    public void setKeyboard(ElementTypeName keyboard) {
-        this.keyboard = keyboard;
-    }
-
-    public ElementTypeName getMouse() {
-        return mouse;
-    }
-
-    public void setMouse(ElementTypeName mouse) {
-        this.mouse = mouse;
-    }
-
-    public ElementTypeName getType() {
-        return type;
-    }
-
-    public void setType(ElementTypeName type) {
-        this.type = type;
+    public void setTypeName(ElementTypeName typeName) {
+        this.typeName = typeName;
     }
 
     public String getReference() {

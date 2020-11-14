@@ -4,47 +4,64 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper">
-    <insert id="registerComputerWithReferences">
+    <insert id="registerComputer">
         INSERT INTO "COMPUTERS"
             (reference, "ELEMENTS_computer_case_id", "ELEMENTS_monitor_id", "ELEMENTS_keyboard_id", "ELEMENTS_mouse_id")
         VALUES (
-                   #{computer},
-                   (
-                       SELECT
-                           id
-                       FROM
-                           "ELEMENTS"
-                       WHERE
-                           reference = #{computerCase}
-                   ),
-                   (
-                       SELECT
-                           id
-                       FROM
-                           "ELEMENTS"
-                       WHERE
-                           reference = #{monitor}
-                   ),
-                   (
-                       SELECT
-                           id
-                       FROM
-                           "ELEMENTS"
-                       WHERE
-                           reference = #{keyboard}
-                   ),
-                   (
-                       SELECT
-                           id
-                       FROM
-                           "ELEMENTS"
-                       WHERE
-                           reference = #{mouse}
-                   )
+                    #{reference},
+                    #{computerCaseId},
+                    #{monitorId},
+                    #{keyboardId},
+                    #{mouseId}
                );
     </insert>
 
-    <select id="loadComputerByReference" resultMap="ComputerResultMap">
+    <select id="getIdByReference" resultType="long">
+        SELECT
+            id
+        FROM
+            "COMPUTERS"
+        WHERE
+            reference = #{reference};
+    </select >
+
+    <select id="getIdByComputerCaseId" resultType="long">
+        SELECT
+            id
+        FROM
+            "COMPUTERS"
+        WHERE
+            "ELEMENTS_computer_case_id" = #{id};
+    </select>
+
+    <select id="getIdByMonitorId" resultType="long">
+        SELECT
+            id
+        FROM
+            "COMPUTERS"
+        WHERE
+            "ELEMENTS_monitor_id" = #{id};
+    </select>
+
+    <select id="getIdByKeyboardId" resultType="long">
+        SELECT
+            id
+        FROM
+            "COMPUTERS"
+        WHERE
+            "ELEMENTS_keyboard_id" = #{id};
+    </select>
+
+    <select id="getIdByMouseId" resultType="long">
+        SELECT
+            id
+        FROM
+            "COMPUTERS"
+        WHERE
+            "ELEMENTS_mouse_id" = #{id};
+    </select>
+
+    <select id="getComputerByReference" resultMap="ComputerResultMap">
         SELECT
             c.id AS id,
             c.reference AS reference,
@@ -96,68 +113,40 @@
             c.reference = #{reference};
     </select>
 
-    <update id="associateComputerCaseByReference">
+    <update id="setComputerCaseIdByIds">
         UPDATE
             "COMPUTERS"
         SET
-            "ELEMENTS_computer_case_id" = (
-                SELECT
-                    id
-                FROM
-                    "ELEMENTS"
-                WHERE
-                    reference = #{computerCase}
-            )
+            "ELEMENTS_computer_case_id" = #{computerCaseId}
         WHERE
-            reference = #{computer};
+            id = #{computerId};
     </update>
 
-    <update id="associateMonitorByReference">
+    <update id="setMonitorIdByIds">
         UPDATE
             "COMPUTERS"
         SET
-            "ELEMENTS_monitor_id" = (
-                SELECT
-                    id
-                FROM
-                    "ELEMENTS"
-                WHERE
-                    reference = #{monitor}
-            )
+            "ELEMENTS_monitor_id" = #{monitorId}
         WHERE
-            reference = #{computer};
+            id = #{computerId};
     </update>
 
-    <update id="associateKeyboardByReference">
+    <update id="setKeyboardIdByIds">
         UPDATE
             "COMPUTERS"
         SET
-            "ELEMENTS_keyboard_id" = (
-                SELECT
-                    id
-                FROM
-                    "ELEMENTS"
-                WHERE
-                    reference = #{keyboard}
-            )
+            "ELEMENTS_keyboard_id" = #{keyboardId}
         WHERE
-            reference = #{computer};
+            id = #{computerId};
     </update>
 
-    <update id="associateMouseByReference">
+    <update id="setMouseIdByIds">
         UPDATE
             "COMPUTERS"
         SET
-            "ELEMENTS_mouse_id" = (
-                SELECT
-                    id
-                FROM
-                    "ELEMENTS"
-                WHERE
-                    reference = #{mouse}
-            )
+            "ELEMENTS_Mouse_id" = #{mouseId}
         WHERE
-            reference = #{computer};
+            id = #{computerId};
     </update>
 
     <update id="setDiscardedAndAvailableById">

@@ -1,27 +1,25 @@
 package edu.eci.cvds.model.dao;
 
 import edu.eci.cvds.model.entities.element.Element;
-import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import org.apache.ibatis.exceptions.PersistenceException;
 
-@SuppressWarnings("unused")
 public interface ElementDAO {
 
-    void registerElement(
-            ElementTypeName name, String reference)
+    void registerElement(String reference, Long typeId)
             throws PersistenceException;
 
-    Element loadElementById(long id)
+    Long getIdByReference(String reference)
             throws PersistenceException;
 
-    Element loadElementByReference(String reference)
+    Element getElementById(Long id)
             throws PersistenceException;
 
-    void setAvailableByReference(
-            String reference, boolean available)
+    Element getElementByReference(String reference)
             throws PersistenceException;
 
-    void setDiscardedById(
-            long id, boolean discarded)
+    void setAvailableById(Long id, Boolean available)
+            throws PersistenceException;
+
+    void setDiscardedById(Long id, Boolean discarded)
             throws PersistenceException;
 }

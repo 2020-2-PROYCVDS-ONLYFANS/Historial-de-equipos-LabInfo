@@ -1,35 +1,53 @@
 package edu.eci.cvds.model.services;
 
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.entities.Computer;
+import edu.eci.cvds.model.entities.element.type.ElementTypeName;
+import org.javatuples.Pair;
 
 public interface ComputerServices {
 
-    void registerComputerWithReferences(
-            String computerCase, String monitor, String keyboard, String mouse,
-            String computer, boolean existsComputerCase, boolean existsMonitor,
-            boolean existsKeyboard, boolean existsMouse, String username)
-            throws LabInfoServicesException;
+    void registerComputerByReferences(
+            String username, String reference,
+            Pair<Boolean, String> computerCasePair,
+            Pair<Boolean, String> monitorPair,
+            Pair<Boolean, String> keyboardPair,
+            Pair<Boolean, String> mousePair)
+            throws ServicesException;
 
-    Computer loadComputerByReference(String reference) throws LabInfoServicesException;
+    Long getIdByReference(String reference) throws ServicesException;
 
-    void associateComputerCaseByReference(String computer, String computerCase)
-            throws LabInfoServicesException;
+    Long getIdByComputerCaseId(Long computerCaseId) throws ServicesException;
 
-    void associateMonitorByReference(String computer, String monitor)
-            throws LabInfoServicesException;
+    Long getIdByMonitorId(Long monitorId) throws ServicesException;
 
-    void associateKeyboardByReference(String computer, String keyboard)
-            throws LabInfoServicesException;
+    Long getIdByKeyboardId(Long keyboardId) throws ServicesException;
 
-    void associateMouseByReference(String computer, String mouse)
-            throws LabInfoServicesException;
+    Long getIdByMouseId(Long mouseId) throws ServicesException;
 
-    void addComputerHistoryByReferenceAndUsername(
-            String reference, String username, String title, String detail)
-            throws LabInfoServicesException;
+    Computer loadComputerByReference(String reference) throws ServicesException;
 
-    void discardComputer(
-            Computer computer, String username, boolean discardComputerCase,
+    void linkElementByIdsAndComputer(
+            ElementTypeName typeName, Long userId, Long elementId, Computer computer)
+            throws ServicesException;
+
+    void setElementIdByIds(
+            ElementTypeName typeName, Long userId, Long elementId, Computer computer)
+            throws ServicesException;
+
+    void setComputerCaseIdByIds(Long userId, Long computerCaseId, Long computerId)
+            throws ServicesException;
+
+    void setMonitorIdByIds(Long userId, Long monitorId, Long computerId)
+            throws ServicesException;
+
+    void setKeyboardIdByIds(Long userId, Long keyboardId, Long computerId)
+            throws ServicesException;
+
+    void setMouseIdByIds(Long userId, Long mouseId, Long computerId)
+            throws ServicesException;
+
+    void discard(
+            Long userId, Computer computer, boolean discardComputerCase,
             boolean discardMonitor, boolean discardKeyboard, boolean discardMouse)
-            throws LabInfoServicesException;
+            throws ServicesException;
 }

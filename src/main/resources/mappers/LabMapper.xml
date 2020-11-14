@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper">
+    <select id="getLabIdByLinkedComputerId" resultType="long">
+        SELECT
+            "LABS_id"
+        FROM
+            "LABS_COMPUTERS"
+        WHERE
+            "COMPUTERS_id" = #{id}
+    </select>
+
+    <resultMap id="LabResultMap" type="Lab">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="active" property="active"/>
+        <result column="openingDate" property="openingDate"/>
+        <result column="openingDate" property="closingDate"/>
+        <collection property="computers" ofType="Computer" columnPrefix="COMPUTER_"
+                    resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap"/>
+    </resultMap>
+</mapper>

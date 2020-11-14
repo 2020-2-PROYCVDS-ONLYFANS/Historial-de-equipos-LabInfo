@@ -1,7 +1,7 @@
 package edu.eci.cvds.model.dao.shiro;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.dao.auth.AuthDAO;
+import edu.eci.cvds.model.dao.ShiroDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.shiro.authc.AuthenticationException;
@@ -15,9 +15,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 public class AuthorizingRealmImpl extends AuthorizingRealm {
 
     @Inject
-    AuthDAO authDAO;
+    ShiroDAO shiroDAO;
 
-    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(AuthorizingRealmImpl.class);
 
     public AuthorizingRealmImpl(CredentialsMatcher matcher) {
@@ -27,8 +26,9 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
             throws AuthenticationException {
+        LOGGER.info("doGetAuthenticationInfo");
         if (token.getPrincipal() != null && token.getCredentials() != null) {
-            return authDAO.fetchAuthenticationInfoByUsername(
+            return shiroDAO.fetchAuthenticationInfoByUsername(
                     token.getPrincipal().toString(),
                     this.getClass().getSimpleName()
             );
@@ -38,8 +38,9 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection collection) {
+        LOGGER.info("doGetAuthorizationInfo");
         if (!collection.isEmpty()) {
-            return authDAO.fetchAuthorizationInfoByUsername(
+            return shiroDAO.fetchAuthorizationInfoByUsername(
                     collection.getPrimaryPrincipal().toString() // = username
             );
         }

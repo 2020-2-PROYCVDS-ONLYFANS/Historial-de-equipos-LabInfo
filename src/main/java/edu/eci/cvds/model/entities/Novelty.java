@@ -1,24 +1,20 @@
-package edu.eci.cvds.model.entities.element;
+package edu.eci.cvds.model.entities;
 
-import edu.eci.cvds.model.entities.Computer;
-import edu.eci.cvds.model.entities.User;
+import edu.eci.cvds.model.entities.element.Element;
 
 import java.io.Serializable;
 import java.util.Date;
 
-
-public class ElementHistory implements Serializable {
+public class Novelty implements Serializable {
 
     private long id;
+    private User user;
     private Element element;
     private Computer computer;
-    private User user;
+    private Lab lab;
     private Date timestamp;
     private String title;
     private String detail;
-
-    public ElementHistory() {
-    }
 
     public long getId() {
         return id;
@@ -26,6 +22,14 @@ public class ElementHistory implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Element getElement() {
@@ -36,20 +40,20 @@ public class ElementHistory implements Serializable {
         this.element = element;
     }
 
-    public Computer getTeam() {
+    public Computer getComputer() {
         return computer;
     }
 
-    public void setTeam(Computer computer) {
+    public void setComputer(Computer computer) {
         this.computer = computer;
     }
 
-    public User getUser() {
-        return user;
+    public Lab getLab() {
+        return lab;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setLab(Lab lab) {
+        this.lab = lab;
     }
 
     public Date getTimestamp() {
@@ -74,18 +78,5 @@ public class ElementHistory implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    @Override
-    public String toString() {
-        return "ElementHistory{" +
-                "id=" + id +
-                ", element=" + element +
-                ", team=" + computer +
-                ", user=" + user +
-                ", timestamp=" + timestamp +
-                ", title='" + title + '\'' +
-                ", detail='" + detail + '\'' +
-                '}';
     }
 }

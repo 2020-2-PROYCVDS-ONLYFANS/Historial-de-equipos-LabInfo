@@ -1,8 +1,8 @@
 package edu.eci.cvds.test;
 
 import edu.eci.cvds.model.services.AuthServices;
-import edu.eci.cvds.model.services.LabInfoServicesFactory;
-import edu.eci.cvds.model.services.impl.AuthServicesItemStub;
+import edu.eci.cvds.model.services.ServicesFactory;
+import edu.eci.cvds.model.services.impl.ServicesItemStub;
 import edu.eci.cvds.test.util.LabInfoTestUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,13 +15,13 @@ public class LabInfoTest {
     private final SqlSessionFactory sqlSessionFactory;
 
     private final AuthServices authServices;
-    private final AuthServices authServicesItemStub;
+    private final ServicesItemStub servicesItemStub;
 
     public LabInfoTest() {
         sqlSessionFactory = LabInfoTestUtil.getSqlSessionFactory();
 
-        authServices = LabInfoServicesFactory.getInstance().getLabInfoServicesTesting();
-        authServicesItemStub = new AuthServicesItemStub();
+        authServices = ServicesFactory.getInstance().getLabInfoServicesTesting();
+        servicesItemStub = new ServicesItemStub();
     }
 
     @Before

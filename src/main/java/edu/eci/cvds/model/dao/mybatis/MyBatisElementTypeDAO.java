@@ -3,30 +3,29 @@ package edu.eci.cvds.model.dao.mybatis;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.ElementTypeDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.ElementTypeMapper;
-import edu.eci.cvds.model.entities.element.type.ElementType;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyBatisElementTypeDAO implements ElementTypeDAO {
 
     @Inject
-    ElementTypeMapper elementTypeMapper;
+    private ElementTypeMapper elementTypeMapper;
+
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(MyBatisElementTypeDAO.class);
 
     @Override
-    public void registerElementType(ElementTypeName name) throws PersistenceException {
+    public long getElementTypeIdByName(ElementTypeName name)
+            throws PersistenceException {
+        LOGGER.info("loadElementTypeIdByName");
         try {
-            elementTypeMapper.registerElementType(name);
+            LOGGER.info("loadElementTypeIdByName - try");
+            return elementTypeMapper.getElementTypeIdByName(name);
         } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to register element type.", e);
-        }
-    }
-
-    @Override
-    public ElementType loadElementTypeByName(ElementTypeName name) throws PersistenceException {
-        try {
-            return elementTypeMapper.loadElementTypeByName(name);
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to load element type by name.", e);
+            LOGGER.info("loadElementTypeIdByName - catch");
+            throw new PersistenceException("Fail to load element id by name.", e);
         }
     }
 }

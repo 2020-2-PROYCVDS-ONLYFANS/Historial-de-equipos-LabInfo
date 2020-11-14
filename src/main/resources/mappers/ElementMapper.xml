@@ -6,21 +6,23 @@
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper">
     <insert id="registerElement">
         INSERT INTO
-            "ELEMENTS" ("ELEMENT_TYPES_id", reference)
+            "ELEMENTS" (reference, "ELEMENT_TYPES_id")
         VALUES (
-            (
-                SELECT
-                    id
-                FROM
-                    "ELEMENT_TYPES"
-                WHERE
-                    "name" = #{name}
-            ),
-            #{reference}
-        );
+                   #{reference},
+                   #{typeId}
+               );
     </insert>
 
-    <select id="loadElementById" resultMap="ElementResultMap">
+    <select id="getIdByReference" resultType="long">
+        SELECT
+            id
+        FROM
+            "ELEMENTS"
+        WHERE
+            reference = #{reference};
+    </select>
+
+    <select id="getElementById" resultMap="ElementResultMap">
         SELECT
             e.id,
             e.reference,
@@ -36,7 +38,7 @@
             e.id = #{id};
     </select>
 
-    <select id="loadElementByReference" resultMap="ElementResultMap">
+    <select id="getElementByReference" resultMap="ElementResultMap">
         SELECT
             e.id,
             e.reference,
@@ -52,13 +54,13 @@
             e.reference = #{reference};
     </select>
     
-    <update id="setAvailableByReference">
+    <update id="setAvailableById">
         UPDATE
             "ELEMENTS"
         SET
             available = #{available}
         WHERE
-            reference = #{reference}
+            id = #{id}
     </update>
 
     <update id="setDiscardedById">
@@ -72,9 +74,9 @@
 
     <resultMap id="ElementResultMap" type="Element">
         <id column="id" property="id"/>
+        <result column="reference" property="reference"/>
         <result column="available" property="available"/>
         <result column="discarded" property="discarded"/>
-        <result column="reference" property="reference"/>
         <association property="type" javaType="ElementType"
                      resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementTypeMapper.ElementTypeResultMap"
                      columnPrefix="ELEMENT_TYPES_"/>

@@ -1,7 +1,6 @@
 package edu.eci.cvds.model.dao.mybatis.mappers;
 
 import edu.eci.cvds.model.entities.element.Element;
-import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.guice.transactional.Transactional;
 
@@ -9,20 +8,22 @@ public interface ElementMapper {
 
     @Transactional
     void registerElement(
-            @Param("name") ElementTypeName name,
-            @Param("reference") String reference);
+            @Param("reference") String reference,
+            @Param("typeId") Long typeId);
 
-    Element loadElementById(@Param("id") long id);
+    Long getIdByReference(@Param("reference") String reference);
 
-    Element loadElementByReference(@Param("reference") String reference);
+    Element getElementById(@Param("id") Long id);
+
+    Element getElementByReference(@Param("reference") String reference);
 
     @Transactional
-    void setAvailableByReference(
-            @Param("reference") String reference,
-            @Param("available") boolean available);
+    void setAvailableById(
+            @Param("id") Long id,
+            @Param("available") Boolean available);
 
     @Transactional
     void setDiscardedById(
-            @Param("id") long id,
-            @Param("discarded") boolean discarded);
+            @Param("id") Long id,
+            @Param("discarded") Boolean discarded);
 }

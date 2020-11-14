@@ -12,22 +12,15 @@ import java.io.IOException;
 @RequestScoped
 public class IndexBean extends BasePageBean {
 
-    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(IndexBean.class);
 
     public void redirectToHome() {
+        LOGGER.info("redirectToHome");
         try {
+            LOGGER.info("redirectToHome - try");
             FacesContext.getCurrentInstance().getExternalContext().dispatch("home.xhtml");
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void redirectToAccount() {
-        LOGGER.info("redirectToAccount");
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("account/");
-        } catch (IOException e) {
+            LOGGER.info("redirectToHome - catch IOException");
             e.printStackTrace();
         }
     }

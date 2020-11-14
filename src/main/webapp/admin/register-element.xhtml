@@ -22,11 +22,11 @@
             <div class="p-field">
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                     <p:outputLabel for="type" value="Type:" />
-                    <p:selectOneRadio id="type" value="#{registerElementBean.type}" unselectable="true">
-                        <f:selectItem itemLabel="Computer Case" itemValue="#{registerElementBean.computerCase}" />
-                        <f:selectItem itemLabel="Monitor" itemValue="#{registerElementBean.monitor}" />
-                        <f:selectItem itemLabel="Keyboard" itemValue="#{registerElementBean.keyboard}" />
-                        <f:selectItem itemLabel="Mouse" itemValue="#{registerElementBean.mouse}" />
+                    <p:selectOneRadio id="type" value="#{registerElementBean.typeName}" unselectable="true">
+                        <f:selectItem itemLabel="Computer Case" itemValue="#{enumsBean.computerCase}" />
+                        <f:selectItem itemLabel="Monitor" itemValue="#{enumsBean.monitor}" />
+                        <f:selectItem itemLabel="Keyboard" itemValue="#{enumsBean.keyboard}" />
+                        <f:selectItem itemLabel="Mouse" itemValue="#{enumsBean.mouse}" />
                     </p:selectOneRadio>
                 </h:panelGrid>
             </div>

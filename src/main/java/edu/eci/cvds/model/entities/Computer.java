@@ -1,6 +1,7 @@
-package edu.eci.cvds.model.entities.computer;
+package edu.eci.cvds.model.entities;
 
 import edu.eci.cvds.model.entities.element.Element;
+import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 
 import java.io.Serializable;
 
@@ -15,6 +16,21 @@ public class Computer implements Serializable {
     private Element mouse;
     private boolean available;
     private boolean discarded;
+
+    public Element getElement(ElementTypeName typeName) {
+        switch (typeName) {
+            case ETN_COMPUTER_CASE:
+                return computerCase;
+            case ETN_MONITOR:
+                return monitor;
+            case ETN_KEYBOARD:
+                return keyboard;
+            case ETN_MOUSE:
+                return mouse;
+            default:
+                return null;
+        }
+    }
 
     public Computer() {
     }

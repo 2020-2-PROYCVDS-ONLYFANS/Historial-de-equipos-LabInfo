@@ -4,22 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.RoleMapper">
-    <insert id="registerRole">
-        INSERT INTO
-            "ROLES" ("name")
-        VALUES (#{roleName});
-    </insert>
-
-    <select id="loadByRoleName" resultMap="RoleResultMap">
-        SELECT
-            "name",
-            id
-        FROM
-            "ROLES"
-        WHERE
-            "name" = #{roleName};
-    </select>
-
     <resultMap id="RoleResultMap" type="Role">
         <id column="id" property="id"/>
         <result column="name" property="roleName" javaType="RoleName"/>

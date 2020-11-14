@@ -1,10 +1,13 @@
 package edu.eci.cvds.controller;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.entities.Computer;
+import edu.eci.cvds.model.entities.element.Element;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
+import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.ElementServices;
+import edu.eci.cvds.model.services.ServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +27,18 @@ public class AssociateElementsBean extends BasePageBean {
     @Inject
     ComputerServices computerServices;
 
-    private ElementTypeName computerCase = ElementTypeName.ETN_COMPUTER_CASE;
-    private ElementTypeName monitor = ElementTypeName.ETN_MONITOR;
-    private ElementTypeName keyboard = ElementTypeName.ETN_KEYBOARD;
-    private ElementTypeName mouse = ElementTypeName.ETN_MOUSE;
+    @Inject
+    AuthServices authServices;
 
-    private ElementTypeName type;
+    private ElementTypeName elementTypeName;
     private String elementReference;
     private String computerReference;
 
-    private boolean elementAvailable;
+    private Boolean elementAvailable;
+    private Long elementId;
 
-    @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(AssociateElementsBean.class);
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(AssociateElementsBean.class);
 
     public void associate() {
         LOGGER.info("associate");
@@ -44,38 +46,14 @@ public class AssociateElementsBean extends BasePageBean {
             String username = SecurityUtils.getSubject().getPrincipal().toString();
             try {
                 Computer computer = computerServices.loadComputerByReference(computerReference);
-                if (computer != null && computer.isAvailable()) {
-                    switch (type) {
-                        case ETN_COMPUTER_CASE:
-                            LOGGER.info("ETN_COMPUTER_CASE");
-                            elementServices
-                                    .associateComputerCaseByReferenceAndUsername(
-                                            elementReference, username, computer);
-                            break;
-                        case ETN_MONITOR:
-                            LOGGER.info("ETN_MONITOR");
-                            elementServices
-                                    .associateMonitorByReferenceAndUsername(
-                                            elementReference, username, computer);
-                            break;
-                        case ETN_KEYBOARD:
-                            LOGGER.info("ETN_KEYBOARD");
-                            elementServices
-                                    .associateKeyboardByReferenceAndUsername(
-                                            elementReference, username, computer);
-                            break;
-                        case ETN_MOUSE:
-                            LOGGER.info("ETN_MOUSE");
-                            elementServices
-                                    .associateMouseByReferenceAndUsername(
-                                            elementReference, username, computer);
-                            break;
-                    }
+                if (computer != null && !computer.isDiscarded()) {
+                    Long userId = authServices.getUserIdByUsername(username);
+                    computerServices.linkElementByIdsAndComputer(elementTypeName, userId, elementId, computer);
                     addMessage("Done!", "Successful association.", FacesMessage.SEVERITY_INFO);
                 } else {
                     addMessage("Error!", "Computer not exists", FacesMessage.SEVERITY_ERROR);
                 }
-            } catch (Exception e) {
+            } catch (ServicesException e) {
                 e.printStackTrace();
                 addMessage("System Error!", "Please try again later.", FacesMessage.SEVERITY_FATAL);
             }
@@ -87,7 +65,9 @@ public class AssociateElementsBean extends BasePageBean {
     public void askElementAvailable() {
         LOGGER.info("askElementAvailable");
         try {
-            elementAvailable = elementServices.loadElementByReference(elementReference).isAvailable();
+            Element element = elementServices.getElementByReference(elementReference);
+            elementAvailable = element.isAvailable();
+            elementId = element.getId();
             if (elementAvailable) {
                 addElementMessage("Info", "Element is available.", FacesMessage.SEVERITY_INFO);
             } else {
@@ -110,44 +90,12 @@ public class AssociateElementsBean extends BasePageBean {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public ElementTypeName getComputerCase() {
-        return computerCase;
+    public ElementTypeName getElementTypeName() {
+        return elementTypeName;
     }
 
-    public void setComputerCase(ElementTypeName computerCase) {
-        this.computerCase = computerCase;
-    }
-
-    public ElementTypeName getMonitor() {
-        return monitor;
-    }
-
-    public void setMonitor(ElementTypeName monitor) {
-        this.monitor = monitor;
-    }
-
-    public ElementTypeName getKeyboard() {
-        return keyboard;
-    }
-
-    public void setKeyboard(ElementTypeName keyboard) {
-        this.keyboard = keyboard;
-    }
-
-    public ElementTypeName getMouse() {
-        return mouse;
-    }
-
-    public void setMouse(ElementTypeName mouse) {
-        this.mouse = mouse;
-    }
-
-    public ElementTypeName getType() {
-        return type;
-    }
-
-    public void setType(ElementTypeName type) {
-        this.type = type;
+    public void setElementTypeName(ElementTypeName elementTypeName) {
+        this.elementTypeName = elementTypeName;
     }
 
     public String getElementReference() {

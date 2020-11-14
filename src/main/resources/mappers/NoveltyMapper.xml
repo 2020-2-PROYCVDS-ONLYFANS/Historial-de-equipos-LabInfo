@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.NoveltyMapper">
+    <insert id="createElementNovelty">
+        INSERT INTO
+            "NOVELTIES" ("USERS_id", "ELEMENTS_id", "COMPUTERS_id", "LABS_id", title, detail)
+        VALUES (
+                    #{userId},
+                    #{elementId},
+                    #{computerId},
+                    #{labId},
+                    #{title},
+                    #{detail}
+               );
+    </insert>
+
+    <resultMap id="NoveltyResultMap" type="Novelty">
+        <id column="id" property="id"/>
+        <result column="timestamp" property="timestamp" javaType="Date"/>
+        <result column="title" property="title"/>
+        <result column="detail" property="detail"/>
+        <association property="user" javaType="User" columnPrefix="USERS_"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.UserMapper.UserResultMap"/>
+        <association property="element" javaType="Element" columnPrefix="ELEMENTS_"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"/>
+        <association property="computer" javaType="Computer" columnPrefix="COMPUTERS_"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap"/>
+        <association property="lab" javaType="Lab" columnPrefix="LABS_"
+                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper.LabResultMap"/>
+
+    </resultMap>
+</mapper>

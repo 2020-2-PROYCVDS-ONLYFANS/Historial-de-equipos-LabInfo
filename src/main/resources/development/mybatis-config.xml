@@ -14,21 +14,23 @@
         <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementTypeName" alias="ElementTypeName"/>
         <typeAlias type="edu.eci.cvds.model.entities.element.Element" alias="Element"/>
         <typeAlias type="edu.eci.cvds.model.entities.element.ElementHistory" alias="ElementHistory"/>
-        <typeAlias type="edu.eci.cvds.model.entities.computer.Computer" alias="Computer"/>
+        <typeAlias type="edu.eci.cvds.model.entities.Computer" alias="Computer"/>
         <typeAlias type="edu.eci.cvds.model.entities.computer.ComputerHistory" alias="ComputerHistory"/>
+        <typeAlias type="edu.eci.cvds.model.entities.Lab" alias="Lab"/>
+        <typeAlias type="edu.eci.cvds.model.entities.Novelty" alias="Novelty"/>
         <typeAlias type="java.util.Date" alias="Date"/>
+        <typeAlias type="java.lang.Long" alias="Long"/>
     </typeAliases>
 
     <typeHandlers>
         <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
-                     javaType="RoleName"
-                     jdbcType="VARCHAR"/>
+                     javaType="RoleName" jdbcType="VARCHAR"/>
         <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler"
-                     javaType="ElementTypeName"
-                     jdbcType="VARCHAR"/>
+                     javaType="ElementTypeName" jdbcType="VARCHAR"/>
         <typeHandler handler="org.apache.ibatis.type.DateTypeHandler"
-                     javaType="Date"
-                     jdbcType="TIMESTAMP"/>
+                     javaType="Date" jdbcType="TIMESTAMP"/>
+        <typeHandler handler="org.apache.ibatis.type.LongTypeHandler"
+                     javaType="Long" jdbcType="BIGINT"/>
     </typeHandlers>
 
     <environments default="development">
@@ -51,5 +53,7 @@
         <mapper resource="mappers/ElementHistoryMapper.xml"/>
         <mapper resource="mappers/ComputerMapper.xml"/>
         <mapper resource="mappers/ComputerHistoryMapper.xml"/>
+        <mapper resource="mappers/LabMapper.xml"/>
+        <mapper resource="mappers/NoveltyMapper.xml"/>
     </mappers>
 </configuration>

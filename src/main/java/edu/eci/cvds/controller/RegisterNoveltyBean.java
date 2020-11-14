@@ -1,11 +1,8 @@
 package edu.eci.cvds.controller;
 
-
 import com.google.inject.Inject;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
-import edu.eci.cvds.model.services.ComputerServices;
-import edu.eci.cvds.model.services.ElementServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +22,8 @@ public class RegisterNoveltyBean extends BasePageBean {
     private String detail;
 
     @Inject
-    private ElementServices elementServices;
+    private NoveltyServices noveltyServices;
 
-    @Inject
-    private ComputerServices computerServices;
-
-    @SuppressWarnings("unused")
     private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterNoveltyBean.class);
 
     public void register() {
@@ -42,45 +35,44 @@ public class RegisterNoveltyBean extends BasePageBean {
             LOGGER.info("title = " + title);
             LOGGER.info("detail = " + detail);
             LOGGER.info("username = " + username);
+
             switch (type) {
                 case "computer":
                     LOGGER.info("computer");
-                    computerServices
-                            .addComputerHistoryByReferenceAndUsername(
-                                    reference, username, title, detail);
+                    noveltyServices.createByComputerReferenceAndUsername(
+                            username, reference, title, detail);
                     break;
 
                 case "computerCase":
                     LOGGER.info("computerCase");
-                    elementServices
-                            .addElementHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail, ElementTypeName.ETN_COMPUTER_CASE);
+                    noveltyServices.createByElementReferenceAndUsername(
+                            ElementTypeName.ETN_COMPUTER_CASE,
+                            username, reference, title, detail);
                     break;
 
                 case "monitor":
                     LOGGER.info("monitor");
-                    elementServices
-                            .addElementHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail, ElementTypeName.ETN_MONITOR);
+                    noveltyServices.createByElementReferenceAndUsername(
+                            ElementTypeName.ETN_MONITOR,
+                            username, reference, title, detail);
                     break;
 
                 case "keyboard":
                     LOGGER.info("keyboard");
-                    elementServices
-                            .addElementHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail, ElementTypeName.ETN_KEYBOARD);
+                    noveltyServices.createByElementReferenceAndUsername(
+                            ElementTypeName.ETN_KEYBOARD,
+                            username, reference, title, detail);
                     break;
 
                 case "mouse":
                     LOGGER.info("mouse");
-                    elementServices
-                            .addElementHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail, ElementTypeName.ETN_MOUSE);
+                    noveltyServices.createByElementReferenceAndUsername(
+                            ElementTypeName.ETN_MOUSE,
+                            username, reference, title, detail);
                     break;
             } addMessage("Done!", "Successful registration.", FacesMessage.SEVERITY_INFO);
-        } catch (LabInfoServicesException e) {
+        } catch (ServicesException e) {
             LOGGER.info("register - catch");
-            e.printStackTrace();
             addMessage("Error!", "Element or computer not exists.", FacesMessage.SEVERITY_ERROR);
         }
     }

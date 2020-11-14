@@ -5,9 +5,9 @@ import com.google.inject.Injector;
 
 import static com.google.inject.Guice.createInjector;
 
-public class LabInfoServicesFactory {
+public class ServicesFactory {
 
-    private static final LabInfoServicesFactory instance = new LabInfoServicesFactory();
+    private static final ServicesFactory instance = new ServicesFactory();
 
     private Injector guiceInjector;
 
@@ -17,7 +17,7 @@ public class LabInfoServicesFactory {
         );
     }
 
-    private LabInfoServicesFactory(){ }
+    private ServicesFactory(){ }
 
     public AuthServices getLabInfoServicesTesting() {
         if (guiceInjector == null) {
@@ -27,7 +27,7 @@ public class LabInfoServicesFactory {
         return guiceInjector.getInstance(AuthServices.class);
     }
 
-    public static LabInfoServicesFactory getInstance() {
+    public static ServicesFactory getInstance() {
         return instance;
     }
 }

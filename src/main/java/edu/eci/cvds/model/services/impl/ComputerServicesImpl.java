@@ -1,214 +1,276 @@
 package edu.eci.cvds.model.services.impl;
 
 import com.google.inject.Inject;
-import edu.eci.cvds.model.dao.ComputerDAO;
-import edu.eci.cvds.model.dao.ComputerHistoryDAO;
-import edu.eci.cvds.model.dao.ElementDAO;
-import edu.eci.cvds.model.dao.ElementHistoryDAO;
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.dao.*;
+import edu.eci.cvds.model.entities.Computer;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
-import edu.eci.cvds.model.services.ComputerServices;
-import edu.eci.cvds.model.services.ElementServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.*;
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ComputerServicesImpl implements ComputerServices {
 
     @Inject
-    ElementServices elementServices;
+    private ElementServices elementServices;
 
     @Inject
-    ComputerDAO computerDAO;
+    private ElementDAO elementDAO;
 
     @Inject
-    ComputerHistoryDAO computerHistoryDAO;
+    private ComputerDAO computerDAO;
 
     @Inject
-    ElementDAO elementDAO;
+    private NoveltyServices noveltyServices;
 
     @Inject
-    ElementHistoryDAO elementHistoryDAO;
+    private AuthServices authServices;
 
-    @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(ComputerServicesImpl.class);
+    @Inject
+    private LabServices labServices;
+
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(ComputerServicesImpl.class);
 
     @Override
-    public void registerComputerWithReferences(
-            String computer, String computerCase, String monitor, String keyboard,
-            String mouse, boolean existsComputerCase, boolean existsMonitor,
-            boolean existsKeyboard, boolean existsMouse, String username)
-            throws LabInfoServicesException {
+    public void registerComputerByReferences(
+            String username, String reference, Pair<Boolean, String> computerCasePair,
+            Pair<Boolean, String> monitorPair, Pair<Boolean, String> keyboardPair,
+            Pair<Boolean, String> mousePair) throws ServicesException {
         try {
-            if (!existsComputerCase) {
+            LOGGER.info("registerComputerByReferences - try");
+            if (!computerCasePair.getValue0()) {
                 elementServices.registerElement(
-                        ElementTypeName.ETN_COMPUTER_CASE, computerCase, username);
-            } if (!existsMonitor) {
+                        ElementTypeName.ETN_COMPUTER_CASE,
+                        computerCasePair.getValue1(), username);
+            } if (!monitorPair.getValue0()) {
                 elementServices.registerElement(
-                        ElementTypeName.ETN_MONITOR, monitor, username);
-            } if (!existsKeyboard) {
+                        ElementTypeName.ETN_MONITOR,
+                        monitorPair.getValue1(), username);
+            } if (!keyboardPair.getValue0()) {
                 elementServices.registerElement(
-                        ElementTypeName.ETN_KEYBOARD, keyboard, username);
-            } if (!existsMouse) {
+                        ElementTypeName.ETN_KEYBOARD,
+                        keyboardPair.getValue1(), username);
+            } if (!mousePair.getValue0()) {
                 elementServices.registerElement(
-                        ElementTypeName.ETN_MOUSE, mouse, username);
+                        ElementTypeName.ETN_MOUSE,
+                        mousePair.getValue1(), username);
             }
 
-            elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
-                    computerCase, username, "Associated", "Computer: " + computer);
-            elementDAO.setAvailableByReference(computerCase, false);
+            Long userId = authServices.getUserIdByUsername(username);
+            Long computerCaseId = elementServices.getIdByReference(computerCasePair.getValue1());
+            Long monitorId = elementServices.getIdByReference(monitorPair.getValue1());
+            Long keyboardId = elementServices.getIdByReference(keyboardPair.getValue1());
+            Long mouseId = elementServices.getIdByReference(mousePair.getValue1());
 
-            elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
-                    monitor, username, "Associated", "Computer: " + computer);
-            elementDAO.setAvailableByReference(monitor, false);
+            elementServices.prepareElementToLinkToNewComputer(userId, computerCaseId);
+            elementServices.prepareElementToLinkToNewComputer(userId, monitorId);
+            elementServices.prepareElementToLinkToNewComputer(userId, keyboardId);
+            elementServices.prepareElementToLinkToNewComputer(userId, mouseId);
 
-            elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
-                    keyboard, username, "Associated", "Computer: " + computer);
-            elementDAO.setAvailableByReference(keyboard, false);
-
-            elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
-                    mouse, username, "Associated", "Computer: " + computer);
-            elementDAO.setAvailableByReference(mouse, false);
-
-            computerDAO.registerComputerWithReferences(
-                    computer, computerCase, monitor, keyboard, mouse);
-            computerHistoryDAO.addComputerHistoryByReferenceAndUsername(
-                    computer, username, "Registered");
+            computerDAO.registerComputer(reference, computerCaseId, monitorId, keyboardId, mouseId);
+            noveltyServices.create(
+                    userId, null, getIdByReference(reference),
+                    null, "Registered", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            LOGGER.info("registerComputerByReferences - catch");
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Long getIdByReference(String reference) throws ServicesException {
+        try {
+            LOGGER.info("getIdByReference - try");
+            return computerDAO.getIdByReference(reference);
+        } catch (PersistenceException e) {
+            LOGGER.info("getIdByReference - catch");
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Long getIdByComputerCaseId(Long computerCaseId) throws ServicesException {
+        try {
+            return computerDAO.getIdByComputerCaseId(computerCaseId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Long getIdByMonitorId(Long monitorId) throws ServicesException {
+        try {
+            return computerDAO.getIdByMonitorId(monitorId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Long getIdByKeyboardId(Long keyboardId) throws ServicesException {
+        try {
+            return computerDAO.getIdByKeyboardId(keyboardId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Long getIdByMouseId(Long mouseId) throws ServicesException {
+        try {
+            return computerDAO.getIdByMouseId(mouseId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
     public Computer loadComputerByReference(String reference)
-            throws LabInfoServicesException {
+            throws ServicesException {
         try {
-            return computerDAO.loadComputerByReference(reference);
+            return computerDAO.getComputerByReference(reference);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void associateComputerCaseByReference(
-            String computer, String computerCase) throws LabInfoServicesException {
+    public void linkElementByIdsAndComputer(
+            ElementTypeName typeName, Long userId, Long elementId, Computer computer)
+            throws ServicesException {
+        elementServices.unlink(
+                typeName, userId, computer.getElement(typeName).getId(), computer.getId());
+
+        elementDAO.setAvailableById(elementId, false);
+        setElementIdByIds(typeName, userId, elementId, computer);
+    }
+
+    @Override
+    public void setElementIdByIds(
+            ElementTypeName typeName, Long userId, Long elementId, Computer computer)
+            throws ServicesException {
+        switch (typeName) {
+            case ETN_COMPUTER_CASE:
+                setComputerCaseIdByIds(userId, elementId, computer.getId());
+                break;
+
+            case ETN_MONITOR:
+                setMonitorIdByIds(userId, elementId, computer.getId());
+                break;
+
+            case ETN_KEYBOARD:
+                setKeyboardIdByIds(userId, elementId, computer.getId());
+                break;
+
+            case ETN_MOUSE:
+                setMouseIdByIds(userId, elementId, computer.getId());
+                break;
+        }
+    }
+    
+    @Override
+    public void setComputerCaseIdByIds(
+            Long userId, Long computerCaseId, Long computerId) throws ServicesException {
         try {
-            computerDAO.associateComputerCaseByReference(
-                    computer, computerCase);
+            computerDAO.setComputerCaseIdByIds(computerId, computerCaseId);
+
+            noveltyServices.create(userId, computerCaseId, computerId,
+                    labServices.getLabIdByLinkedComputerId(computerId),
+                    "Linked computer case", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void associateMonitorByReference(
-            String computer, String monitor) throws LabInfoServicesException {
+    public void setMonitorIdByIds(
+            Long userId, Long monitorId, Long computerId) throws ServicesException {
         try {
-            computerDAO.associateMonitorByReference(computer, monitor);
+            computerDAO.setMonitorIdByIds(computerId, monitorId);
+
+            noveltyServices.create(userId, monitorId, computerId,
+                    labServices.getLabIdByLinkedComputerId(computerId),
+                    "Linked monitor", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void associateKeyboardByReference(
-            String computer, String keyboard) throws LabInfoServicesException {
+    public void setKeyboardIdByIds(
+            Long userId, Long keyboardId, Long computerId) throws ServicesException {
         try {
-            computerDAO.associateKeyboardByReference(computer, keyboard);
+            computerDAO.setKeyboardIdByIds(computerId, keyboardId);
+
+            noveltyServices.create(userId, keyboardId, computerId,
+                    labServices.getLabIdByLinkedComputerId(computerId),
+                    "Linked keyboard", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void associateMouseByReference(
-            String computer, String mouse) throws LabInfoServicesException {
+    public void setMouseIdByIds(
+            Long userId, Long mouseId, Long computerId) throws ServicesException {
         try {
-            computerDAO.associateMouseByReference(computer, mouse);
+            computerDAO.setMouseIdByIds(computerId, mouseId);
+
+            noveltyServices.create(userId, mouseId, computerId,
+                    labServices.getLabIdByLinkedComputerId(computerId),
+                    "Linked mouse", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void addComputerHistoryByReferenceAndUsername(
-            String reference, String username, String title, String detail)
-            throws LabInfoServicesException {
-        LOGGER.info("addComputerHistoryByReferenceAndUsername");
-        try {
-            computerHistoryDAO.addComputerHistoryWithDetailByReferenceAndUsername(
-                    reference, username, title, detail);
-        } catch (PersistenceException e) {
-            LOGGER.info("addComputerHistoryByReferenceAndUsername - catch");
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void discardComputer(
-            Computer computer, String username, boolean discardComputerCase,
+    public void discard(
+            Long userId, Computer computer, boolean discardComputerCase,
             boolean discardMonitor, boolean discardKeyboard, boolean discardMouse)
-            throws LabInfoServicesException {
+            throws ServicesException {
         try {
             if (discardComputerCase) {
-                elementDAO.setDiscardedById(
-                        computer.getComputerCase().getId(), true);
-                elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
-                        computer.getComputerCase().getReference(), username, 
-                        "Discarded", null);
+                elementServices.discard(ElementTypeName.ETN_COMPUTER_CASE,
+                        userId, computer.getComputerCase().getId(), computer.getId());
             } else {
-                elementDAO.setAvailableByReference(
-                        computer.getComputerCase().getReference(), true);
-                elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
-                        computer.getComputerCase().getReference(), username, "Unlinked", null);
+                elementServices.unlink(ElementTypeName.ETN_COMPUTER_CASE,
+                        userId, computer.getComputerCase().getId(), computer.getId());
             }
 
             if (discardMonitor) {
-                elementDAO.setDiscardedById(
-                        computer.getMonitor().getId(), true);
-                elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
-                        computer.getMonitor().getReference(), username,
-                        "Discarded", null);
+                elementServices.discard(ElementTypeName.ETN_MONITOR,
+                        userId, computer.getMonitor().getId(), computer.getId());
             } else {
-                elementDAO.setAvailableByReference(
-                        computer.getMonitor().getReference(), true);
-                elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
-                        computer.getMonitor().getReference(), username, "Unlinked", null);
+                elementServices.unlink(ElementTypeName.ETN_MONITOR,
+                        userId, computer.getMonitor().getId(), computer.getId());
             }
 
             if (discardKeyboard) {
-                elementDAO.setDiscardedById(
-                        computer.getKeyboard().getId(), true);
-                elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
-                        computer.getKeyboard().getReference(), username,
-                        "Discarded", null);
+                elementServices.discard(ElementTypeName.ETN_KEYBOARD,
+                        userId, computer.getKeyboard().getId(), computer.getId());
             } else {
-                elementDAO.setAvailableByReference(
-                        computer.getKeyboard().getReference(), true);
-                elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
-                        computer.getKeyboard().getReference(), username, "Unlinked", null);
+                elementServices.unlink(ElementTypeName.ETN_KEYBOARD,
+                        userId, computer.getKeyboard().getId(), computer.getId());
             }
 
             if (discardMouse) {
-                elementDAO.setDiscardedById(
-                        computer.getMouse().getId(), true);
-                elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
-                        computer.getMouse().getReference(), username,
-                        "Discarded", null);
+                elementServices.discard(ElementTypeName.ETN_MOUSE,
+                        userId, computer.getMouse().getId(), computer.getId());
             } else {
-                elementDAO.setAvailableByReference(
-                        computer.getMouse().getReference(), true);
-                elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
-                        computer.getMouse().getReference(), username, "Unlinked", null);
+                elementServices.unlink(ElementTypeName.ETN_MOUSE,
+                        userId, computer.getMouse().getId(), computer.getId());
             }
 
             computerDAO.setDiscardedAndAvailableById(
                     computer.getId(), true, false);
-            computerHistoryDAO.addComputerHistoryByIdAndUsername(
-                    computer.getId(), username, "Discarded");
+            noveltyServices.create(userId, null, computer.getId(),
+                    labServices.getLabIdByLinkedComputerId(computer.getId()),
+                    "Discarded computer", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 }

@@ -2,7 +2,6 @@ package edu.eci.cvds.model.entities.role;
 
 import java.io.Serializable;
 
-@SuppressWarnings("unused")
 public class Role implements Serializable {
 
     private long id;

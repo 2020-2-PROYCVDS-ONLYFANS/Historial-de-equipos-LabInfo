@@ -2,8 +2,9 @@ package edu.eci.cvds.controller;
 
 import com.google.inject.Inject;
 import edu.eci.cvds.model.entities.element.Element;
+import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ElementServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.ServicesException;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,27 +23,34 @@ public class DiscardElementBean extends BasePageBean {
     @Inject
     private ElementServices elementServices;
 
-    @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(DiscardElementBean.class);
+    @Inject
+    private AuthServices authServices;
+
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(DiscardElementBean.class);
 
     public void discard() {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            Element element = elementServices.loadElementByReference(reference);
+            Element element = elementServices.getElementByReference(reference);
             if (element.isAvailable()) {
-                elementServices.discardElement(element.getId(), username);
-                addMessage("Error!", "Element associated with a computer.", FacesMessage.SEVERITY_ERROR);
+                elementServices.discard(element.getType().getName(),
+                        authServices.getUserIdByUsername(username), element.getId(), null);
+                addMessage("Done!", "Discarded successful.",
+                        FacesMessage.SEVERITY_INFO);
             } else {
-                addMessage("Error!", "Element associated with a computer.", FacesMessage.SEVERITY_ERROR);
+                addMessage("Error!", "Element associated with a computer.",
+                        FacesMessage.SEVERITY_ERROR);
             }
-        } catch (LabInfoServicesException e) {
-            e.printStackTrace();
-            addMessage("Fatal!", "Element not exists", FacesMessage.SEVERITY_FATAL);
+        } catch (ServicesException e) {
             LOGGER.info(e.getMessage());
+            addMessage("Fatal!", "Element not exists",
+                    FacesMessage.SEVERITY_FATAL);
         }
     }
 
-    public void addMessage(String summary, String detail, FacesMessage.Severity severity) {
+    public void addMessage(
+            String summary, String detail, FacesMessage.Severity severity) {
         LOGGER.info("addMessage");
         FacesMessage message = new FacesMessage(severity, summary, detail);
         FacesContext.getCurrentInstance().addMessage("elementMessage", message);

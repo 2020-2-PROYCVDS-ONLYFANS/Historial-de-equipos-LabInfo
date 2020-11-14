@@ -2,293 +2,137 @@ package edu.eci.cvds.model.services.impl;
 
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.ElementDAO;
-import edu.eci.cvds.model.dao.ElementHistoryDAO;
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.dao.ElementTypeDAO;
 import edu.eci.cvds.model.entities.element.Element;
-import edu.eci.cvds.model.entities.element.ElementHistory;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
-import edu.eci.cvds.model.services.ComputerServices;
-import edu.eci.cvds.model.services.ElementServices;
-import edu.eci.cvds.model.services.LabInfoServicesException;
+import edu.eci.cvds.model.services.*;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 public class ElementServicesImpl implements ElementServices {
 
     @Inject
-    ElementDAO elementDAO;
+    private ElementTypeDAO elementTypeDAO;
 
     @Inject
-    ElementHistoryDAO elementHistoryDAO;
+    private ElementDAO elementDAO;
 
     @Inject
-    ComputerServices computerServices;
+    private AuthServices authServices;
 
-    @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(ElementServicesImpl.class);
+    @Inject
+    private NoveltyServices noveltyServices;
+
+    @Inject
+    private LabServices labServices;
+
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(ElementServicesImpl.class);
 
     @Override
     public void registerElement(
-            ElementTypeName name, String reference, String username)
-            throws LabInfoServicesException {
+            ElementTypeName typeName, String reference, String username)
+            throws ServicesException {
+        LOGGER.info("registerElement");
         try {
-            elementDAO.registerElement(name, reference);
-            elementHistoryDAO.addElementHistoryByReferenceAndUsername(
-                    reference, username, "Registered");
+            LOGGER.info("registerElement - try");
+            Long elementTypeId = elementTypeDAO.getElementTypeIdByName(typeName);
+            Long userId = authServices.getUserIdByUsername(username);
+
+            elementDAO.registerElement(reference, elementTypeId);
+
+            Long elementId = elementDAO.getIdByReference(reference);
+            noveltyServices.create(
+                    userId, elementId, null, null,
+                    "Registered", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            LOGGER.info("registerElement - catch");
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Element loadElementByReference(String reference)
-            throws LabInfoServicesException {
+    public Element getElementByReference(String reference)
+            throws ServicesException {
         try {
-            return elementDAO.loadElementByReference(reference);
+            return elementDAO.getElementByReference(reference);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void addElementHistoryByIdAndUsername(long elementId, String username, String title)
-            throws LabInfoServicesException {
+    public void prepareElementToLinkToNewComputer(
+            Long userId, Long elementId)
+            throws ServicesException {
         try {
-            elementHistoryDAO.addElementHistoryByIdAndUsername(elementId, username, title);
+            elementDAO.setAvailableById(elementId, false);
+            noveltyServices.create(
+                    userId, elementId, null,
+                    null, "Linked to new computer", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void addElementHistoryWithDetailById(
-            long elementId, long userId, String title, String detail)
-            throws LabInfoServicesException {
+    public Long getIdByReference(String reference) throws ServicesException {
+        LOGGER.info("getIdByReference");
         try {
-            elementHistoryDAO.addElementHistoryWithDetailById(
-                    elementId, userId, title, detail);
+            LOGGER.info("getIdByReference - try");
+            return elementDAO.getIdByReference(reference);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            LOGGER.info("getIdByReference - try");
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void addElementHistoryByReference(String reference, long userId, String title)
-            throws LabInfoServicesException {
+    public void unlink(ElementTypeName typeName, Long userId, Long elementId, Long computerId)
+            throws ServicesException {
         try {
-            elementHistoryDAO.addElementHistoryByReference(reference, userId, title);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void addElementHistoryByReferenceAndUsername(
-            String reference, String username, String title)
-            throws LabInfoServicesException {
-        try {
-            elementHistoryDAO.addElementHistoryByReferenceAndUsername(
-                    reference, username, title);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void addElementHistoryWithDetailByReference(
-            String reference, long userId, String title, String detail)
-            throws LabInfoServicesException {
-        try {
-            elementHistoryDAO.addElementHistoryWithDetailByReference(
-                    reference, userId, title, detail);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void addElementHistoryWithDetailByReferenceAndUsername(
-            String reference, String username, String title, String detail, ElementTypeName type)
-            throws LabInfoServicesException {
-        LOGGER.info("addElementHistoryWithDetailByReferenceAndUsername");
-        try {
-            switch (type) {
+            elementDAO.setAvailableById(elementId, true);
+            switch (typeName) {
                 case ETN_COMPUTER_CASE:
-                    LOGGER.info("ETN_COMPUTER_CASE");
-                    elementHistoryDAO
-                            .addComputerCaseHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail);
+                    noveltyServices.create(userId, elementId, computerId,
+                            labServices.getLabIdByLinkedComputerId(computerId),
+                            "Unlinked computer case", null);
                     break;
 
                 case ETN_MONITOR:
-                    LOGGER.info("ETN_MONITOR");
-                    elementHistoryDAO
-                            .addMonitorHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail);
+                    noveltyServices.create(userId, elementId, computerId,
+                            labServices.getLabIdByLinkedComputerId(computerId),
+                            "Unlinked monitor", null);
                     break;
 
                 case ETN_KEYBOARD:
-                    LOGGER.info("ETN_KEYBOARD");
-                    elementHistoryDAO
-                            .addKeyboardHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail);
+                    noveltyServices.create(userId, elementId, computerId,
+                            labServices.getLabIdByLinkedComputerId(computerId),
+                            "Unlinked keyboard", null);
                     break;
 
                 case ETN_MOUSE:
-                    LOGGER.info("ETN_MOUSE");
-                    elementHistoryDAO
-                            .addMouseHistoryWithDetailByReferenceAndUsername(
-                                    reference, username, title, detail);
+                    noveltyServices.create(userId, elementId, computerId,
+                            labServices.getLabIdByLinkedComputerId(computerId),
+                            "Unlinked mouse", null);
                     break;
             }
         } catch (PersistenceException e) {
-            LOGGER.info("addElementHistoryWithDetailByReferenceAndUsername - catch");
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void associateComputerCaseByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException {
+    public void discard(ElementTypeName typeName, Long userId, Long elementId, Long computerId)
+            throws ServicesException {
         try {
-            if (newComputer.getComputerCase() != null) {
-                elementDAO.setAvailableByReference(
-                        newComputer.getComputerCase().getReference(), true);
-                elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
-                        newComputer.getComputerCase().getReference(), username,
-                        "Unlinked", "Computer: " + newComputer.getReference());
-                computerServices.addComputerHistoryByReferenceAndUsername(
-                        newComputer.getReference(), username,
-                        "Computer case unlinked", "Computer case: " + reference);
-            }
-
-            elementDAO.setAvailableByReference(reference, false);
-            elementHistoryDAO.addComputerCaseHistoryWithDetailByReferenceAndUsername(
-                    reference, username, "Linked", "Computer: " + newComputer.getReference());
-
-            computerServices.associateComputerCaseByReference(newComputer.getReference(), reference);
-            computerServices.addComputerHistoryByReferenceAndUsername(
-                    newComputer.getReference(), username,
-                    "Computer case linked", "Computer case: " + reference);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void associateMonitorByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException {
-        try {
-            if (newComputer.getMonitor() != null) {
-                elementDAO.setAvailableByReference(
-                        newComputer.getMonitor().getReference(), true);
-                elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
-                        newComputer.getMonitor().getReference(), username,
-                        "Unlinked", "Computer: " + newComputer.getReference());
-                computerServices.addComputerHistoryByReferenceAndUsername(
-                        newComputer.getReference(), username,
-                        "Monitor linked", "Monitor: " + reference);
-            }
-
-            elementDAO.setAvailableByReference(reference, false);
-            elementHistoryDAO.addMonitorHistoryWithDetailByReferenceAndUsername(
-                    reference, username, "Linked", "Computer: " + newComputer.getReference());
-
-            computerServices.associateMonitorByReference(newComputer.getReference(), reference);
-            computerServices.addComputerHistoryByReferenceAndUsername(
-                    newComputer.getReference(), username,
-                    "Monitor linked", "Monitor: " + reference);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void associateKeyboardByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException {
-        try {
-            if (newComputer.getKeyboard() != null) {
-                elementDAO.setAvailableByReference(
-                        newComputer.getKeyboard().getReference(), true);
-                elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
-                        newComputer.getKeyboard().getReference(), username,
-                        "Unlinked", "Computer: " + newComputer.getReference());
-                computerServices.addComputerHistoryByReferenceAndUsername(
-                        newComputer.getReference(), username,
-                        "Keyboard linked", "Keyboard: " + reference);
-            }
-
-            elementDAO.setAvailableByReference(reference, false);
-            elementHistoryDAO.addKeyboardHistoryWithDetailByReferenceAndUsername(
-                    reference, username, "Linked", "Computer: " + newComputer.getReference());
-
-            computerServices.associateKeyboardByReference(newComputer.getReference(), reference);
-            computerServices.addComputerHistoryByReferenceAndUsername(
-                    newComputer.getReference(), username,
-                    "Keyboard linked", "Keyboard: " + reference);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void associateMouseByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException {
-        try {
-            if (newComputer.getMouse() != null) {
-                elementDAO.setAvailableByReference(
-                        newComputer.getMouse().getReference(), true);
-                elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
-                        newComputer.getMouse().getReference(), username,
-                        "Unlinked", "Computer: " + newComputer.getReference());
-            }
-
-            elementDAO.setAvailableByReference(reference, false);
-            elementHistoryDAO.addMouseHistoryWithDetailByReferenceAndUsername(
-                    reference, username, "Linked", "Computer: " + newComputer.getReference());
-
-            computerServices.associateMouseByReference(newComputer.getReference(), reference);
-            computerServices.addComputerHistoryByReferenceAndUsername(
-                    newComputer.getReference(), username,
-                    "Mouse linked", "Mouse: " + reference);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<ElementHistory> loadElementsHistory() throws LabInfoServicesException {
-        try {
-            return elementHistoryDAO.loadElementsHistory();
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<ElementHistory> loadElementHistoryById(long elementId)
-            throws LabInfoServicesException {
-        try {
-            return elementHistoryDAO.loadElementHistoryById(elementId);
-        } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void discardElement(long elementId, String username) throws LabInfoServicesException {
-        try {
+            elementDAO.setAvailableById(elementId, false);
             elementDAO.setDiscardedById(elementId, true);
-            elementHistoryDAO.addElementHistoryByIdAndUsername(elementId, username, "Discarded");
+            noveltyServices.create(userId, elementId, null,
+                    null, "Discarded", null);
         } catch (PersistenceException e) {
-            throw new LabInfoServicesException(e.getMessage(), e);
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 }

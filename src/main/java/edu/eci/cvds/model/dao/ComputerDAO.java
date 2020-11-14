@@ -1,27 +1,39 @@
 package edu.eci.cvds.model.dao;
 
-import edu.eci.cvds.model.entities.computer.Computer;
+import edu.eci.cvds.model.entities.Computer;
 import org.apache.ibatis.exceptions.PersistenceException;
 
 public interface ComputerDAO {
 
-    void registerComputerWithReferences(
-            String computer, String computerCase, String monitor, String keyboard, String mouse)
+    void registerComputer(
+            String reference, Long computerCaseId,
+            Long monitorId, Long keyboardId, Long mouseId)
             throws PersistenceException;
 
-    Computer loadComputerByReference(String reference) throws PersistenceException;
+    Long getIdByReference(String reference) throws PersistenceException;
 
-    void associateComputerCaseByReference(String computer, String computerCase)
+    Long getIdByComputerCaseId(Long id) throws PersistenceException;
+
+    Long getIdByMonitorId(Long id) throws PersistenceException;
+
+    Long getIdByKeyboardId(Long id) throws PersistenceException;
+
+    Long getIdByMouseId(Long id) throws PersistenceException;
+
+    Computer getComputerByReference(String reference) throws PersistenceException;
+
+    void setComputerCaseIdByIds(Long computerId, Long computerCaseId)
             throws PersistenceException;
 
-    void associateMonitorByReference(String computer, String monitor)
+    void setMonitorIdByIds(Long computerId, Long monitorId)
             throws PersistenceException;
 
-    void associateKeyboardByReference(String computer, String keyboard)
-            throws PersistenceException;
-    void associateMouseByReference(String computer, String mouse)
+    void setKeyboardIdByIds(Long computerId, Long keyboardId)
             throws PersistenceException;
 
-    void setDiscardedAndAvailableById(long id, boolean discarded, boolean available)
+    void setMouseIdByIds(Long computerId, Long mouseId)
+            throws PersistenceException;
+
+    void setDiscardedAndAvailableById(Long id, Boolean discarded, Boolean available)
             throws PersistenceException;
 }

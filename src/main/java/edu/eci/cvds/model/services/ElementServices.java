@@ -1,61 +1,22 @@
 package edu.eci.cvds.model.services;
 
-import edu.eci.cvds.model.entities.computer.Computer;
 import edu.eci.cvds.model.entities.element.Element;
-import edu.eci.cvds.model.entities.element.ElementHistory;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
-
-import java.util.List;
 
 public interface ElementServices {
 
-    void registerElement(ElementTypeName name, String reference, String username)
-            throws LabInfoServicesException;
+    void registerElement(
+            ElementTypeName typeName, String reference, String username)
+            throws ServicesException;
 
-    Element loadElementByReference(String reference) throws LabInfoServicesException;
+    Element getElementByReference(String reference) throws ServicesException;
 
-    void addElementHistoryByIdAndUsername(long elementId, String username, String title)
-            throws LabInfoServicesException;
+    void prepareElementToLinkToNewComputer(Long userId, Long elementId)
+            throws ServicesException;
 
-    void addElementHistoryWithDetailById(
-            long elementId, long userId, String title, String detail)
-            throws LabInfoServicesException;
+    Long getIdByReference(String reference) throws ServicesException;
 
-    void addElementHistoryByReference(String reference, long userId, String title)
-            throws LabInfoServicesException;
+    void unlink(ElementTypeName typeName, Long userId, Long elementId, Long computerId) throws ServicesException;
 
-    void addElementHistoryByReferenceAndUsername(
-            String reference, String username, String title)
-            throws LabInfoServicesException;
-
-    void addElementHistoryWithDetailByReference(
-            String reference, long userId, String title, String detail)
-            throws LabInfoServicesException;
-
-    void addElementHistoryWithDetailByReferenceAndUsername(
-            String reference, String username, String title, String detail, ElementTypeName type)
-            throws LabInfoServicesException;
-
-    void associateComputerCaseByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException;
-
-    void associateMonitorByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException;
-
-    void associateKeyboardByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException;
-
-    void associateMouseByReferenceAndUsername(
-            String reference, String username, Computer newComputer)
-            throws LabInfoServicesException;
-
-    List<ElementHistory> loadElementsHistory() throws LabInfoServicesException;
-
-    List<ElementHistory> loadElementHistoryById(long elementId)
-            throws LabInfoServicesException;
-
-    void discardElement(long elementId, String username) throws LabInfoServicesException;
+    void discard(ElementTypeName typeName, Long userId, Long elementId, Long computerId) throws ServicesException;
 }

@@ -3,75 +3,56 @@ package edu.eci.cvds.model.dao.mybatis;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.UserDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.UserMapper;
-import edu.eci.cvds.model.entities.role.Role;
-import edu.eci.cvds.model.entities.role.RoleName;
 import edu.eci.cvds.model.entities.User;
+import edu.eci.cvds.model.entities.role.Role;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Set;
 
 public class MyBatisUserDAO implements UserDAO {
 
-    @SuppressWarnings("unused")
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(UserDAO.class);
-
     @Inject
-    UserMapper userMapper;
+    private UserMapper userMapper;
+
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(UserDAO.class);
 
     @Override
-    public User loadByUsername(String username) throws PersistenceException {
+    public Long getIdByUsername(String username) throws PersistenceException {
+        LOGGER.info("loadIdByUsername");
         try {
-            return userMapper.loadByUsername(username);
+            LOGGER.info("loadIdByUsername - try");
+            return userMapper.getIdByUsername(username);
         } catch (PersistenceException e) {
+            LOGGER.info("loadIdByUsername - catch");
+            throw new PersistenceException("Fail to load id by username.", e);
+        }
+    }
+
+    @Override
+    public User getByUsername(String username) throws PersistenceException {
+        LOGGER.info("loadByUsername");
+        try {
+            LOGGER.info("loadByUsername - try");
+            return userMapper.getByUsername(username);
+        } catch (PersistenceException e) {
+            LOGGER.info("loadByUsername - catch");
             throw new PersistenceException("Not found user " + username + ".", e);
         }
     }
 
     @Override
-    public void addRoleToUserByUsername(String username, RoleName roleName) throws PersistenceException {
+    public Set<Role> getUserRolesByUsername(String username)
+            throws PersistenceException {
+        LOGGER.info("loadUserRolesByUsername");
         try {
-            userMapper.addRoleToUserByUsername(username, roleName);
+            LOGGER.info("loadUserRolesByUsername - try");
+            return userMapper.getUserRolesByUsername(username);
         } catch (PersistenceException e) {
-            throw new PersistenceException("Fails to add role to user " + username + ".", e);
-        }
-    }
-
-    @Override
-    public List<User> loadAll() throws PersistenceException {
-        try {
-            return userMapper.loadAll();
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to load users.", e);
-        }
-    }
-
-    @Override
-    public Set<Role> loadUserRolesByUsername(String username) throws PersistenceException {
-        try {
-            return userMapper.loadUserRolesByUsername(username);
-        } catch (PersistenceException e) {
+            LOGGER.info("loadUserRolesByUsername - catch");
             throw new PersistenceException("Fail to load user roles for " + username, e);
-        }
-    }
-
-    @Override
-    public void registerUser(User user) throws PersistenceException {
-        try {
-            userMapper.registerUser(user);
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to register user " + user.getName() + ".", e);
-        }
-    }
-
-    @Override
-    public void updatePassword(String username, String password) throws PersistenceException {
-        try {
-            userMapper.updatePassword(username, password);
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Fail to update password", e);
         }
     }
 }
