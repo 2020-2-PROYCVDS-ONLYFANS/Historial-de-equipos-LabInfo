@@ -20,7 +20,6 @@ public class Client {
         RoleMapper roleMapper = session.getMapper(RoleMapper.class);
         ElementTypeMapper elementTypeMapper = session.getMapper(ElementTypeMapper.class);
         ElementMapper elementMapper = session.getMapper(ElementMapper.class);
-        ElementHistoryMapper elementHistoryMapper = session.getMapper(ElementHistoryMapper.class);
         ComputerMapper computerMapper = session.getMapper(ComputerMapper.class);
 
         session.commit();

@@ -13,9 +13,7 @@
         <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementType" alias="ElementType"/>
         <typeAlias type="edu.eci.cvds.model.entities.element.type.ElementTypeName" alias="ElementTypeName"/>
         <typeAlias type="edu.eci.cvds.model.entities.element.Element" alias="Element"/>
-        <typeAlias type="edu.eci.cvds.model.entities.element.ElementHistory" alias="ElementHistory"/>
         <typeAlias type="edu.eci.cvds.model.entities.Computer" alias="Computer"/>
-        <typeAlias type="edu.eci.cvds.model.entities.computer.ComputerHistory" alias="ComputerHistory"/>
         <typeAlias type="edu.eci.cvds.model.entities.Lab" alias="Lab"/>
         <typeAlias type="edu.eci.cvds.model.entities.Novelty" alias="Novelty"/>
         <typeAlias type="java.util.Date" alias="Date"/>
@@ -50,9 +48,7 @@
         <mapper resource="mappers/RoleMapper.xml"/>
         <mapper resource="mappers/ElementTypeMapper.xml"/>
         <mapper resource="mappers/ElementMapper.xml"/>
-        <mapper resource="mappers/ElementHistoryMapper.xml"/>
         <mapper resource="mappers/ComputerMapper.xml"/>
-        <mapper resource="mappers/ComputerHistoryMapper.xml"/>
         <mapper resource="mappers/LabMapper.xml"/>
         <mapper resource="mappers/NoveltyMapper.xml"/>
     </mappers>

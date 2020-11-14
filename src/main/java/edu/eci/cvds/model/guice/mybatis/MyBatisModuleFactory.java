@@ -36,12 +36,9 @@ public class MyBatisModuleFactory {
 
                 bind(UserDAO.class).to(MyBatisUserDAO.class);
                 bind(RoleDAO.class).to(MyBatisRoleDAO.class);
-                // bind(AuthDAO.class).to(AuthDAOImpl.class);
                 bind(ElementTypeDAO.class).to(MyBatisElementTypeDAO.class);
                 bind(ElementDAO.class).to(MyBatisElementDAO.class);
-                // bind(ElementHistoryDAO.class).to(MyBatisElementHistoryDAO.class);
                 bind(ComputerDAO.class).to(MyBatisComputerDAO.class);
-                // bind(ComputerHistoryDAO.class).to(MyBatisComputerHistoryDAO.class);
                 bind(LabDAO.class).to(MyBatisLabDAO.class);
                 bind(NoveltyDAO.class).to(MyBatisNoveltyDAO.class);
             }
