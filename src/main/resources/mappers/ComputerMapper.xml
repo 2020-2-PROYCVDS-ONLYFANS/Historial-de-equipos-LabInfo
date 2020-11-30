@@ -13,7 +13,7 @@
                     #{monitorId},
                     #{keyboardId},
                     #{mouseId}
-               );
+               )
     </insert>
 
     <select id="getIdByReference" resultType="long">
@@ -22,7 +22,7 @@
         FROM
             "COMPUTERS"
         WHERE
-            reference = #{reference};
+            reference = #{reference}
     </select >
 
     <select id="getIdByComputerCaseId" resultType="long">
@@ -31,7 +31,7 @@
         FROM
             "COMPUTERS"
         WHERE
-            "ELEMENTS_computer_case_id" = #{id};
+            "ELEMENTS_computer_case_id" = #{id}
     </select>
 
     <select id="getIdByMonitorId" resultType="long">
@@ -40,7 +40,7 @@
         FROM
             "COMPUTERS"
         WHERE
-            "ELEMENTS_monitor_id" = #{id};
+            "ELEMENTS_monitor_id" = #{id}
     </select>
 
     <select id="getIdByKeyboardId" resultType="long">
@@ -49,7 +49,7 @@
         FROM
             "COMPUTERS"
         WHERE
-            "ELEMENTS_keyboard_id" = #{id};
+            "ELEMENTS_keyboard_id" = #{id}
     </select>
 
     <select id="getIdByMouseId" resultType="long">
@@ -58,7 +58,7 @@
         FROM
             "COMPUTERS"
         WHERE
-            "ELEMENTS_mouse_id" = #{id};
+            "ELEMENTS_mouse_id" = #{id}
     </select>
 
     <select id="getComputerByReference" resultMap="ComputerResultMap">
@@ -110,7 +110,7 @@
                 LEFT JOIN
             "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
         WHERE
-            c.reference = #{reference};
+            c.reference = #{reference}
     </select>
 
     <update id="setComputerCaseIdByIds">
@@ -119,7 +119,7 @@
         SET
             "ELEMENTS_computer_case_id" = #{computerCaseId}
         WHERE
-            id = #{computerId};
+            id = #{computerId}
     </update>
 
     <update id="setMonitorIdByIds">
@@ -128,7 +128,7 @@
         SET
             "ELEMENTS_monitor_id" = #{monitorId}
         WHERE
-            id = #{computerId};
+            id = #{computerId}
     </update>
 
     <update id="setKeyboardIdByIds">
@@ -137,7 +137,7 @@
         SET
             "ELEMENTS_keyboard_id" = #{keyboardId}
         WHERE
-            id = #{computerId};
+            id = #{computerId}
     </update>
 
     <update id="setMouseIdByIds">
@@ -146,7 +146,7 @@
         SET
             "ELEMENTS_Mouse_id" = #{mouseId}
         WHERE
-            id = #{computerId};
+            id = #{computerId}
     </update>
 
     <update id="setDiscardedAndAvailableById">
@@ -156,7 +156,7 @@
             discarded = #{discarded},
             available = #{available}
         WHERE
-            id = #{id};
+            id = #{id}
     </update>
 
     <resultMap id="ComputerResultMap" type="Computer">

@@ -22,14 +22,15 @@ public class NoveltyServicesImpl implements NoveltyServices {
     @Inject
     private ComputerServices computerServices;
 
-    @Inject LabServices labServices;
+    @Inject
+    LabServices labServices;
 
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(NoveltyServicesImpl.class);
 
     @Override
-    public void create(Long userId, Long elementId, Long computerId,
-                       Long labId, String title, String detail) throws ServicesException {
+    public void create(Long userId, Long elementId, Long computerId, Long labId, String title,
+            String detail) throws ServicesException {
         try {
             LOGGER.info("create - try");
             noveltyDAO.create(userId, elementId, computerId, labId, title, detail);
@@ -40,15 +41,13 @@ public class NoveltyServicesImpl implements NoveltyServices {
     }
 
     @Override
-    public void createByComputerReferenceAndUsername(
-            String username, String computerRef, String title, String detail)
-            throws ServicesException {
+    public void createByComputerReferenceAndUsername(String username, String computerRef,
+            String title, String detail) throws ServicesException {
         try {
             LOGGER.info("createByComputerReferenceAndUsername - try");
             Long computerId = computerServices.getIdByReference(computerRef);
 
-            noveltyDAO.create(
-                    authServices.getUserIdByUsername(username), null, computerId,
+            noveltyDAO.create(authServices.getUserIdByUsername(username), null, computerId,
                     labServices.getLabIdByLinkedComputerId(computerId), title, detail);
         } catch (ServicesException e) {
             LOGGER.info("createByComputerReferenceAndUsername - catch 1");
@@ -60,9 +59,8 @@ public class NoveltyServicesImpl implements NoveltyServices {
     }
 
     @Override
-    public void createByElementReferenceAndUsername(
-            ElementTypeName typeName, String username, String elementRef,
-            String title, String detail) throws ServicesException {
+    public void createByElementReferenceAndUsername(ElementTypeName typeName, String username,
+            String elementRef, String title, String detail) throws ServicesException {
         try {
             LOGGER.info("createByElementReferenceAndUsername - try");
             Long userId = authServices.getUserIdByUsername(username);

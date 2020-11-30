@@ -1,43 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-
-<h:head>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
     <title>Register element</title>
-</h:head>
+  </h:head>
 
-<f:view>
+  <f:view>
     <h:form>
-        <div class="ui-fluid" style="width: fit-content; margin: auto; padding: 1em;">
-            <div class="p-field">
-                <p:outputLabel for="reference" value="Reference" />
-                <p:inputText id="reference" value="#{registerElementBean.reference}" />
-            </div>
-
-            <div class="p-field">
-                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                    <p:outputLabel for="type" value="Type:" />
-                    <p:selectOneRadio id="type" value="#{registerElementBean.typeName}" unselectable="true">
-                        <f:selectItem itemLabel="Computer Case" itemValue="#{enumsBean.computerCase}" />
-                        <f:selectItem itemLabel="Monitor" itemValue="#{enumsBean.monitor}" />
-                        <f:selectItem itemLabel="Keyboard" itemValue="#{enumsBean.keyboard}" />
-                        <f:selectItem itemLabel="Mouse" itemValue="#{enumsBean.mouse}" />
-                    </p:selectOneRadio>
-                </h:panelGrid>
-            </div>
-
-            <p:commandButton value="Register"
-                             actionListener="#{registerElementBean.register()}"
-                             action="#{registerElementBean.redirectToAdminPanel()}"/>
+      <div
+        class="ui-fluid"
+        style="width: fit-content; margin: auto; padding: 1em"
+      >
+        <div class="p-field">
+          <p:outputLabel for="reference" value="Reference" />
+          <p:inputText
+            id="reference"
+            value="#{registerElementBean.reference}"
+          />
         </div>
-    </h:form>
-    <br/><br/>
-    <p:linkButton href="../admin/" value="Volver"/>
-</f:view>
 
+        <div class="p-field">
+          <h:panelGrid columns="2" style="margin-bottom: 10px" cellpadding="5">
+            <p:outputLabel for="type" value="Type:" />
+            <p:selectOneRadio
+              id="type"
+              value="#{registerElementBean.typeName}"
+              unselectable="true"
+            >
+              <f:selectItem
+                itemLabel="Computer Case"
+                itemValue="#{enumsBean.computerCase}"
+              />
+              <f:selectItem
+                itemLabel="Monitor"
+                itemValue="#{enumsBean.monitor}"
+              />
+              <f:selectItem
+                itemLabel="Keyboard"
+                itemValue="#{enumsBean.keyboard}"
+              />
+              <f:selectItem itemLabel="Mouse" itemValue="#{enumsBean.mouse}" />
+            </p:selectOneRadio>
+          </h:panelGrid>
+        </div>
+
+        <p:commandButton
+          value="Register"
+          actionListener="#{registerElementBean.register()}"
+          action="#{registerElementBean.redirectToAdminPanel()}"
+        />
+      </div>
+    </h:form>
+    <br /><br />
+    <p:linkButton href="../admin/" value="Volver" />
+  </f:view>
 </html>

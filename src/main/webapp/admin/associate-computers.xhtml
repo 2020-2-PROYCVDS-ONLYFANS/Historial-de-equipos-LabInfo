@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+  <h:head>
+    <title>Associate computers</title>
+  </h:head>
+
+  <f:view>
+    <p:outputPanel style="width: fit-content; margin: auto; padding: 1em">
+      <p:growl id="msgs" showDetail="true" />
+      <p:outputPanel>
+        <h:form id="lab-form">
+          <p:panel
+            header="Lab info"
+            style="width: fit-content; padding: 1em; margin-bottom: 20px"
+          >
+            <h:panelGrid id="lab-info" columns="2" cellpadding="5">
+              <h:outputLabel value="Name:" for="txt_lab_name" />
+              <p:inputText
+                id="txt_lab_name"
+                required="true"
+                value="#{registerLabBean.lab.name}"
+              />
+
+              <p:commandButton
+                value="Reset"
+                update="txt_lab_name :computer-form :computers :msgs"
+                action="#{registerLabBean.reset()}"
+              />
+              <p:commandButton
+                value="Register"
+                update="lab-form :computer-form :computers :msgs"
+                action="#{registerLabBean.registerLab()}"
+              />
+            </h:panelGrid>
+          </p:panel>
+        </h:form>
+      </p:outputPanel>
+      <h:form id="computer-form" styleClass="ui-fluid">
+        <p:panel
+          header="Add computers"
+          style="width: fit-content; padding: 1em; margin-bottom: 20px"
+        >
+          <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel value="Reference:" for="txt_computer_ref" />
+            <p:inputText
+              id="txt_computer_ref"
+              required="true"
+              value="#{registerLabBean.computer.reference}"
+            />
+
+            <p:commandButton
+              id="btn_add"
+              value="Add"
+              update="txt_computer_ref computers msgs @all"
+              action="#{registerLabBean.addComputer()}"
+            />
+          </h:panelGrid>
+        </p:panel>
+      </h:form>
+    </p:outputPanel>
+
+    <p:outputPanel id="computers">
+      <p:panel header="Computers">
+        <p:dataTable
+          value="#{registerLabBean.lab.computers}"
+          var="computer"
+          id="computersTable"
+        >
+          <p:column headerText="Id">
+            <h:outputText value="#{computer.id}" />
+          </p:column>
+
+          <p:column headerText="Reference">
+            <h:outputText value="#{computer.reference}" />
+          </p:column>
+
+          <p:column headerText="Computer case (Ref)">
+            <h:outputText value="#{computer.computerCase.reference}" />
+          </p:column>
+
+          <p:column headerText="Monitor (Ref)">
+            <h:outputText value="#{computer.monitor.reference}" />
+          </p:column>
+
+          <p:column headerText="Keyboard (Ref)">
+            <h:outputText value="#{computer.keyboard.reference}" />
+          </p:column>
+
+          <p:column headerText="Mouse (Ref)">
+            <h:outputText value="#{computer.mouse.reference}" />
+          </p:column>
+
+          <p:column headerText="Available">
+            <h:outputText value="#{computer.available}" />
+          </p:column>
+
+          <p:column>
+            <p:commandButton
+              id="btn_remove"
+              value="Remove"
+              update=":computers"
+              process=":computers"
+            >
+              <p:collector
+                value="#{computer}"
+                unique="true"
+                removeFrom="#{registerLabBean.lab.computers}"
+              />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </p:outputPanel>
+  </f:view>
+</html>

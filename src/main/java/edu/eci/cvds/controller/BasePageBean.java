@@ -1,26 +1,26 @@
 package edu.eci.cvds.controller;
 
 import com.google.inject.Injector;
-
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import java.io.Serializable;
 
 public abstract class BasePageBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Injector injector;
 
     public Injector getInjector() {
         if (injector == null) {
-            ServletContext servletContext = (ServletContext)
-                    FacesContext.getCurrentInstance().getExternalContext().getContext();
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance()
+                    .getExternalContext().getContext();
             injector = (Injector) servletContext.getAttribute(Injector.class.getName());
         }
         return injector;
     }
 
-    @SuppressWarnings("unused")
     public void setInjector(Injector injector) {
         this.injector = injector;
     }

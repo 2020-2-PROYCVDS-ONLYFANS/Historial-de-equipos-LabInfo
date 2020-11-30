@@ -2,13 +2,16 @@ package edu.eci.cvds.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 
 public class Lab implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private long id;
     private String name;
-    private Set<Computer> computers;
+    private List<Computer> computers;
     private boolean active;
     private Date openingDate;
     private Date closingDate;
@@ -29,11 +32,11 @@ public class Lab implements Serializable {
         this.name = name;
     }
 
-    public Set<Computer> getComputers() {
+    public List<Computer> getComputers() {
         return computers;
     }
 
-    public void setComputers(Set<Computer> computers) {
+    public void setComputers(List<Computer> computers) {
         this.computers = computers;
     }
 
@@ -59,5 +62,27 @@ public class Lab implements Serializable {
 
     public void setClosingDate(Date closingDate) {
         this.closingDate = closingDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Lab{" + "id=" + id + ", name='" + name + '\'' + ", computers=" + computers
+                + ", active=" + active + ", openingDate=" + openingDate + ", closingDate="
+                + closingDate + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Lab lab = (Lab) o;
+        return id == lab.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

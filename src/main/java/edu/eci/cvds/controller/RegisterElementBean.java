@@ -4,18 +4,20 @@ import com.google.inject.Inject;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.ServicesException;
+import java.io.IOException;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-
 @ManagedBean(name = "registerElementBean")
 @ViewScoped
+@SuppressWarnings("deprecation")
 public class RegisterElementBean extends BasePageBean {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     ElementServices elementServices;
@@ -24,7 +26,8 @@ public class RegisterElementBean extends BasePageBean {
 
     private String reference;
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterElementBean.class);
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(RegisterElementBean.class);
 
     public void register() {
         LOGGER.info("register");

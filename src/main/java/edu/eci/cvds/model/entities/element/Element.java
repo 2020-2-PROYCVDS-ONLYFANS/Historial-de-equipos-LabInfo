@@ -3,9 +3,11 @@ package edu.eci.cvds.model.entities.element;
 import edu.eci.cvds.model.entities.element.type.ElementType;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class Element implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private String reference;
@@ -62,11 +64,22 @@ public class Element implements Serializable {
 
     @Override
     public String toString() {
-        return "Element{" +
-                "id=" + id +
-                ", type=" + type +
-                ", available=" + available +
-                ", discarded=" + discarded +
-                '}';
+        return "Element{" + "id=" + id + ", type=" + type + ", available=" + available
+                + ", discarded=" + discarded + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Element element = (Element) o;
+        return id == element.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

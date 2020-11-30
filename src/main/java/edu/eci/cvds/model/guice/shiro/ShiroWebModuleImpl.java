@@ -45,17 +45,15 @@ public class ShiroWebModuleImpl extends ShiroWebModule {
         this.servletContext = servletContext; // to loadShiroIni()
     }
 
-
+    @SuppressWarnings("all")
     protected void configFilterChain() {
         LOGGER.info("configFilterChain");
         addFilterChain("/login.xhtml", AUTHC);
         addFilterChain("/logout.xhtml", LOGOUT);
         addFilterChain("/account/**", AUTHC);
 
-        //noinspection unchecked
-        addFilterChain(
-                "/admin/**",
-                filterConfig(AUTHC),
+        // noinspection unchecked
+        addFilterChain("/admin/**", filterConfig(AUTHC),
                 filterConfig(ROLES, RoleName.ROLE_ADMIN.toString()));
     }
 
@@ -91,24 +89,23 @@ public class ShiroWebModuleImpl extends ShiroWebModule {
     }
 
     @Override
-    protected void bindWebSecurityManager(AnnotatedBindingBuilder<? super WebSecurityManager> bind) {
-        LOGGER.info("bindWebSecurityManager");
+    protected void bindWebSecurityManager(
+            AnnotatedBindingBuilder<? super WebSecurityManager> bind) {
         try {
             LOGGER.info("bindWebSecurityManager - try");
-            String cipherKey = loadShiroIni().getSectionProperty(
-                    "main",
-                    "securityManager.rememberMeManager.cipherKey" );
+            String cipherKey = loadShiroIni().getSectionProperty("main",
+                    "securityManager.rememberMeManager.cipherKey");
             DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
             CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
-            rememberMeManager.setCipherKey( Base64.decode( cipherKey ) );
+            rememberMeManager.setCipherKey(Base64.decode(cipherKey));
             securityManager.setRememberMeManager(rememberMeManager);
             bind.toInstance(securityManager);
-        } catch ( MalformedURLException e ) {
+        } catch (MalformedURLException e) {
             LOGGER.info("bindWebSecurityManager - catch");
             // for now just throw, you could just call
             // super.bindWebSecurityManager(bind) if you do not need rememberMe functionality
             throw new ConfigurationException(
-                    "securityManager.rememberMeManager.cipherKey must be set in shiro.ini." );
+                    "securityManager.rememberMeManager.cipherKey must be set in shiro.ini.");
         }
     }
 }

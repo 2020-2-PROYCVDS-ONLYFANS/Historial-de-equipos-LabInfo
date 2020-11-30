@@ -1,16 +1,18 @@
 package edu.eci.cvds.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ManagedBean(name = "indexBean", eager = true)
 @RequestScoped
+@SuppressWarnings("deprecation")
 public class IndexBean extends BasePageBean {
+
+    private static final long serialVersionUID = 1L;
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(IndexBean.class);
 

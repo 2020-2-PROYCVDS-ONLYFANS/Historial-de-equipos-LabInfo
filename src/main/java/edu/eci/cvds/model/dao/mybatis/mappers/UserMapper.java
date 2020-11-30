@@ -1,11 +1,9 @@
 package edu.eci.cvds.model.dao.mybatis.mappers;
 
-import edu.eci.cvds.model.entities.role.Role;
 import edu.eci.cvds.model.entities.User;
-import org.apache.ibatis.annotations.Param;
-import org.mybatis.guice.transactional.Transactional;
-
+import edu.eci.cvds.model.entities.role.Role;
 import java.util.Set;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
 

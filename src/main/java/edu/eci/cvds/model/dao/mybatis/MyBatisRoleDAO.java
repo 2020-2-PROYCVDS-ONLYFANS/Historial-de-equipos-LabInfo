@@ -12,6 +12,5 @@ public class MyBatisRoleDAO implements RoleDAO {
     @Inject
     private RoleMapper roleMapper;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(MyBatisRoleDAO.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(MyBatisRoleDAO.class);
 }

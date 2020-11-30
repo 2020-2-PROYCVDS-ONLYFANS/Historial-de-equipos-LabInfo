@@ -5,18 +5,20 @@ import edu.eci.cvds.model.entities.element.Element;
 import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.ServicesException;
-import org.apache.shiro.SecurityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ManagedBean(name = "discardElement")
 @ViewScoped
+@SuppressWarnings("deprecation")
 public class DiscardElementBean extends BasePageBean {
+
+    private static final long serialVersionUID = 1L;
 
     private String reference;
 
@@ -36,21 +38,18 @@ public class DiscardElementBean extends BasePageBean {
             if (element.isAvailable()) {
                 elementServices.discard(element.getType().getName(),
                         authServices.getUserIdByUsername(username), element.getId(), null);
-                addMessage("Done!", "Discarded successful.",
-                        FacesMessage.SEVERITY_INFO);
+                addMessage("Done!", "Discarded successful.", FacesMessage.SEVERITY_INFO);
             } else {
                 addMessage("Error!", "Element associated with a computer.",
                         FacesMessage.SEVERITY_ERROR);
             }
         } catch (ServicesException e) {
             LOGGER.info(e.getMessage());
-            addMessage("Fatal!", "Element not exists",
-                    FacesMessage.SEVERITY_FATAL);
+            addMessage("Fatal!", "Element not exists", FacesMessage.SEVERITY_FATAL);
         }
     }
 
-    public void addMessage(
-            String summary, String detail, FacesMessage.Severity severity) {
+    public void addMessage(String summary, String detail, FacesMessage.Severity severity) {
         LOGGER.info("addMessage");
         FacesMessage message = new FacesMessage(severity, summary, detail);
         FacesContext.getCurrentInstance().addMessage("elementMessage", message);

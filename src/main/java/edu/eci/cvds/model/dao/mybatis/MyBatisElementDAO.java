@@ -9,16 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MyBatisElementDAO implements ElementDAO {
-    
+
     @Inject
     private ElementMapper elementMapper;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(MyBatisElementDAO.class);
-    
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(MyBatisElementDAO.class);
+
     @Override
-    public void registerElement(String reference, Long typeId)
-            throws PersistenceException {
+    public void registerElement(String reference, Long typeId) throws PersistenceException {
         LOGGER.info("registerElement");
         try {
             LOGGER.info("registerElement - try");
@@ -30,8 +28,7 @@ public class MyBatisElementDAO implements ElementDAO {
     }
 
     @Override
-    public Long getIdByReference(String reference)
-            throws PersistenceException {
+    public Long getIdByReference(String reference) throws PersistenceException {
         LOGGER.info("loadIdByReference");
         try {
             LOGGER.info("loadIdByReference - try");
@@ -42,8 +39,7 @@ public class MyBatisElementDAO implements ElementDAO {
         }
     }
 
-    public Element getElementById(Long id)
-            throws PersistenceException {
+    public Element getElementById(Long id) throws PersistenceException {
         LOGGER.info("loadElementById");
         try {
             LOGGER.info("loadElementById - try");
@@ -55,8 +51,7 @@ public class MyBatisElementDAO implements ElementDAO {
     }
 
     @Override
-    public Element getElementByReference(String reference)
-            throws PersistenceException {
+    public Element getElementByReference(String reference) throws PersistenceException {
         LOGGER.info("loadElementByReference");
         try {
             LOGGER.info("loadElementByReference - try");
@@ -68,8 +63,7 @@ public class MyBatisElementDAO implements ElementDAO {
     }
 
     @Override
-    public void setAvailableById(Long id, Boolean available)
-            throws PersistenceException {
+    public void setAvailableById(Long id, Boolean available) throws PersistenceException {
         LOGGER.info("setAvailableByReference");
         try {
             LOGGER.info("setAvailableByReference - try");
@@ -80,8 +74,7 @@ public class MyBatisElementDAO implements ElementDAO {
         }
     }
 
-    public void setDiscardedById(Long id, Boolean discarded)
-            throws PersistenceException {
+    public void setDiscardedById(Long id, Boolean discarded) throws PersistenceException {
         LOGGER.info("setDiscardedById");
         try {
             LOGGER.info("setDiscardedById - try");

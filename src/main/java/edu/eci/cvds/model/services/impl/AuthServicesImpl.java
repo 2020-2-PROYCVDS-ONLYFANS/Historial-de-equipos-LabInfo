@@ -13,12 +13,10 @@ public class AuthServicesImpl implements AuthServices {
     @Inject
     private UserDAO userDAO;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(AuthServicesImpl.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(AuthServicesImpl.class);
 
     @Override
     public Long getUserIdByUsername(String username) throws ServicesException {
-        LOGGER.info("loadIdByUsername");
         try {
             LOGGER.info("loadIdByUsername - try");
             return userDAO.getIdByUsername(username);

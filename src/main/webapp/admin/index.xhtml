@@ -1,33 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-
-<h:head>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
     <title>Admin</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </h:head>
 
-<f:view>
-    <h:outputLabel value="Panel Admin"/>
+  <f:view>
+    <h:outputLabel value="Panel Admin" />
 
-    <p><p:linkButton outcome="register-element" value="Register Element" style="margin-right:20px;"/></p>
+    <p>
+      <p:linkButton
+        outcome="register-element"
+        value="Register Element"
+        style="margin-right: 20px"
+      />
+    </p>
 
-    <p><p:linkButton outcome="register-computer" value="Register Computer" style="margin-right:20px;"/></p>
+    <p>
+      <p:linkButton
+        outcome="register-computer"
+        value="Register Computer"
+        style="margin-right: 20px"
+      />
+    </p>
 
-    <p><p:linkButton outcome="associate-elements" value="Associate Elements" style="margin-right:20px;"/></p>
+    <p>
+      <p:linkButton
+        outcome="associate-elements"
+        value="Associate Elements"
+        style="margin-right: 20px"
+      />
+    </p>
 
-    <p><p:linkButton outcome="register-novelty" value="Register Novelty" style="margin-right:20px;"/></p>
+    <p>
+      <p:linkButton
+        outcome="register-novelty"
+        value="Register Novelty"
+        style="margin-right: 20px"
+      />
+    </p>
 
-    <p><p:linkButton outcome="discard-element" value="Discard Element" style="margin-right:20px;"/></p>
+    <p>
+      <p:linkButton
+        outcome="discard-element"
+        value="Discard Element"
+        style="margin-right: 20px"
+      />
+    </p>
 
-    <p><p:linkButton outcome="discard-computer" value="Discard Computer" style="margin-right:20px;"/></p>
+    <p>
+      <p:linkButton
+        outcome="discard-computer"
+        value="Discard Computer"
+        style="margin-right: 20px"
+      />
+    </p>
 
-    <p><p:linkButton href="../account/" value="Home"/></p>
-</f:view>
+    <p>
+      <p:linkButton
+        outcome="register-lab"
+        value="Register Lab"
+        style="margin-right: 20px"
+      />
+    </p>
 
+    <p>
+      <p:linkButton
+        outcome="associate-computers"
+        value="Associate Computers Lab"
+        style="margin-right: 20px"
+      />
+    </p>
+
+    <p><p:linkButton href="../account/" value="Home" /></p>
+  </f:view>
 </html>

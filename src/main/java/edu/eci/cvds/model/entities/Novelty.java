@@ -4,8 +4,11 @@ import edu.eci.cvds.model.entities.element.Element;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class Novelty implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private User user;
@@ -78,5 +81,27 @@ public class Novelty implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    @Override
+    public String toString() {
+        return "Novelty{" + "id=" + id + ", user=" + user + ", element=" + element + ", computer="
+                + computer + ", lab=" + lab + ", timestamp=" + timestamp + ", title='" + title
+                + '\'' + ", detail='" + detail + '\'' + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Novelty novelty = (Novelty) o;
+        return id == novelty.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

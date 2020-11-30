@@ -4,22 +4,24 @@ import com.google.inject.Inject;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.ServicesException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.apache.shiro.SecurityUtils;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 @ManagedBean(name = "registerComputerBean")
 @ViewScoped
+@SuppressWarnings("deprecation")
 public class RegisterComputerBean extends BasePageBean {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private ComputerServices computerServices;
@@ -32,14 +34,15 @@ public class RegisterComputerBean extends BasePageBean {
     private String keyboardReference;
     private String mouseReference;
 
-    private boolean existsComputerCase;
-    private boolean existsMonitor;
-    private boolean existsKeyboard;
-    private boolean existsMouse;
+    private Boolean existsComputerCase;
+    private Boolean existsMonitor;
+    private Boolean existsKeyboard;
+    private Boolean existsMouse;
 
     private String computerReference;
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterComputerBean.class);
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(RegisterComputerBean.class);
 
     public String updateMessage() {
         String message = buildMessage();
@@ -52,13 +55,14 @@ public class RegisterComputerBean extends BasePageBean {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
             LOGGER.info("register - try");
-            Pair<Boolean, String> computerCasePair = new Pair<>(existsComputerCase, computerCaseReference);
+            Pair<Boolean, String> computerCasePair =
+                    new Pair<>(existsComputerCase, computerCaseReference);
             Pair<Boolean, String> monitorPair = new Pair<>(existsMonitor, monitorReference);
             Pair<Boolean, String> keyboardPair = new Pair<>(existsKeyboard, keyboardReference);
             Pair<Boolean, String> mousePair = new Pair<>(existsMouse, mouseReference);
 
-            computerServices.registerComputerByReferences(
-                    username, computerReference, computerCasePair, monitorPair, keyboardPair, mousePair);
+            computerServices.registerComputerByReferences(username, computerReference,
+                    computerCasePair, monitorPair, keyboardPair, mousePair);
 
             addMessage("Done", "Computer successfully registered.");
         } catch (Exception e) {
@@ -80,13 +84,16 @@ public class RegisterComputerBean extends BasePageBean {
             LOGGER.info(messageAndCont.toString());
             if (messageAndCont.getValue0() != 0) {
                 if (messageAndCont.getValue0() == 1) {
-                    return "The " + messageAndCont.getValue1() + " does not exist, so it will be created." +
-                            " The other components will be associated with this computer.";
+                    return ("The " + messageAndCont.getValue1()
+                            + " does not exist, so it will be created."
+                            + " The other components will be associated with this computer.");
                 } else if (messageAndCont.getValue0() == 4) {
-                    return "The " + messageAndCont.getValue1() + " do not exist, so they will be created.";
+                    return ("The " + messageAndCont.getValue1()
+                            + " do not exist, so they will be created.");
                 } else {
-                    return "The " + messageAndCont.getValue1() + " do not exist, so they will be created." +
-                            " The other components will be associated with this computer.";
+                    return ("The " + messageAndCont.getValue1()
+                            + " do not exist, so they will be created."
+                            + " The other components will be associated with this computer.");
                 }
             } else {
                 return "The components will be associated with this computer.";
@@ -105,13 +112,16 @@ public class RegisterComputerBean extends BasePageBean {
         if (!existsComputerCase) {
             elements.add("computer case");
             cont++;
-        } if (!existsMonitor) {
+        }
+        if (!existsMonitor) {
             elements.add("monitor");
             cont++;
-        } if (!existsKeyboard) {
+        }
+        if (!existsKeyboard) {
             elements.add("keyboard");
             cont++;
-        } if (!existsMouse) {
+        }
+        if (!existsMouse) {
             elements.add("mouse");
             cont++;
         }
@@ -130,13 +140,14 @@ public class RegisterComputerBean extends BasePageBean {
     }
 
     private boolean areSomeReferencesNull() {
-        return computerCaseReference == null || monitorReference == null
-                || keyboardReference == null || mouseReference == null;
+        return (computerCaseReference == null || monitorReference == null
+                || keyboardReference == null || mouseReference == null);
     }
 
     public void askComputerCase() {
         try {
-            existsComputerCase = elementServices.getElementByReference(computerCaseReference) != null;
+            existsComputerCase =
+                    elementServices.getElementByReference(computerCaseReference) != null;
         } catch (ServicesException e) {
             LOGGER.info("askComputerCase - catch");
             existsComputerCase = false;

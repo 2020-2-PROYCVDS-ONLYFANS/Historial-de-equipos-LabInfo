@@ -17,13 +17,12 @@ public class MyBatisComputerDAO implements ComputerDAO {
             LoggerFactory.getLogger(MyBatisComputerDAO.class);
 
     @Override
-    public void registerComputer(
-            String reference, Long computerCaseId, Long monitorId, Long keyboardId, Long mouseId)
-            throws PersistenceException {
+    public void registerComputer(String reference, Long computerCaseId, Long monitorId,
+            Long keyboardId, Long mouseId) throws PersistenceException {
         try {
             LOGGER.info("registerComputer - try");
-            computerMapper.registerComputer(
-                    reference, computerCaseId, monitorId, keyboardId, mouseId);
+            computerMapper.registerComputer(reference, computerCaseId, monitorId, keyboardId,
+                    mouseId);
         } catch (PersistenceException e) {
             LOGGER.info("registerComputer - catch");
             throw new PersistenceException("Fail to register computer.", e);
@@ -86,8 +85,7 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
-    public Computer getComputerByReference(String reference)
-            throws PersistenceException {
+    public Computer getComputerByReference(String reference) throws PersistenceException {
         try {
             return computerMapper.getComputerByReference(reference);
         } catch (PersistenceException e) {
@@ -96,8 +94,8 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
-    public void setComputerCaseIdByIds(
-            Long computerId, Long computerCaseId) throws PersistenceException {
+    public void setComputerCaseIdByIds(Long computerId, Long computerCaseId)
+            throws PersistenceException {
         try {
             computerMapper.setComputerCaseIdByIds(computerId, computerCaseId);
         } catch (PersistenceException e) {
@@ -106,8 +104,7 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
-    public void setMonitorIdByIds(
-            Long computerId, Long monitorId) throws PersistenceException {
+    public void setMonitorIdByIds(Long computerId, Long monitorId) throws PersistenceException {
         try {
             computerMapper.setMonitorIdByIds(computerId, monitorId);
         } catch (PersistenceException e) {
@@ -116,8 +113,7 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
-    public void setKeyboardIdByIds(
-            Long computerId, Long keyboardId) throws PersistenceException {
+    public void setKeyboardIdByIds(Long computerId, Long keyboardId) throws PersistenceException {
         try {
             computerMapper.setKeyboardIdByIds(computerId, keyboardId);
         } catch (PersistenceException e) {
@@ -126,8 +122,7 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
-    public void setMouseIdByIds(
-            Long computerId, Long mouseId) throws PersistenceException {
+    public void setMouseIdByIds(Long computerId, Long mouseId) throws PersistenceException {
         try {
             computerMapper.setMouseIdByIds(computerId, mouseId);
         } catch (PersistenceException e) {
@@ -136,8 +131,7 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
-    public void setDiscardedAndAvailableById(
-            Long id, Boolean discarded, Boolean available)
+    public void setDiscardedAndAvailableById(Long id, Boolean discarded, Boolean available)
             throws PersistenceException {
         try {
             computerMapper.setDiscardedAndAvailableById(id, discarded, available);

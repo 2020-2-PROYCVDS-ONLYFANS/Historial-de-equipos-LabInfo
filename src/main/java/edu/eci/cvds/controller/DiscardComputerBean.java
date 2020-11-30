@@ -5,18 +5,20 @@ import edu.eci.cvds.model.entities.Computer;
 import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.ServicesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
-import javax.transaction.Transactional;
-
 @ManagedBean(name = "discardComputerBean")
-@Transactional
+@ViewScoped
+@SuppressWarnings("deprecation")
 public class DiscardComputerBean extends BasePageBean {
+
+    private static final long serialVersionUID = 1L;
 
     private String computerReference;
     private boolean discardComputerCase;
@@ -36,26 +38,21 @@ public class DiscardComputerBean extends BasePageBean {
     public void discardComputer() {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            Computer computer = computerServices.loadComputerByReference(computerReference);
+            Computer computer = computerServices.getComputerByReference(computerReference);
             if (!computer.isDiscarded()) {
-                computerServices.discard(
-                        authServices.getUserIdByUsername(username), computer, discardComputerCase,
-                        discardMonitor, discardKeyboard, discardMouse);
-                addMessage("Done!", "Computer discarded",
-                        FacesMessage.SEVERITY_INFO);
+                computerServices.discard(authServices.getUserIdByUsername(username), computer,
+                        discardComputerCase, discardMonitor, discardKeyboard, discardMouse);
+                addMessage("Done!", "Computer discarded", FacesMessage.SEVERITY_INFO);
             } else {
-                addMessage("Error!", "Computer discarded already",
-                        FacesMessage.SEVERITY_ERROR);
+                addMessage("Error!", "Computer discarded already", FacesMessage.SEVERITY_ERROR);
             }
         } catch (ServicesException e) {
             e.printStackTrace();
-            addMessage("Fatal!", "Computer not exists",
-                    FacesMessage.SEVERITY_FATAL);
+            addMessage("Fatal!", "Computer not exists", FacesMessage.SEVERITY_FATAL);
         }
     }
 
-    public void addMessage(
-            String summary, String detail, FacesMessage.Severity severity) {
+    public void addMessage(String summary, String detail, FacesMessage.Severity severity) {
         LOGGER.info("addMessage");
         FacesMessage message = new FacesMessage(severity, summary, detail);
         FacesContext.getCurrentInstance().addMessage("elementMessage", message);

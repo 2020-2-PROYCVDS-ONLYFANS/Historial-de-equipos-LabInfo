@@ -3,10 +3,12 @@ package edu.eci.cvds.model.entities;
 import edu.eci.cvds.model.entities.role.Role;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
-@SuppressWarnings("unused")
 public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private String username;
@@ -76,13 +78,23 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", roles=" + roles +
-                '}';
+        return "User{" + "id=" + id + ", username='" + username + '\'' + ", email='" + email + '\''
+                + ", password='" + password + '\'' + ", name='" + name + '\'' + ", roles=" + roles
+                + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

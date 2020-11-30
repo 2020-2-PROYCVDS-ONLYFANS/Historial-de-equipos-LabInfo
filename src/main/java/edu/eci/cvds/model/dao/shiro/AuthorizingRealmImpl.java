@@ -17,7 +17,8 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
     @Inject
     ShiroDAO shiroDAO;
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(AuthorizingRealmImpl.class);
+    private static final transient Logger LOGGER =
+            LoggerFactory.getLogger(AuthorizingRealmImpl.class);
 
     public AuthorizingRealmImpl(CredentialsMatcher matcher) {
         super(matcher);
@@ -28,10 +29,8 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
             throws AuthenticationException {
         LOGGER.info("doGetAuthenticationInfo");
         if (token.getPrincipal() != null && token.getCredentials() != null) {
-            return shiroDAO.fetchAuthenticationInfoByUsername(
-                    token.getPrincipal().toString(),
-                    this.getClass().getSimpleName()
-            );
+            return shiroDAO.fetchAuthenticationInfoByUsername(token.getPrincipal().toString(),
+                    this.getClass().getSimpleName());
         }
         return null;
     }
@@ -40,9 +39,10 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection collection) {
         LOGGER.info("doGetAuthorizationInfo");
         if (!collection.isEmpty()) {
-            return shiroDAO.fetchAuthorizationInfoByUsername(
-                    collection.getPrimaryPrincipal().toString() // = username
-            );
+            return shiroDAO
+                    .fetchAuthorizationInfoByUsername(collection.getPrimaryPrincipal().toString() // =
+                                                                                                  // username
+                    );
         }
         return null;
     }

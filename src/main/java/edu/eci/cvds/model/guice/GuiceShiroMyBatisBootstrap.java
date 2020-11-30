@@ -29,10 +29,8 @@ public class GuiceShiroMyBatisBootstrap extends GuiceServletContextListener {
     @Override
     protected Injector getInjector() {
         LOGGER.info("getInjector");
-        return Guice.createInjector(
-                new ShiroWebModuleImpl(servletContext),
+        return Guice.createInjector(new ShiroWebModuleImpl(servletContext),
                 ShiroWebModule.guiceFilterModule(),
-                MyBatisModuleFactory.getInstance().getMyBatisDevModule()
-        );
+                MyBatisModuleFactory.getInstance().getMyBatisDevModule());
     }
 }

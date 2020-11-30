@@ -4,9 +4,11 @@ import edu.eci.cvds.model.entities.element.Element;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class Computer implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private String reference;
@@ -101,15 +103,23 @@ public class Computer implements Serializable {
 
     @Override
     public String toString() {
-        return "Computer{" +
-                "id=" + id +
-                ", reference='" + reference + '\'' +
-                ", computerCase=" + computerCase +
-                ", monitor=" + monitor +
-                ", keyboard=" + keyboard +
-                ", mouse=" + mouse +
-                ", available=" + available +
-                ", discarded=" + discarded +
-                '}';
+        return "Computer{" + "id=" + id + ", reference='" + reference + '\'' + ", computerCase="
+                + computerCase + ", monitor=" + monitor + ", keyboard=" + keyboard + ", mouse="
+                + mouse + ", available=" + available + ", discarded=" + discarded + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Computer computer = (Computer) o;
+        return id == computer.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

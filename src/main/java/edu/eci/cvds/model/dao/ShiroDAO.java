@@ -9,6 +9,5 @@ public interface ShiroDAO {
     AuthenticationInfo fetchAuthenticationInfoByUsername(String username, String realmName)
             throws PersistenceException;
 
-    AuthorizationInfo fetchAuthorizationInfoByUsername(String username)
-            throws PersistenceException;
+    AuthorizationInfo fetchAuthorizationInfoByUsername(String username) throws PersistenceException;
 }

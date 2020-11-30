@@ -16,9 +16,6 @@ public class ComputerServicesImpl implements ComputerServices {
     private ElementServices elementServices;
 
     @Inject
-    private ElementDAO elementDAO;
-
-    @Inject
     private ComputerDAO computerDAO;
 
     @Inject
@@ -34,28 +31,27 @@ public class ComputerServicesImpl implements ComputerServices {
             LoggerFactory.getLogger(ComputerServicesImpl.class);
 
     @Override
-    public void registerComputerByReferences(
-            String username, String reference, Pair<Boolean, String> computerCasePair,
-            Pair<Boolean, String> monitorPair, Pair<Boolean, String> keyboardPair,
-            Pair<Boolean, String> mousePair) throws ServicesException {
+    public void registerComputerByReferences(String username, String reference,
+            Pair<Boolean, String> computerCasePair, Pair<Boolean, String> monitorPair,
+            Pair<Boolean, String> keyboardPair, Pair<Boolean, String> mousePair)
+            throws ServicesException {
         try {
             LOGGER.info("registerComputerByReferences - try");
             if (!computerCasePair.getValue0()) {
-                elementServices.registerElement(
-                        ElementTypeName.ETN_COMPUTER_CASE,
+                elementServices.registerElement(ElementTypeName.ETN_COMPUTER_CASE,
                         computerCasePair.getValue1(), username);
-            } if (!monitorPair.getValue0()) {
-                elementServices.registerElement(
-                        ElementTypeName.ETN_MONITOR,
+            }
+            if (!monitorPair.getValue0()) {
+                elementServices.registerElement(ElementTypeName.ETN_MONITOR,
                         monitorPair.getValue1(), username);
-            } if (!keyboardPair.getValue0()) {
-                elementServices.registerElement(
-                        ElementTypeName.ETN_KEYBOARD,
+            }
+            if (!keyboardPair.getValue0()) {
+                elementServices.registerElement(ElementTypeName.ETN_KEYBOARD,
                         keyboardPair.getValue1(), username);
-            } if (!mousePair.getValue0()) {
-                elementServices.registerElement(
-                        ElementTypeName.ETN_MOUSE,
-                        mousePair.getValue1(), username);
+            }
+            if (!mousePair.getValue0()) {
+                elementServices.registerElement(ElementTypeName.ETN_MOUSE, mousePair.getValue1(),
+                        username);
             }
 
             Long userId = authServices.getUserIdByUsername(username);
@@ -70,9 +66,8 @@ public class ComputerServicesImpl implements ComputerServices {
             elementServices.prepareElementToLinkToNewComputer(userId, mouseId);
 
             computerDAO.registerComputer(reference, computerCaseId, monitorId, keyboardId, mouseId);
-            noveltyServices.create(
-                    userId, null, getIdByReference(reference),
-                    null, "Registered", null);
+            noveltyServices.create(userId, null, getIdByReference(reference), null, "Registered",
+                    null);
         } catch (PersistenceException e) {
             LOGGER.info("registerComputerByReferences - catch");
             throw new ServicesException(e.getMessage(), e);
@@ -127,8 +122,7 @@ public class ComputerServicesImpl implements ComputerServices {
     }
 
     @Override
-    public Computer loadComputerByReference(String reference)
-            throws ServicesException {
+    public Computer getComputerByReference(String reference) throws ServicesException {
         try {
             return computerDAO.getComputerByReference(reference);
         } catch (PersistenceException e) {
@@ -137,20 +131,17 @@ public class ComputerServicesImpl implements ComputerServices {
     }
 
     @Override
-    public void linkElementByIdsAndComputer(
-            ElementTypeName typeName, Long userId, Long elementId, Computer computer)
-            throws ServicesException {
-        elementServices.unlink(
-                typeName, userId, computer.getElement(typeName).getId(), computer.getId());
+    public void linkElementByIdsAndComputer(ElementTypeName typeName, Long userId, Long elementId,
+            Computer computer) throws ServicesException {
+        unlinkElement(typeName, userId, computer.getElement(typeName).getId(), computer.getId());
 
-        elementDAO.setAvailableById(elementId, false);
+        elementServices.setAvailableById(elementId, false);
         setElementIdByIds(typeName, userId, elementId, computer);
     }
 
     @Override
-    public void setElementIdByIds(
-            ElementTypeName typeName, Long userId, Long elementId, Computer computer)
-            throws ServicesException {
+    public void setElementIdByIds(ElementTypeName typeName, Long userId, Long elementId,
+            Computer computer) throws ServicesException {
         switch (typeName) {
             case ETN_COMPUTER_CASE:
                 setComputerCaseIdByIds(userId, elementId, computer.getId());
@@ -169,106 +160,141 @@ public class ComputerServicesImpl implements ComputerServices {
                 break;
         }
     }
-    
+
     @Override
-    public void setComputerCaseIdByIds(
-            Long userId, Long computerCaseId, Long computerId) throws ServicesException {
+    public void setComputerCaseIdByIds(Long userId, Long computerCaseId, Long computerId)
+            throws ServicesException {
         try {
             computerDAO.setComputerCaseIdByIds(computerId, computerCaseId);
 
             noveltyServices.create(userId, computerCaseId, computerId,
-                    labServices.getLabIdByLinkedComputerId(computerId),
-                    "Linked computer case", null);
+                    labServices.getLabIdByLinkedComputerId(computerId), "Linked computer case",
+                    null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void setMonitorIdByIds(
-            Long userId, Long monitorId, Long computerId) throws ServicesException {
+    public void setMonitorIdByIds(Long userId, Long monitorId, Long computerId)
+            throws ServicesException {
         try {
             computerDAO.setMonitorIdByIds(computerId, monitorId);
 
             noveltyServices.create(userId, monitorId, computerId,
-                    labServices.getLabIdByLinkedComputerId(computerId),
-                    "Linked monitor", null);
+                    labServices.getLabIdByLinkedComputerId(computerId), "Linked monitor", null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void setKeyboardIdByIds(
-            Long userId, Long keyboardId, Long computerId) throws ServicesException {
+    public void setKeyboardIdByIds(Long userId, Long keyboardId, Long computerId)
+            throws ServicesException {
         try {
             computerDAO.setKeyboardIdByIds(computerId, keyboardId);
 
             noveltyServices.create(userId, keyboardId, computerId,
-                    labServices.getLabIdByLinkedComputerId(computerId),
-                    "Linked keyboard", null);
+                    labServices.getLabIdByLinkedComputerId(computerId), "Linked keyboard", null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void setMouseIdByIds(
-            Long userId, Long mouseId, Long computerId) throws ServicesException {
+    public void setMouseIdByIds(Long userId, Long mouseId, Long computerId)
+            throws ServicesException {
         try {
             computerDAO.setMouseIdByIds(computerId, mouseId);
 
             noveltyServices.create(userId, mouseId, computerId,
-                    labServices.getLabIdByLinkedComputerId(computerId),
-                    "Linked mouse", null);
+                    labServices.getLabIdByLinkedComputerId(computerId), "Linked mouse", null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void discard(
-            Long userId, Computer computer, boolean discardComputerCase,
+    public void unlinkElement(ElementTypeName typeName, Long userId, Long elementId,
+            Long computerId) throws ServicesException {
+        elementServices.setAvailableById(elementId, true);
+        switch (typeName) {
+            case ETN_COMPUTER_CASE:
+                noveltyServices.create(userId, elementId, computerId,
+                        labServices.getLabIdByLinkedComputerId(computerId),
+                        "Unlinked computer case", null);
+                break;
+
+            case ETN_MONITOR:
+                noveltyServices.create(userId, elementId, computerId,
+                        labServices.getLabIdByLinkedComputerId(computerId), "Unlinked monitor",
+                        null);
+                break;
+
+            case ETN_KEYBOARD:
+                noveltyServices.create(userId, elementId, computerId,
+                        labServices.getLabIdByLinkedComputerId(computerId), "Unlinked keyboard",
+                        null);
+                break;
+
+            case ETN_MOUSE:
+                noveltyServices.create(userId, elementId, computerId,
+                        labServices.getLabIdByLinkedComputerId(computerId), "Unlinked mouse", null);
+                break;
+        }
+    }
+
+    @Override
+    public void setDiscardedAndAvailableById(Long id, Boolean discarded, Boolean available)
+            throws ServicesException {
+        try {
+            computerDAO.setDiscardedAndAvailableById(id, discarded, available);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void discard(Long userId, Computer computer, boolean discardComputerCase,
             boolean discardMonitor, boolean discardKeyboard, boolean discardMouse)
             throws ServicesException {
         try {
             if (discardComputerCase) {
-                elementServices.discard(ElementTypeName.ETN_COMPUTER_CASE,
-                        userId, computer.getComputerCase().getId(), computer.getId());
+                elementServices.discard(ElementTypeName.ETN_COMPUTER_CASE, userId,
+                        computer.getComputerCase().getId(), computer.getId());
             } else {
-                elementServices.unlink(ElementTypeName.ETN_COMPUTER_CASE,
-                        userId, computer.getComputerCase().getId(), computer.getId());
+                unlinkElement(ElementTypeName.ETN_COMPUTER_CASE, userId,
+                        computer.getComputerCase().getId(), computer.getId());
             }
 
             if (discardMonitor) {
-                elementServices.discard(ElementTypeName.ETN_MONITOR,
-                        userId, computer.getMonitor().getId(), computer.getId());
+                elementServices.discard(ElementTypeName.ETN_MONITOR, userId,
+                        computer.getMonitor().getId(), computer.getId());
             } else {
-                elementServices.unlink(ElementTypeName.ETN_MONITOR,
-                        userId, computer.getMonitor().getId(), computer.getId());
+                unlinkElement(ElementTypeName.ETN_MONITOR, userId, computer.getMonitor().getId(),
+                        computer.getId());
             }
 
             if (discardKeyboard) {
-                elementServices.discard(ElementTypeName.ETN_KEYBOARD,
-                        userId, computer.getKeyboard().getId(), computer.getId());
+                elementServices.discard(ElementTypeName.ETN_KEYBOARD, userId,
+                        computer.getKeyboard().getId(), computer.getId());
             } else {
-                elementServices.unlink(ElementTypeName.ETN_KEYBOARD,
-                        userId, computer.getKeyboard().getId(), computer.getId());
+                unlinkElement(ElementTypeName.ETN_KEYBOARD, userId, computer.getKeyboard().getId(),
+                        computer.getId());
             }
 
             if (discardMouse) {
-                elementServices.discard(ElementTypeName.ETN_MOUSE,
-                        userId, computer.getMouse().getId(), computer.getId());
+                elementServices.discard(ElementTypeName.ETN_MOUSE, userId,
+                        computer.getMouse().getId(), computer.getId());
             } else {
-                elementServices.unlink(ElementTypeName.ETN_MOUSE,
-                        userId, computer.getMouse().getId(), computer.getId());
+                unlinkElement(ElementTypeName.ETN_MOUSE, userId, computer.getMouse().getId(),
+                        computer.getId());
             }
 
-            computerDAO.setDiscardedAndAvailableById(
-                    computer.getId(), true, false);
+            computerDAO.setDiscardedAndAvailableById(computer.getId(), true, false);
             noveltyServices.create(userId, null, computer.getId(),
-                    labServices.getLabIdByLinkedComputerId(computer.getId()),
-                    "Discarded computer", null);
+                    labServices.getLabIdByLinkedComputerId(computer.getId()), "Discarded computer",
+                    null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }

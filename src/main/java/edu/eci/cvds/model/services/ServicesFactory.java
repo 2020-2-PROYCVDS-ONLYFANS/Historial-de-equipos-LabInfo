@@ -12,12 +12,11 @@ public class ServicesFactory {
     private Injector guiceInjector;
 
     private Injector getTestInjector() {
-        return createInjector(
-                MyBatisModuleFactory.getInstance().getMyBatisTestModule()
-        );
+        return createInjector(MyBatisModuleFactory.getInstance().getMyBatisTestModule());
     }
 
-    private ServicesFactory(){ }
+    private ServicesFactory() {
+    }
 
     public AuthServices getLabInfoServicesTesting() {
         if (guiceInjector == null) {

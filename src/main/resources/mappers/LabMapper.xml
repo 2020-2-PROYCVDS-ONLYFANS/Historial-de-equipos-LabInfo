@@ -4,21 +4,184 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper">
+    <select id="getLabById" resultMap="LabResultMap">
+        SELECT
+            l.id AS id,
+            l."name" AS name,
+            l.active AS active,
+            l."openingDate" AS "openingDate",
+            l."closingDate" AS "closingDate",
+            c.id AS id,
+            c.reference AS reference,
+            c.available AS available,
+            c.discarded AS discarded,
+            e_cc.id AS "COMPUTER_ELEMENTS_computer_case_id",
+            e_cc.available AS "COMPUTER_ELEMENTS_computer_case_available",
+            e_cc.discarded AS "COMPUTER_ELEMENTS_computer_case_discarded",
+            e_cc.reference AS "COMPUTER_ELEMENTS_computer_case_reference",
+            et_cc.id AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            et_cc."name" AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            e_mon.id AS "COMPUTER_ELEMENTS_monitor_id",
+            e_mon.available AS "COMPUTER_ELEMENTS_monitor_available",
+            e_mon.discarded AS "COMPUTER_ELEMENTS_monitor_discarded",
+            e_mon.reference AS "COMPUTER_ELEMENTS_monitor_reference",
+            et_mon.id AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_id",
+            et_mon."name" AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_name",
+            e_key.id AS "COMPUTER_ELEMENTS_keyboard_id",
+            e_key.available AS "COMPUTER_ELEMENTS_keyboard_available",
+            e_key.discarded AS "COMPUTER_ELEMENTS_keyboard_discarded",
+            e_key.reference AS "COMPUTER_ELEMENTS_keyboard_reference",
+            et_key.id AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            et_key."name" AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            e_mou.id AS "COMPUTER_ELEMENTS_mouse_id",
+            e_mou.available AS "COMPUTER_ELEMENTS_mouse_available",
+            e_mou.discarded AS "COMPUTER_ELEMENTS_mouse_discarded",
+            e_mou.reference AS "COMPUTER_ELEMENTS_mouse_reference",
+            et_mou.id AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_id",
+            et_mou."name" AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_name"
+        FROM
+            "LABS" AS l
+                LEFT JOIN
+            "LABS_COMPUTERS" AS l_c ON l_c."LABS_id" = l.id
+                LEFT JOIN
+            "COMPUTERS" AS c ON c.id = l_c."COMPUTERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_cc ON e_cc.id = c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_cc ON et_cc.id = e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mon ON e_mon.id = c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mon ON et_mon.id = e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_key ON e_key.id = c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_key ON et_key.id = e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mou ON e_mou.id = c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
+        WHERE
+            l.id = #{id}
+    </select>
+
+    <select id="getLabByName" resultMap="LabResultMap">
+        SELECT
+            l.id AS id,
+            l."name" AS name,
+            l.active AS active,
+            l."openingDate" AS "openingDate",
+            l."closingDate" AS "closingDate",
+            c.id AS id,
+            c.reference AS reference,
+            c.available AS available,
+            c.discarded AS discarded,
+            e_cc.id AS "COMPUTER_ELEMENTS_computer_case_id",
+            e_cc.available AS "COMPUTER_ELEMENTS_computer_case_available",
+            e_cc.discarded AS "COMPUTER_ELEMENTS_computer_case_discarded",
+            e_cc.reference AS "COMPUTER_ELEMENTS_computer_case_reference",
+            et_cc.id AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            et_cc."name" AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            e_mon.id AS "COMPUTER_ELEMENTS_monitor_id",
+            e_mon.available AS "COMPUTER_ELEMENTS_monitor_available",
+            e_mon.discarded AS "COMPUTER_ELEMENTS_monitor_discarded",
+            e_mon.reference AS "COMPUTER_ELEMENTS_monitor_reference",
+            et_mon.id AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_id",
+            et_mon."name" AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_name",
+            e_key.id AS "COMPUTER_ELEMENTS_keyboard_id",
+            e_key.available AS "COMPUTER_ELEMENTS_keyboard_available",
+            e_key.discarded AS "COMPUTER_ELEMENTS_keyboard_discarded",
+            e_key.reference AS "COMPUTER_ELEMENTS_keyboard_reference",
+            et_key.id AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            et_key."name" AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            e_mou.id AS "COMPUTER_ELEMENTS_mouse_id",
+            e_mou.available AS "COMPUTER_ELEMENTS_mouse_available",
+            e_mou.discarded AS "COMPUTER_ELEMENTS_mouse_discarded",
+            e_mou.reference AS "COMPUTER_ELEMENTS_mouse_reference",
+            et_mou.id AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_id",
+            et_mou."name" AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_name"
+        FROM
+            "LABS" AS l
+                LEFT JOIN
+            "LABS_COMPUTERS" AS l_c ON l_c."LABS_id" = l.id
+                LEFT JOIN
+            "COMPUTERS" AS c ON c.id = l_c."COMPUTERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_cc ON e_cc.id = c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_cc ON et_cc.id = e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mon ON e_mon.id = c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mon ON et_mon.id = e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_key ON e_key.id = c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_key ON et_key.id = e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mou ON e_mou.id = c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
+        WHERE
+            l."name" = #{name}
+    </select>
+
     <select id="getLabIdByLinkedComputerId" resultType="long">
         SELECT
             "LABS_id"
         FROM
             "LABS_COMPUTERS"
         WHERE
-            "COMPUTERS_id" = #{id}
+            "COMPUTERS_id" = #{computerId}
     </select>
+    
+    <select id="getLabIdByName" resultType="Long">
+        SELECT
+            id
+        FROM
+            "LABS"
+        WHERE
+            "name" = #{name}
+    </select>
+    
+    <insert id="registerLab" parameterType="Lab">
+        INSERT INTO
+            "LABS" ("name")
+        VALUES
+            (#{lab.name})
+    </insert>
+
+    <insert id="registerComputerToLabByIds">
+        INSERT INTO
+            "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
+        VALUES
+            (#{labId}, #{computerId})
+    </insert>
+    
+    <insert id="registerComputersToLabByIdAndList">
+        INSERT INTO
+            "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
+        VALUES
+        <foreach collection="list" item="computer" separator=",">
+            (#{labId}, #{computer.id})
+        </foreach>
+    </insert>
+    
+    <delete id="unlinkLabComputerByIds">
+        DELETE FROM
+            "LABS_COMPUTERS"
+        WHERE
+            "LABS_id" = #{labId}
+        AND
+            "COMPUTERS_id" = #{computerId}
+    </delete>
 
     <resultMap id="LabResultMap" type="Lab">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="active" property="active"/>
-        <result column="openingDate" property="openingDate"/>
-        <result column="openingDate" property="closingDate"/>
+        <result column="openingDate" property="openingDate" javaType="Date"/>
+        <result column="openingDate" property="closingDate" javaType="Date"/>
         <collection property="computers" ofType="Computer" columnPrefix="COMPUTER_"
                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap"/>
     </resultMap>

@@ -24,15 +24,11 @@ public class ElementServicesImpl implements ElementServices {
     @Inject
     private NoveltyServices noveltyServices;
 
-    @Inject
-    private LabServices labServices;
-
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(ElementServicesImpl.class);
 
     @Override
-    public void registerElement(
-            ElementTypeName typeName, String reference, String username)
+    public void registerElement(ElementTypeName typeName, String reference, String username)
             throws ServicesException {
         LOGGER.info("registerElement");
         try {
@@ -43,9 +39,7 @@ public class ElementServicesImpl implements ElementServices {
             elementDAO.registerElement(reference, elementTypeId);
 
             Long elementId = elementDAO.getIdByReference(reference);
-            noveltyServices.create(
-                    userId, elementId, null, null,
-                    "Registered", null);
+            noveltyServices.create(userId, elementId, null, null, "Registered", null);
         } catch (PersistenceException e) {
             LOGGER.info("registerElement - catch");
             throw new ServicesException(e.getMessage(), e);
@@ -53,8 +47,7 @@ public class ElementServicesImpl implements ElementServices {
     }
 
     @Override
-    public Element getElementByReference(String reference)
-            throws ServicesException {
+    public Element getElementByReference(String reference) throws ServicesException {
         try {
             return elementDAO.getElementByReference(reference);
         } catch (PersistenceException e) {
@@ -63,14 +56,12 @@ public class ElementServicesImpl implements ElementServices {
     }
 
     @Override
-    public void prepareElementToLinkToNewComputer(
-            Long userId, Long elementId)
+    public void prepareElementToLinkToNewComputer(Long userId, Long elementId)
             throws ServicesException {
         try {
             elementDAO.setAvailableById(elementId, false);
-            noveltyServices.create(
-                    userId, elementId, null,
-                    null, "Linked to new computer", null);
+            noveltyServices.create(userId, elementId, null, null, "Linked to the next new computer",
+                    null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
@@ -89,35 +80,10 @@ public class ElementServicesImpl implements ElementServices {
     }
 
     @Override
-    public void unlink(ElementTypeName typeName, Long userId, Long elementId, Long computerId)
-            throws ServicesException {
+    public void setAvailableById(Long elementId, Boolean available) throws ServicesException {
         try {
-            elementDAO.setAvailableById(elementId, true);
-            switch (typeName) {
-                case ETN_COMPUTER_CASE:
-                    noveltyServices.create(userId, elementId, computerId,
-                            labServices.getLabIdByLinkedComputerId(computerId),
-                            "Unlinked computer case", null);
-                    break;
-
-                case ETN_MONITOR:
-                    noveltyServices.create(userId, elementId, computerId,
-                            labServices.getLabIdByLinkedComputerId(computerId),
-                            "Unlinked monitor", null);
-                    break;
-
-                case ETN_KEYBOARD:
-                    noveltyServices.create(userId, elementId, computerId,
-                            labServices.getLabIdByLinkedComputerId(computerId),
-                            "Unlinked keyboard", null);
-                    break;
-
-                case ETN_MOUSE:
-                    noveltyServices.create(userId, elementId, computerId,
-                            labServices.getLabIdByLinkedComputerId(computerId),
-                            "Unlinked mouse", null);
-                    break;
-            }
+            LOGGER.info("setAvailableById - try");
+            elementDAO.setAvailableById(elementId, available);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
@@ -129,8 +95,7 @@ public class ElementServicesImpl implements ElementServices {
         try {
             elementDAO.setAvailableById(elementId, false);
             elementDAO.setDiscardedById(elementId, true);
-            noveltyServices.create(userId, elementId, null,
-                    null, "Discarded", null);
+            noveltyServices.create(userId, elementId, null, null, "Discarded", null);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }

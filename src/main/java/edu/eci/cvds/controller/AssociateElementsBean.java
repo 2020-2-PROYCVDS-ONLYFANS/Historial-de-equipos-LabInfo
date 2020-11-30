@@ -8,18 +8,22 @@ import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.ServicesException;
-import org.apache.shiro.SecurityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @ManagedBean(name = "associateElementsBean")
 @ViewScoped
+@SuppressWarnings("deprecation")
 public class AssociateElementsBean extends BasePageBean {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     ElementServices elementServices;
@@ -45,10 +49,11 @@ public class AssociateElementsBean extends BasePageBean {
         if (elementAvailable) {
             String username = SecurityUtils.getSubject().getPrincipal().toString();
             try {
-                Computer computer = computerServices.loadComputerByReference(computerReference);
+                Computer computer = computerServices.getComputerByReference(computerReference);
                 if (computer != null && !computer.isDiscarded()) {
                     Long userId = authServices.getUserIdByUsername(username);
-                    computerServices.linkElementByIdsAndComputer(elementTypeName, userId, elementId, computer);
+                    computerServices.linkElementByIdsAndComputer(elementTypeName, userId, elementId,
+                            computer);
                     addMessage("Done!", "Successful association.", FacesMessage.SEVERITY_INFO);
                 } else {
                     addMessage("Error!", "Computer not exists", FacesMessage.SEVERITY_ERROR);
@@ -58,7 +63,8 @@ public class AssociateElementsBean extends BasePageBean {
                 addMessage("System Error!", "Please try again later.", FacesMessage.SEVERITY_FATAL);
             }
         } else {
-            addMessage("Error!", "Element is not available or not exists.", FacesMessage.SEVERITY_ERROR);
+            addMessage("Error!", "Element is not available or not exists.",
+                    FacesMessage.SEVERITY_ERROR);
         }
     }
 
@@ -71,7 +77,8 @@ public class AssociateElementsBean extends BasePageBean {
             if (elementAvailable) {
                 addElementMessage("Info", "Element is available.", FacesMessage.SEVERITY_INFO);
             } else {
-                addElementMessage("Warning!", "Element is not available.", FacesMessage.SEVERITY_WARN);
+                addElementMessage("Warning!", "Element is not available.",
+                        FacesMessage.SEVERITY_WARN);
             }
         } catch (Exception e) {
             addElementMessage("Error!", "Element not exists.", FacesMessage.SEVERITY_ERROR);

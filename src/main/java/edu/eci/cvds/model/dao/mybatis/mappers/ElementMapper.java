@@ -7,9 +7,7 @@ import org.mybatis.guice.transactional.Transactional;
 public interface ElementMapper {
 
     @Transactional
-    void registerElement(
-            @Param("reference") String reference,
-            @Param("typeId") Long typeId);
+    void registerElement(@Param("reference") String reference, @Param("typeId") Long typeId);
 
     Long getIdByReference(@Param("reference") String reference);
 
@@ -18,12 +16,8 @@ public interface ElementMapper {
     Element getElementByReference(@Param("reference") String reference);
 
     @Transactional
-    void setAvailableById(
-            @Param("id") Long id,
-            @Param("available") Boolean available);
+    void setAvailableById(@Param("id") Long id, @Param("available") Boolean available);
 
     @Transactional
-    void setDiscardedById(
-            @Param("id") Long id,
-            @Param("discarded") Boolean discarded);
+    void setDiscardedById(@Param("id") Long id, @Param("discarded") Boolean discarded);
 }

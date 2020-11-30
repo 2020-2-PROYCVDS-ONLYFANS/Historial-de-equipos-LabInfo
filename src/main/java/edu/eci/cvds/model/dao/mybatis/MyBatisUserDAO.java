@@ -21,7 +21,6 @@ public class MyBatisUserDAO implements UserDAO {
 
     @Override
     public Long getIdByUsername(String username) throws PersistenceException {
-        LOGGER.info("loadIdByUsername");
         try {
             LOGGER.info("loadIdByUsername - try");
             return userMapper.getIdByUsername(username);
@@ -33,7 +32,6 @@ public class MyBatisUserDAO implements UserDAO {
 
     @Override
     public User getByUsername(String username) throws PersistenceException {
-        LOGGER.info("loadByUsername");
         try {
             LOGGER.info("loadByUsername - try");
             return userMapper.getByUsername(username);
@@ -46,7 +44,6 @@ public class MyBatisUserDAO implements UserDAO {
     @Override
     public Set<Role> getUserRolesByUsername(String username)
             throws PersistenceException {
-        LOGGER.info("loadUserRolesByUsername");
         try {
             LOGGER.info("loadUserRolesByUsername - try");
             return userMapper.getUserRolesByUsername(username);

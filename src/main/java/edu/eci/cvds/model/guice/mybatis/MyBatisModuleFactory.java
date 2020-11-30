@@ -18,7 +18,8 @@ public class MyBatisModuleFactory {
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(MyBatisModuleFactory.class);
 
-    public MyBatisModuleFactory() { }
+    public MyBatisModuleFactory() {
+    }
 
     private XMLMyBatisModule myBatisModule(String env, String pathResource) {
         return new XMLMyBatisModule() {
@@ -47,8 +48,7 @@ public class MyBatisModuleFactory {
 
     public XMLMyBatisModule getMyBatisDevModule() {
         if (myBatisModule == null) {
-            myBatisModule = myBatisModule(
-                    "development", "development/mybatis-config.xml");
+            myBatisModule = myBatisModule("development", "development/mybatis-config.xml");
         }
         return myBatisModule;
     }
@@ -57,8 +57,7 @@ public class MyBatisModuleFactory {
         LOGGER.info("getMyBatisTestModule");
         if (myBatisModule == null) {
             LOGGER.info("getMyBatisTestModule - if myBatisModule == null");
-            myBatisModule = myBatisModule(
-                    "test", "mybatis-config-h2.xml");
+            myBatisModule = myBatisModule("test", "mybatis-config-h2.xml");
         }
         return myBatisModule;
     }

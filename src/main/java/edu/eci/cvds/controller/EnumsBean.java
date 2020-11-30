@@ -2,21 +2,35 @@ package edu.eci.cvds.controller;
 
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import edu.eci.cvds.model.entities.role.RoleName;
-
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 @ManagedBean(name = "enumsBean", eager = true)
 @RequestScoped
+@SuppressWarnings("deprecation")
 public class EnumsBean extends BasePageBean {
 
-    private final RoleName roleUser = RoleName.ROLE_USER;
-    private final RoleName roleAdmin = RoleName.ROLE_ADMIN;
+    private static final long serialVersionUID = 1L;
 
-    private ElementTypeName computerCase = ElementTypeName.ETN_COMPUTER_CASE;
-    private ElementTypeName monitor = ElementTypeName.ETN_MONITOR;
-    private ElementTypeName keyboard = ElementTypeName.ETN_KEYBOARD;
-    private ElementTypeName mouse = ElementTypeName.ETN_MOUSE;
+    private RoleName roleUser;
+    private RoleName roleAdmin;
+
+    private ElementTypeName computerCase;
+    private ElementTypeName monitor;
+    private ElementTypeName keyboard;
+    private ElementTypeName mouse;
+
+    @PostConstruct
+    public void init() {
+        roleUser = RoleName.ROLE_USER;
+        roleAdmin = RoleName.ROLE_ADMIN;
+
+        computerCase = ElementTypeName.ETN_COMPUTER_CASE;
+        monitor = ElementTypeName.ETN_MONITOR;
+        keyboard = ElementTypeName.ETN_KEYBOARD;
+        mouse = ElementTypeName.ETN_MOUSE;
+    }
 
     public RoleName getRoleUser() {
         return roleUser;

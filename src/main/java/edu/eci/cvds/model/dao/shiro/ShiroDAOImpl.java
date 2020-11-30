@@ -28,12 +28,14 @@ public class ShiroDAOImpl implements ShiroDAO {
         try {
             User user = userDAO.getByUsername(username);
             if (user != null) {
-                return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), realmName);
+                return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(),
+                        realmName);
             }
         } catch (PersistenceException e) {
             LOGGER.info("fetchAuthenticationInfoByUsername - catch PersistenceException");
             return null;
-        } return null;
+        }
+        return null;
     }
 
     public AuthorizationInfo fetchAuthorizationInfoByUsername(String username) {

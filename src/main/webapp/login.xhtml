@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:shiro="http://shiro.apache.org/tags">
-
-<h:head>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:shiro="http://shiro.apache.org/tags"
+>
+  <h:head>
     <title>Login</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </h:head>
 
-<f:view>
+  <f:view>
     <shiro:authenticated>
-        #{loginBean.redirectToAccount()}
+      #{loginBean.redirectToAccount()}
     </shiro:authenticated>
 
     <h:form>
-        <tr>
-            <td><p:outputLabel value="Username:"/></td>
-            <td><p:inputText value="#{loginBean.username}"
-                             required="true"/></td>
-        </tr>
-        <tr>
-            <td><p:outputLabel value="Password:"/></td>
-            <td><p:inputText type="password" value="#{loginBean.password}"
-                             required="true"/></td>
-        </tr>
-        <tr>
-            <td><p:outputLabel value="Remember me:"/></td>
-            <td><p:selectBooleanCheckbox value="#{loginBean.rememberMe}"/></td>
-        </tr>
-        <tr>
-            <td><p:commandButton actionListener="#{loginBean.doLogin()}"
-                                 action="#{loginBean.redirectToAccount()}"
-                                 update="message"
-                                 value="Login"/></td>
-
-        </tr>
+      <tr>
+        <td><p:outputLabel value="Username:" /></td>
+        <td><p:inputText value="#{loginBean.username}" required="true" /></td>
+      </tr>
+      <tr>
+        <td><p:outputLabel value="Password:" /></td>
+        <td>
+          <p:inputText
+            type="password"
+            value="#{loginBean.password}"
+            required="true"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><p:outputLabel value="Remember me:" /></td>
+        <td><p:selectBooleanCheckbox value="#{loginBean.rememberMe}" /></td>
+      </tr>
+      <tr>
+        <td>
+          <p:commandButton
+            actionListener="#{loginBean.doLogin()}"
+            action="#{loginBean.redirectToAccount()}"
+            update="message"
+            value="Login"
+          />
+        </td>
+      </tr>
     </h:form>
-    <p:outputLabel id="message" value="#{loginBean.message}"/>
-</f:view>
-
+    <p:outputLabel id="message" value="#{loginBean.message}" />
+  </f:view>
 </html>

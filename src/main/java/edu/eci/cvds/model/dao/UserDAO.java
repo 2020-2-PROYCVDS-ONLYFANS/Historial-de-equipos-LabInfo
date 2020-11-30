@@ -8,12 +8,9 @@ import java.util.Set;
 
 public interface UserDAO {
 
-    Long getIdByUsername(String username)
-            throws PersistenceException;
+        Long getIdByUsername(String username) throws PersistenceException;
 
-    User getByUsername(String username)
-            throws PersistenceException;
+        User getByUsername(String username) throws PersistenceException;
 
-    Set<Role> getUserRolesByUsername(String username)
-            throws PersistenceException;
+        Set<Role> getUserRolesByUsername(String username) throws PersistenceException;
 }
