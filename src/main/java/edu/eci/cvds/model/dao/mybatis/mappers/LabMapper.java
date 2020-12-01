@@ -9,14 +9,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface LabMapper {
 
-    Lab getLabById(@Param("id") Long id);
-
-    Lab getLabByName(@Param("name") String name);
-
-    Long getLabIdByName(@Param("name") String name);
-
-    Long getLabIdByLinkedComputerId(@Param("computerId") Long computerId);
-
     void registerLab(@Param("lab") Lab lab);
 
     void registerComputerToLabByIds(@Param("computerId") Long computerId,
@@ -25,6 +17,18 @@ public interface LabMapper {
     // with dynamic SQL <foreach ...
     void registerComputersToLabByIdAndList(@Param("labId") Long labId,
             @Param("list") List<Computer> list);
+
+
+
+    Lab getLabById(@Param("id") Long id);
+
+    Lab getLabByName(@Param("name") String name);
+
+    Long getLabIdByName(@Param("name") String name);
+
+    Long getLabIdByLinkedComputerId(@Param("computerId") Long computerId);
+
+    void closeLabByName(@Param("name") String name);
 
     void unlinkLabComputerByIds(@Param("labId") Long labId, @Param("computerId") Long computerId);
 }

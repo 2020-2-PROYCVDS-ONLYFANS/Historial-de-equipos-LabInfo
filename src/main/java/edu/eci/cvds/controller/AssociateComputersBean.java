@@ -49,8 +49,12 @@ public class AssociateComputersBean extends BasePageBean {
             LOGGER.info("findLab - try");
             Lab findedLab = labServices.getLabByName(lab.getName());
             LOGGER.info(findedLab.toString());
-            lab = findedLab;
-            addMessage("Done!", "Lab found.", FacesMessage.SEVERITY_INFO);
+            if (lab.getClosingDate() == null) {
+                lab = findedLab;
+                addMessage("Done!", "Lab found.", FacesMessage.SEVERITY_INFO);
+            } else {
+                addMessage("Closed!", "Closed lab", FacesMessage.SEVERITY_INFO);
+            }
         } catch (ServicesException e) {
             addMessage("Not found!", "Sorry, lab not found.", FacesMessage.SEVERITY_ERROR);
             e.printStackTrace();

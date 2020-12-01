@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+  <h:head>
+    <title>Close lab</title>
+  </h:head>
+
+  <f:view>
+    <p:growl id="msgs" showDetail="true" />
+    <p:outputPanel style="width: fit-content; margin: auto; padding: 1em">
+      <h:form id="lab-form" styleClass="ui-fluid">
+        <p:panel
+          header="Lab info"
+          style="width: fit-content; padding: 1em; margin-bottom: 20px"
+        >
+          <h:panelGrid id="lab-info" columns="2" cellpadding="5">
+            <h:outputLabel value="Name:" for="txt_lab_name" />
+            <p:inputText
+              id="txt_lab_name"
+              required="true"
+              value="#{closeLabBean.labName}"
+            />
+
+            <p:commandButton
+              value="Close"
+              update="txt_lab_name :msgs"
+              action="#{closeLabBean.closeLab()}"
+              styleClass="ui-priority-primary"
+            >
+              <p:confirm
+                header="Confirmation"
+                message="Are you sure?"
+                icon="pi pi-exclamation-triangle"
+              />
+            </p:commandButton>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+              <p:commandButton
+                value="Yes"
+                type="button"
+                styleClass="ui-confirmdialog-yes"
+                icon="pi pi-check"
+              />
+              <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no"
+                icon="pi pi-times"
+              />
+            </p:confirmDialog>
+          </h:panelGrid>
+        </p:panel>
+      </h:form>
+    </p:outputPanel>
+
+    <br /><br />
+    <p:linkButton href="../admin/" value="Go back" />
+  </f:view>
+</html>

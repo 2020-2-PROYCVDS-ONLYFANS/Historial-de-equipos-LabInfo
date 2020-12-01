@@ -8,6 +8,14 @@ import java.util.List;
 
 public interface LabDAO {
 
+    void registerLab(Lab lab) throws PersistenceException;
+
+    void registerComputerToLabByIds(Long computerId, Long labId) throws PersistenceException;
+
+    // with dynamic SQL <foreach ...
+    void registerComputersToLabByIdAndList(Long labId, List<Computer> list)
+            throws PersistenceException;
+
     Lab getLabById(Long id) throws PersistenceException;
 
     Lab getLabByName(String name) throws PersistenceException;
@@ -16,13 +24,7 @@ public interface LabDAO {
 
     Long getLabIdByLinkedComputerId(Long computerId) throws PersistenceException;
 
-    void registerLab(Lab lab) throws PersistenceException;
-
-    void registerComputerToLabByIds(Long computerId, Long labId) throws PersistenceException;
-
-    // with dynamic SQL <foreach ...
-    void registerComputersToLabByIdAndList(Long labId, List<Computer> list)
-            throws PersistenceException;
+    void closeLabByName(String name) throws PersistenceException;
 
     void unlinkLabComputerByIds(Long labId, Long computerId) throws PersistenceException;
 }

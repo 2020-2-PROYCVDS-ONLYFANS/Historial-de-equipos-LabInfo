@@ -80,6 +80,15 @@ public class MyBatisLabDAO implements LabDAO {
     }
 
     @Override
+    public void closeLabByName(String name) throws PersistenceException {
+        try {
+            labMapper.closeLabByName(name);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to close lab by name.", e);
+        }
+    }
+
+    @Override
     public void unlinkLabComputerByIds(Long labId, Long computerId) throws PersistenceException {
         try {
             labMapper.unlinkLabComputerByIds(labId, computerId);

@@ -7,20 +7,21 @@ import java.util.List;
 
 public interface LabServices {
 
-        Lab getLabById(Long id) throws ServicesException;
+    void registerComputerToLabByIds(Long userId, Long computerId, Long labId)
+            throws ServicesException;
 
-        Lab getLabByName(String name) throws ServicesException;
+    void registerLab(Long userId, Lab lab) throws ServicesException;
 
-        Long getLabIdByLinkedComputerId(Long computerId) throws ServicesException;
+    void registerComputersToLabById(Long userId, Long labId, List<Computer> list)
+            throws ServicesException;
 
-        void registerComputerToLabByIds(Long userId, Long computerId, Long labId)
-                        throws ServicesException;
+    Lab getLabById(Long id) throws ServicesException;
 
-        void registerLab(Long userId, Lab lab) throws ServicesException;
+    Lab getLabByName(String name) throws ServicesException;
 
-        void registerComputersToLabById(Long userId, Long labId, List<Computer> list)
-                        throws ServicesException;
+    Long getLabIdByLinkedComputerId(Long computerId) throws ServicesException;
 
-        void unlinkLabComputerByIds(Long userId, Long computerId, Long labId)
-                        throws ServicesException;
+    void closeLabByName(Long userId, Lab lab) throws ServicesException;
+
+    void unlinkLabComputerByIds(Long userId, Long computerId, Long labId) throws ServicesException;
 }

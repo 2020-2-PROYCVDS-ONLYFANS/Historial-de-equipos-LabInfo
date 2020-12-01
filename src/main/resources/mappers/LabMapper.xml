@@ -2,6 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper">
+    <insert id="registerLab" parameterType="Lab">
+        INSERT INTO
+            "LABS" ("name")
+        VALUES
+            (#{lab.name})
+    </insert>
+
+    <insert id="registerComputerToLabByIds">
+        INSERT INTO
+            "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
+        VALUES
+            (#{labId}, #{computerId})
+    </insert>
+
+    <insert id="registerComputersToLabByIdAndList">
+        INSERT INTO
+            "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
+        VALUES
+        <foreach collection="list" item="computer" separator=",">
+            (#{labId}, #{computer.id})
+        </foreach>
+    </insert>
+
     <select id="getLabById" resultMap="LabResultMap">
         SELECT
             l.id AS id,
@@ -142,28 +165,14 @@
             "name" = #{name}
     </select>
 
-    <insert id="registerLab" parameterType="Lab">
-        INSERT INTO
-            "LABS" ("name")
-        VALUES
-            (#{lab.name})
-    </insert>
-
-    <insert id="registerComputerToLabByIds">
-        INSERT INTO
-            "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
-        VALUES
-            (#{labId}, #{computerId})
-    </insert>
-
-    <insert id="registerComputersToLabByIdAndList">
-        INSERT INTO
-            "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
-        VALUES
-        <foreach collection="list" item="computer" separator=",">
-            (#{labId}, #{computer.id})
-        </foreach>
-    </insert>
+    <update id="closeLabByName">
+        UPDATE
+            "LABS"
+        SET
+            "closingDate" = now()
+        WHERE
+            "name" = #{name}
+    </update>
 
     <delete id="unlinkLabComputerByIds">
         DELETE FROM

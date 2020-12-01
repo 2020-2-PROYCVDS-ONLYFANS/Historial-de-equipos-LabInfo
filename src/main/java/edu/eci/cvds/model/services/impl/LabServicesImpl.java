@@ -28,35 +28,6 @@ public class LabServicesImpl implements LabServices {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(LabServicesImpl.class);
 
     @Override
-    public Lab getLabById(Long id) throws ServicesException {
-        try {
-            return labDAO.getLabById(id);
-        } catch (PersistenceException e) {
-            throw new ServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Lab getLabByName(String name) throws ServicesException {
-        try {
-            return labDAO.getLabByName(name);
-        } catch (PersistenceException e) {
-            throw new ServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Long getLabIdByLinkedComputerId(Long computerId) throws ServicesException {
-        try {
-            LOGGER.info("getLabIdByLinkedComputerId - try");
-            return labDAO.getLabIdByLinkedComputerId(computerId);
-        } catch (PersistenceException e) {
-            LOGGER.info("getLabIdByLinkedComputerId - catch");
-            throw new ServicesException(e.getMessage(), e);
-        }
-    }
-
-    @Override
     public void registerComputerToLabByIds(Long userId, Long computerId, Long labId)
             throws ServicesException {
         try {
@@ -98,6 +69,49 @@ public class LabServicesImpl implements LabServices {
                         getLabIdByLinkedComputerId(computer.getId()));
             }
             registerComputerToLabByIds(userId, computer.getId(), labId);
+        }
+    }
+
+    @Override
+    public Lab getLabById(Long id) throws ServicesException {
+        try {
+            return labDAO.getLabById(id);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Lab getLabByName(String name) throws ServicesException {
+        try {
+            return labDAO.getLabByName(name);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Long getLabIdByLinkedComputerId(Long computerId) throws ServicesException {
+        try {
+            LOGGER.info("getLabIdByLinkedComputerId - try");
+            return labDAO.getLabIdByLinkedComputerId(computerId);
+        } catch (PersistenceException e) {
+            LOGGER.info("getLabIdByLinkedComputerId - catch");
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void closeLabByName(Long userId, Lab lab) throws ServicesException {
+        try {
+            LOGGER.info("closeLabByName");
+            for (Computer computer : lab.getComputers()) {
+                this.unlinkLabComputerByIds(userId, computer.getId(), lab.getId());
+            }
+            labDAO.closeLabByName(lab.getName());
+            noveltyServices.create(userId, null, null, lab.getId(), "Lab closed", null);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
         }
     }
 
