@@ -1,6 +1,7 @@
 package edu.eci.cvds.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +16,10 @@ public class Lab implements Serializable {
     private boolean active;
     private Date openingDate;
     private Date closingDate;
+
+    public Lab() {
+        computers = new ArrayList<>();
+    }
 
     public long getId() {
         return id;

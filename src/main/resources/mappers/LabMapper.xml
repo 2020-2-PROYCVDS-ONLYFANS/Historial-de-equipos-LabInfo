@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper">
     <select id="getLabById" resultMap="LabResultMap">
@@ -11,10 +9,10 @@
             l.active AS active,
             l."openingDate" AS "openingDate",
             l."closingDate" AS "closingDate",
-            c.id AS id,
-            c.reference AS reference,
-            c.available AS available,
-            c.discarded AS discarded,
+            c.id AS "COMPUTER_id",
+            c.reference AS "COMPUTER_reference",
+            c.available AS "COMPUTER_available",
+            c.discarded AS "COMPUTER_discarded",
             e_cc.id AS "COMPUTER_ELEMENTS_computer_case_id",
             e_cc.available AS "COMPUTER_ELEMENTS_computer_case_available",
             e_cc.discarded AS "COMPUTER_ELEMENTS_computer_case_discarded",
@@ -72,10 +70,10 @@
             l.active AS active,
             l."openingDate" AS "openingDate",
             l."closingDate" AS "closingDate",
-            c.id AS id,
-            c.reference AS reference,
-            c.available AS available,
-            c.discarded AS discarded,
+            c.id AS "COMPUTER_id",
+            c.reference AS "COMPUTER_reference",
+            c.available AS "COMPUTER_available",
+            c.discarded AS "COMPUTER_discarded",
             e_cc.id AS "COMPUTER_ELEMENTS_computer_case_id",
             e_cc.available AS "COMPUTER_ELEMENTS_computer_case_available",
             e_cc.discarded AS "COMPUTER_ELEMENTS_computer_case_discarded",
@@ -134,7 +132,7 @@
         WHERE
             "COMPUTERS_id" = #{computerId}
     </select>
-    
+
     <select id="getLabIdByName" resultType="Long">
         SELECT
             id
@@ -143,7 +141,7 @@
         WHERE
             "name" = #{name}
     </select>
-    
+
     <insert id="registerLab" parameterType="Lab">
         INSERT INTO
             "LABS" ("name")
@@ -157,7 +155,7 @@
         VALUES
             (#{labId}, #{computerId})
     </insert>
-    
+
     <insert id="registerComputersToLabByIdAndList">
         INSERT INTO
             "LABS_COMPUTERS" ("LABS_id", "COMPUTERS_id")
@@ -166,7 +164,7 @@
             (#{labId}, #{computer.id})
         </foreach>
     </insert>
-    
+
     <delete id="unlinkLabComputerByIds">
         DELETE FROM
             "LABS_COMPUTERS"
@@ -177,12 +175,11 @@
     </delete>
 
     <resultMap id="LabResultMap" type="Lab">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="active" property="active"/>
-        <result column="openingDate" property="openingDate" javaType="Date"/>
-        <result column="openingDate" property="closingDate" javaType="Date"/>
-        <collection property="computers" ofType="Computer" columnPrefix="COMPUTER_"
-                    resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap"/>
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="active" property="active" />
+        <result column="openingDate" property="openingDate" javaType="Date" />
+        <result column="openingDate" property="closingDate" javaType="Date" />
+        <collection property="computers" ofType="Computer" columnPrefix="COMPUTER_" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap" />
     </resultMap>
 </mapper>

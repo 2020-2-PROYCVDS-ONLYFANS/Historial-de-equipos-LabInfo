@@ -12,8 +12,8 @@
   </h:head>
 
   <f:view>
+    <p:growl id="msgs" showDetail="true" />
     <p:outputPanel style="width: fit-content; margin: auto; padding: 1em">
-      <p:growl id="msgs" showDetail="true" />
       <p:outputPanel>
         <h:form id="lab-form">
           <p:panel
@@ -25,18 +25,19 @@
               <p:inputText
                 id="txt_lab_name"
                 required="true"
-                value="#{registerLabBean.lab.name}"
+                value="#{associateComputersBean.lab.name}"
               />
 
               <p:commandButton
                 value="Reset"
                 update="txt_lab_name :computer-form :computers :msgs"
-                action="#{registerLabBean.reset()}"
+                action="#{associateComputersBean.reset()}"
               />
+
               <p:commandButton
-                value="Register"
-                update="lab-form :computer-form :computers :msgs"
-                action="#{registerLabBean.registerLab()}"
+                value="Find lab"
+                update="txt_lab_name :computer-form :computers :msgs"
+                action="#{associateComputersBean.findLab()}"
               />
             </h:panelGrid>
           </p:panel>
@@ -52,15 +53,37 @@
             <p:inputText
               id="txt_computer_ref"
               required="true"
-              value="#{registerLabBean.computer.reference}"
+              value="#{associateComputersBean.computerRef}"
             />
 
             <p:commandButton
               id="btn_add"
               value="Add"
               update="txt_computer_ref computers msgs @all"
-              action="#{registerLabBean.addComputer()}"
-            />
+              action="#{associateComputersBean.addComputer()}"
+              styleClass="ui-priority-primary"
+            >
+              <p:confirm
+                header="Confirmation"
+                message="Are you sure?"
+                icon="pi pi-exclamation-triangle"
+              />
+            </p:commandButton>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+              <p:commandButton
+                value="Yes"
+                type="button"
+                styleClass="ui-confirmdialog-yes"
+                icon="pi pi-check"
+              />
+              <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no"
+                icon="pi pi-times"
+              />
+            </p:confirmDialog>
           </h:panelGrid>
         </p:panel>
       </h:form>
@@ -69,7 +92,7 @@
     <p:outputPanel id="computers">
       <p:panel header="Computers">
         <p:dataTable
-          value="#{registerLabBean.lab.computers}"
+          value="#{associateComputersBean.lab.computers}"
           var="computer"
           id="computersTable"
         >
@@ -107,16 +130,35 @@
               value="Remove"
               update=":computers"
               process=":computers"
+              actionListener="#{associateComputersBean.removeComputer(computer)}"
+              styleClass="ui-priority-primary"
             >
-              <p:collector
-                value="#{computer}"
-                unique="true"
-                removeFrom="#{registerLabBean.lab.computers}"
+              <p:confirm
+                header="Confirmation"
+                message="Are you sure?"
+                icon="pi pi-exclamation-triangle"
               />
             </p:commandButton>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+              <p:commandButton
+                value="Yes"
+                type="button"
+                styleClass="ui-confirmdialog-yes"
+                icon="pi pi-check"
+              />
+              <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no"
+                icon="pi pi-times"
+              />
+            </p:confirmDialog>
           </p:column>
         </p:dataTable>
       </p:panel>
     </p:outputPanel>
+    <br /><br />
+    <p:linkButton href="../admin/" value="Go back" />
   </f:view>
 </html>

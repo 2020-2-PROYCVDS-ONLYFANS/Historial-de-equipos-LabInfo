@@ -7,7 +7,6 @@ import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.LabServices;
 import edu.eci.cvds.model.services.ServicesException;
-import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -41,7 +40,6 @@ public class RegisterLabBean extends BasePageBean {
     @PostConstruct
     public void init() {
         lab = new Lab();
-        lab.setComputers(new ArrayList<>());
         computer = new Computer();
         getInjector().injectMembers(this);
     }
@@ -92,7 +90,6 @@ public class RegisterLabBean extends BasePageBean {
     public void reset() {
         LOGGER.info("reset");
         lab = new Lab();
-        lab.setComputers(new ArrayList<>());
         computer = new Computer();
     }
 
