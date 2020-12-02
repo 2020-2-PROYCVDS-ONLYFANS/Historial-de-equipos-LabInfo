@@ -86,6 +86,23 @@ public class ComputerServicesImpl implements ComputerServices {
     }
 
     @Override
+    public Long getIdByElementId(ElementTypeName typeName, Long elementId)
+            throws ServicesException {
+        switch (typeName) {
+            case ETN_COMPUTER_CASE:
+                return this.getIdByComputerCaseId(elementId);
+            case ETN_MONITOR:
+                return this.getIdByMonitorId(elementId);
+            case ETN_KEYBOARD:
+                return this.getIdByKeyboardId(elementId);
+            case ETN_MOUSE:
+                return this.getIdByMouseId(elementId);
+            default:
+                return null;
+        }
+    }
+
+    @Override
     public Long getIdByComputerCaseId(Long computerCaseId) throws ServicesException {
         try {
             return computerDAO.getIdByComputerCaseId(computerCaseId);

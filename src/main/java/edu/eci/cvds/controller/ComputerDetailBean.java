@@ -325,7 +325,6 @@ public class ComputerDetailBean extends BasePageBean {
                 break;
             default:
                 break;
-
         }
     }
 
@@ -372,7 +371,6 @@ public class ComputerDetailBean extends BasePageBean {
         } catch (ServicesException | NumberFormatException e) {
             e.printStackTrace();
         }
-
     }
 
     private void loadComputer() {

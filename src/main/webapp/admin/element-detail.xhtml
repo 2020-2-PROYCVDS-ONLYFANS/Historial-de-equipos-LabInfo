@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+  <h:head>
+    <title>Element Detail</title>
+  </h:head>
+
+  <f:view>
+    <p:growl id="msgs" showDetail="true" />
+
+    <p:outputPanel>
+      <h:form id="element-form" styleClass="ui-fluid">
+        <p:panel
+          header="Element Info"
+          style="width: fit-content; padding: 1em; margin-bottom: 20px"
+        >
+          <h:panelGrid id="element-form-info" columns="3" cellpadding="5">
+            <h:outputLabel value="Id:" for="txt_element_id" />
+            <p:inputText
+              id="txt_element_id"
+              required="true"
+              value="#{elementDetailBean.currentElement.id}"
+              readonly="true"
+            />
+            <p:staticMessage severity="info" detail="Read only" />
+
+            <h:outputLabel value="Reference:" for="txt_element_reference" />
+            <p:inputText
+              id="txt_element_reference"
+              required="true"
+              value="#{elementDetailBean.currentElement.reference}"
+            >
+              <p:ajax
+                event="blur"
+                listener="#{elementDetailBean.validateElementReference()}"
+                update="elementMessage element-form-buttons"
+              />
+            </p:inputText>
+            <p:messages
+              for="elementMessage"
+              id="elementMessage"
+              showDetail="true"
+            />
+
+            <h:outputLabel value="Type:" for="txt_type" />
+            <p:inputText
+              id="txt_type"
+              required="true"
+              value="#{elementDetailBean.currentElement.type.name}"
+            >
+            </p:inputText>
+            <p:staticMessage severity="info" detail="Read only" />
+          </h:panelGrid>
+
+          <h:panelGrid id="element-form-buttons" columns="2" cellpadding="5">
+            <p:commandButton
+              value="Reset"
+              update=":element-form :msgs"
+              action="#{elementDetailBean.reset()}"
+            />
+
+            <p:commandButton
+              value="Save"
+              update=":element-form :msgs :novelties-report"
+              action="#{elementDetailBean.save()}"
+              disabled="#{!elementDetailBean.activateSaveButton}"
+            >
+              <p:confirm
+                header="Confirmation"
+                message="Are you sure?"
+                icon="pi pi-exclamation-triangle"
+              />
+            </p:commandButton>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+              <p:commandButton
+                value="Yes"
+                type="button"
+                styleClass="ui-confirmdialog-yes"
+                icon="pi pi-check"
+              />
+              <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no"
+                icon="pi pi-times"
+              />
+            </p:confirmDialog>
+          </h:panelGrid>
+        </p:panel>
+      </h:form>
+    </p:outputPanel>
+
+    <p:outputPanel id="novelties-report" deferred="true">
+      <p:dataTable var="novelty" value="#{elementDetailBean.noveltiesReport}">
+        <f:facet name="header">
+          <span style="text-align: center"><h1>Novelties Report</h1></span>
+        </f:facet>
+
+        <p:column headerText="Username">
+          <h:outputText value="#{novelty.user.username}" />
+        </p:column>
+
+        <p:column headerText="Element reference">
+          <h:outputText value="#{novelty.element.reference}" />
+        </p:column>
+
+        <p:column headerText="Computer reference">
+          <h:outputText value="#{novelty.computer.reference}" />
+        </p:column>
+
+        <p:column headerText="Lab name">
+          <h:outputText value="#{novelty.lab.name}" />
+        </p:column>
+
+        <p:column headerText="Timestamp">
+          <h:outputText value="#{novelty.timestamp}" />
+        </p:column>
+
+        <p:column headerText="Title">
+          <h:outputText value="#{novelty.title}" />
+        </p:column>
+
+        <p:column headerText="Detail">
+          <h:outputText value="#{novelty.detail}" />
+        </p:column>
+      </p:dataTable>
+    </p:outputPanel>
+
+    <br /><br />
+    <p:commandButton
+      actionListener="#{elementDetailBean.goBack()}"
+      value="Go back"
+    />
+  </f:view>
+</html>

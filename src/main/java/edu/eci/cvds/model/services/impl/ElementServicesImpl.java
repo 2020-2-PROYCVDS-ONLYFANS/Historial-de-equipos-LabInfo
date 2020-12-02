@@ -1,5 +1,6 @@
 package edu.eci.cvds.model.services.impl;
 
+import java.util.List;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.ElementDAO;
 import edu.eci.cvds.model.dao.ElementTypeDAO;
@@ -73,6 +74,15 @@ public class ElementServicesImpl implements ElementServices {
     }
 
     @Override
+    public Element getElementById(Long elementId) throws ServicesException {
+        try {
+            return elementDAO.getElementById(elementId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public void prepareElementToLinkToNewComputer(Long userId, Long elementId)
             throws ServicesException {
         try {
@@ -92,6 +102,15 @@ public class ElementServicesImpl implements ElementServices {
             return elementDAO.getIdByReference(reference);
         } catch (PersistenceException e) {
             LOGGER.info("getIdByReference - try");
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Element> getActiveElements() throws ServicesException {
+        try {
+            return elementDAO.getActiveElements();
+        } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
     }

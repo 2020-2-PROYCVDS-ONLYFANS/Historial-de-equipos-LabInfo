@@ -1,5 +1,6 @@
 package edu.eci.cvds.model.dao.mybatis;
 
+import java.util.List;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.ElementDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper;
@@ -8,12 +9,13 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("java:S1130")
 public class MyBatisElementDAO implements ElementDAO {
 
     @Inject
     private ElementMapper elementMapper;
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(MyBatisElementDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisElementDAO.class);
 
     @Override
     public void registerElement(String reference, Long typeId) throws PersistenceException {
@@ -59,6 +61,15 @@ public class MyBatisElementDAO implements ElementDAO {
         } catch (PersistenceException e) {
             LOGGER.info("loadElementByReference - catch");
             throw new PersistenceException("Fail to load element by reference.", e);
+        }
+    }
+
+    @Override
+    public List<Element> getActiveElements() throws PersistenceException {
+        try {
+            return elementMapper.getActiveElements();
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to get active elements.", e);
         }
     }
 

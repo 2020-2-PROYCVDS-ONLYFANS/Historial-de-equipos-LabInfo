@@ -10,40 +10,47 @@ import com.google.inject.Inject;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import edu.eci.cvds.model.entities.Computer;
+import edu.eci.cvds.model.entities.element.Element;
 import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
+import edu.eci.cvds.model.services.ElementServices;
 import edu.eci.cvds.model.services.ServicesException;
 
-@ManagedBean(name = "computersReportBean")
+@ManagedBean(name = "elementsReportBean")
 @ViewScoped
 @SuppressWarnings("deprecation")
-public class ComputersReportBean extends BasePageBean {
+public class ElementsReportBean extends BasePageBean {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Computer> computers;
-    private List<Computer> filteredComputers;
-    private List<Computer> selectedComputers;
+    private List<Element> elements;
+    private List<Element> filteredElements;
+    private List<Element> selectedElements;
 
     @Inject
     private transient ComputerServices computerServices;
 
     @Inject
+    private transient ElementServices elementServices;
+
+    @Inject
     private transient AuthServices authServices;
 
     private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(ComputersReportBean.class);
+            LoggerFactory.getLogger(ElementsReportBean.class);
 
     public void delete() {
-        if (selectedComputers != null && !selectedComputers.isEmpty()) {
+        if (selectedElements != null && !selectedElements.isEmpty()) {
             try {
                 Long userId = authServices
                         .getUserIdByUsername(SecurityUtils.getSubject().getPrincipal().toString());
-                for (Computer computer : selectedComputers) {
-                    computerServices.discard(userId, computer, false, false, false, false);
+                for (Element element : selectedElements) {
+                    Long computerId = computerServices.getIdByElementId(element.getType().getName(),
+                            element.getId());
+                    elementServices.discard(element.getType().getName(), userId, element.getId(),
+                            computerId);
                 }
-                addMessage("Info", "Discarded computers", FacesMessage.SEVERITY_INFO);
+                addMessage("Info", "Discarded elements", FacesMessage.SEVERITY_INFO);
             } catch (ServicesException e) {
                 addMessage("Error", "System error", FacesMessage.SEVERITY_FATAL);
                 try {
@@ -52,12 +59,12 @@ public class ComputersReportBean extends BasePageBean {
                     e1.printStackTrace();
                 }
             }
-            selectedComputers.clear();
+            selectedElements.clear();
             try {
-                computers = computerServices.getActiveComputers();
+                elements = elementServices.getActiveElements();
             } catch (ServicesException e) {
                 e.printStackTrace();
-                addMessage("Not found", "Active computers not found", FacesMessage.SEVERITY_INFO);
+                addMessage("Not found", "Active elements not found", FacesMessage.SEVERITY_INFO);
             }
         }
     }
@@ -69,24 +76,21 @@ public class ComputersReportBean extends BasePageBean {
         }
         int filterInt = getInteger(filterText);
 
-        Computer computer = (Computer) value;
-        return computer.getReference().toLowerCase().contains(filterText)
-                || computer.getComputerCase().getReference().toLowerCase().contains(filterText)
-                || computer.getMonitor().getReference().toLowerCase().contains(filterText)
-                || computer.getKeyboard().getReference().toLowerCase().contains(filterText)
-                || computer.getMouse().getReference().toLowerCase().contains(filterText)
-                || computer.getId() < filterInt;
+        Element element = (Element) value;
+        return element.getReference().toLowerCase().contains(filterText)
+                || element.getType().getName().toString().toLowerCase().contains(filterText)
+                || element.getId() < filterInt;
     }
 
     @Override
     public void init() {
         this.getInjector().injectMembers(this);
         try {
-            computers = computerServices.getActiveComputers();
-            addMessage("Found", "Active computers found", FacesMessage.SEVERITY_INFO);
+            elements = elementServices.getActiveElements();
+            addMessage("Found", "Active elements found", FacesMessage.SEVERITY_INFO);
         } catch (ServicesException e) {
             e.printStackTrace();
-            addMessage("Not found", "Active computers not found", FacesMessage.SEVERITY_ERROR);
+            addMessage("Not found", "Active elements not found", FacesMessage.SEVERITY_ERROR);
         }
     }
 
@@ -104,27 +108,27 @@ public class ComputersReportBean extends BasePageBean {
         FacesContext.getCurrentInstance().addMessage("msgs", message);
     }
 
-    public List<Computer> getComputers() {
-        return computers;
+    public List<Element> getElements() {
+        return elements;
     }
 
-    public void setComputers(List<Computer> computers) {
-        this.computers = computers;
+    public void setElements(List<Element> elements) {
+        this.elements = elements;
     }
 
-    public List<Computer> getFilteredComputers() {
-        return filteredComputers;
+    public List<Element> getFilteredElements() {
+        return filteredElements;
     }
 
-    public void setFilteredComputers(List<Computer> filteredComputers) {
-        this.filteredComputers = filteredComputers;
+    public void setFilteredElements(List<Element> filteredElements) {
+        this.filteredElements = filteredElements;
     }
 
-    public List<Computer> getSelectedComputers() {
-        return selectedComputers;
+    public List<Element> getSelectedElements() {
+        return selectedElements;
     }
 
-    public void setSelectedComputers(List<Computer> selectedComputers) {
-        this.selectedComputers = selectedComputers;
+    public void setSelectedElements(List<Element> selectedElements) {
+        this.selectedElements = selectedElements;
     }
 }
