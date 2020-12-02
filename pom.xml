@@ -35,7 +35,7 @@
 
   <dependencies>
     <!--  PrimeFaces  -->
-    <!--  DataExporter - Excel - Apache POI  -->
+    <!--  DataExporter - Excel  -->
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
