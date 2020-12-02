@@ -17,8 +17,7 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
     @Inject
     ShiroDAO shiroDAO;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(AuthorizingRealmImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizingRealmImpl.class);
 
     public AuthorizingRealmImpl(CredentialsMatcher matcher) {
         super(matcher);
@@ -40,9 +39,7 @@ public class AuthorizingRealmImpl extends AuthorizingRealm {
         LOGGER.info("doGetAuthorizationInfo");
         if (!collection.isEmpty()) {
             return shiroDAO
-                    .fetchAuthorizationInfoByUsername(collection.getPrimaryPrincipal().toString() // =
-                                                                                                  // username
-                    );
+                    .fetchAuthorizationInfoByUsername(collection.getPrimaryPrincipal().toString());
         }
         return null;
     }

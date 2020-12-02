@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper">
     <insert id="registerComputer">
@@ -23,7 +21,7 @@
             "COMPUTERS"
         WHERE
             reference = #{reference}
-    </select >
+    </select>
 
     <select id="getIdByComputerCaseId" resultType="long">
         SELECT
@@ -59,6 +57,58 @@
             "COMPUTERS"
         WHERE
             "ELEMENTS_mouse_id" = #{id}
+    </select>
+
+    <select id="getComputerById" resultMap="ComputerResultMap">
+        SELECT
+            c.id AS id,
+            c.reference AS reference,
+            c.available AS available,
+            c.discarded AS discarded,
+            e_cc.id AS "ELEMENTS_computer_case_id",
+            e_cc.available AS "ELEMENTS_computer_case_available",
+            e_cc.discarded AS "ELEMENTS_computer_case_discarded",
+            e_cc.reference AS "ELEMENTS_computer_case_reference",
+            et_cc.id AS "ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            et_cc."name" AS "ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            e_mon.id AS "ELEMENTS_monitor_id",
+            e_mon.available AS "ELEMENTS_monitor_available",
+            e_mon.discarded AS "ELEMENTS_monitor_discarded",
+            e_mon.reference AS "ELEMENTS_monitor_reference",
+            et_mon.id AS "ELEMENTS_monitor_ELEMENT_TYPES_id",
+            et_mon."name" AS "ELEMENTS_monitor_ELEMENT_TYPES_name",
+            e_key.id AS "ELEMENTS_keyboard_id",
+            e_key.available AS "ELEMENTS_keyboard_available",
+            e_key.discarded AS "ELEMENTS_keyboard_discarded",
+            e_key.reference AS "ELEMENTS_keyboard_reference",
+            et_key.id AS "ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            et_key."name" AS "ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            e_mou.id AS "ELEMENTS_mouse_id",
+            e_mou.available AS "ELEMENTS_mouse_available",
+            e_mou.discarded AS "ELEMENTS_mouse_discarded",
+            e_mou.reference AS "ELEMENTS_mouse_reference",
+            et_mou.id AS "ELEMENTS_mouse_ELEMENT_TYPES_id",
+            et_mou."name" AS "ELEMENTS_mouse_ELEMENT_TYPES_name"
+        FROM
+            "COMPUTERS" AS c
+                LEFT JOIN
+            "ELEMENTS" AS e_cc ON e_cc.id = c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_cc ON et_cc.id = e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mon ON e_mon.id = c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mon ON et_mon.id = e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_key ON e_key.id = c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_key ON et_key.id = e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mou ON e_mou.id = c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
+        WHERE
+            c.id = #{id}
     </select>
 
     <select id="getComputerByReference" resultMap="ComputerResultMap">
@@ -113,6 +163,69 @@
             c.reference = #{reference}
     </select>
 
+    <select id="getActiveComputers" resultMap="ComputerResultMap">
+        SELECT
+            c.id AS id,
+            c.reference AS reference,
+            c.available AS available,
+            c.discarded AS discarded,
+            e_cc.id AS "ELEMENTS_computer_case_id",
+            e_cc.available AS "ELEMENTS_computer_case_available",
+            e_cc.discarded AS "ELEMENTS_computer_case_discarded",
+            e_cc.reference AS "ELEMENTS_computer_case_reference",
+            et_cc.id AS "ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            et_cc."name" AS "ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            e_mon.id AS "ELEMENTS_monitor_id",
+            e_mon.available AS "ELEMENTS_monitor_available",
+            e_mon.discarded AS "ELEMENTS_monitor_discarded",
+            e_mon.reference AS "ELEMENTS_monitor_reference",
+            et_mon.id AS "ELEMENTS_monitor_ELEMENT_TYPES_id",
+            et_mon."name" AS "ELEMENTS_monitor_ELEMENT_TYPES_name",
+            e_key.id AS "ELEMENTS_keyboard_id",
+            e_key.available AS "ELEMENTS_keyboard_available",
+            e_key.discarded AS "ELEMENTS_keyboard_discarded",
+            e_key.reference AS "ELEMENTS_keyboard_reference",
+            et_key.id AS "ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            et_key."name" AS "ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            e_mou.id AS "ELEMENTS_mouse_id",
+            e_mou.available AS "ELEMENTS_mouse_available",
+            e_mou.discarded AS "ELEMENTS_mouse_discarded",
+            e_mou.reference AS "ELEMENTS_mouse_reference",
+            et_mou.id AS "ELEMENTS_mouse_ELEMENT_TYPES_id",
+            et_mou."name" AS "ELEMENTS_mouse_ELEMENT_TYPES_name"
+        FROM
+            "COMPUTERS" AS c
+                LEFT JOIN
+            "ELEMENTS" AS e_cc ON e_cc.id = c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_cc ON et_cc.id = e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mon ON e_mon.id = c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mon ON et_mon.id = e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_key ON e_key.id = c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_key ON et_key.id = e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mou ON e_mou.id = c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
+        WHERE
+            c.discarded = FALSE
+        ORDER BY
+            c.id
+    </select>
+
+    <update id="setReferenceById">
+        UPDATE
+            "COMPUTERS"
+        SET
+            reference = #{reference}
+        WHERE
+            id = #{id}
+    </update>
+
     <update id="setComputerCaseIdByIds">
         UPDATE
             "COMPUTERS"
@@ -160,21 +273,13 @@
     </update>
 
     <resultMap id="ComputerResultMap" type="Computer">
-        <id column="id" property="id"/>
-        <result column="reference" property="reference"/>
-        <result column="available" property="available"/>
-        <result column="discarded" property="discarded"/>
-        <association property="computerCase" javaType="Element"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
-                     columnPrefix="ELEMENTS_computer_case_"/>
-        <association property="monitor" javaType="Element"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
-                     columnPrefix="ELEMENTS_monitor_"/>
-        <association property="keyboard" javaType="Element"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
-                     columnPrefix="ELEMENTS_keyboard_"/>
-        <association property="mouse" javaType="Element"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"
-                     columnPrefix="ELEMENTS_mouse_"/>
+        <id column="id" property="id" />
+        <result column="reference" property="reference" />
+        <result column="available" property="available" />
+        <result column="discarded" property="discarded" />
+        <association property="computerCase" javaType="Element" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap" columnPrefix="ELEMENTS_computer_case_" />
+        <association property="monitor" javaType="Element" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap" columnPrefix="ELEMENTS_monitor_" />
+        <association property="keyboard" javaType="Element" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap" columnPrefix="ELEMENTS_keyboard_" />
+        <association property="mouse" javaType="Element" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap" columnPrefix="ELEMENTS_mouse_" />
     </resultMap>
 </mapper>

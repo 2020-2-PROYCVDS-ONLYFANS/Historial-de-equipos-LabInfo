@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+  <h:head>
+    <title>Computer Detail</title>
+  </h:head>
+
+  <f:view>
+    <p:growl id="msgs" showDetail="true" />
+
+    <p:outputPanel>
+      <h:form id="computer-form" styleClass="ui-fluid">
+        <p:panel
+          header="Computer Info"
+          style="width: fit-content; padding: 1em; margin-bottom: 20px"
+        >
+          <h:panelGrid id="computer-form-info" columns="3" cellpadding="5">
+            <h:outputLabel value="Id:" for="txt_computer_id" />
+            <p:inputText
+              id="txt_computer_id"
+              required="true"
+              value="#{computerDetailBean.currentComputer.id}"
+              readonly="true"
+            />
+            <p:staticMessage severity="info" detail="Read only" />
+
+            <h:outputLabel value="Reference:" for="txt_computer_reference" />
+            <p:inputText
+              id="txt_computer_reference"
+              required="true"
+              value="#{computerDetailBean.currentComputer.reference}"
+            >
+              <p:ajax
+                event="blur"
+                listener="#{computerDetailBean.validateComputerReference()}"
+                update="computerMessage computer-form-buttons"
+              />
+            </p:inputText>
+            <p:messages
+              for="computerMessage"
+              id="computerMessage"
+              showDetail="true"
+            />
+
+            <h:outputLabel
+              value="Computer Case Reference:"
+              for="txt_computer_case"
+            />
+            <p:inputText
+              id="txt_computer_case"
+              required="true"
+              value="#{computerDetailBean.currentComputer.computerCase.reference}"
+            >
+              <p:ajax
+                event="blur"
+                listener="#{computerDetailBean.validateComputerCase()}"
+                update="computerCaseMessage computer-form-buttons"
+              />
+            </p:inputText>
+            <p:messages
+              for="computerCaseMessage"
+              id="computerCaseMessage"
+              showDetail="true"
+            />
+
+            <h:outputLabel value="Monitor Reference:" for="txt_monitor" />
+            <p:inputText
+              id="txt_monitor"
+              required="true"
+              value="#{computerDetailBean.currentComputer.monitor.reference}"
+            >
+              <p:ajax
+                event="blur"
+                listener="#{computerDetailBean.validateMonitor()}"
+                update="monitorMessage computer-form-buttons"
+              />
+            </p:inputText>
+            <p:messages
+              for="monitorMessage"
+              id="monitorMessage"
+              showDetail="true"
+            />
+
+            <h:outputLabel value="Keyboard Reference:" for="txt_keyboard" />
+            <p:inputText
+              id="txt_keyboard"
+              required="true"
+              value="#{computerDetailBean.currentComputer.keyboard.reference}"
+            >
+              <p:ajax
+                event="blur"
+                listener="#{computerDetailBean.validateKeyboard()}"
+                update="keyboardMessage computer-form-buttons"
+              />
+            </p:inputText>
+            <p:messages
+              for="keyboardMessage"
+              id="keyboardMessage"
+              showDetail="true"
+            />
+
+            <h:outputLabel value="Mouse Reference:" for="txt_mouse" />
+            <p:inputText
+              id="txt_mouse"
+              required="true"
+              value="#{computerDetailBean.currentComputer.mouse.reference}"
+            >
+              <p:ajax
+                event="blur"
+                listener="#{computerDetailBean.validateMouse()}"
+                update="mouseMessage computer-form-buttons"
+              />
+            </p:inputText>
+            <p:messages
+              for="mouseMessage"
+              id="mouseMessage"
+              showDetail="true"
+            />
+          </h:panelGrid>
+
+          <h:panelGrid id="computer-form-buttons" columns="2" cellpadding="5">
+            <p:commandButton
+              value="Reset"
+              update=":computer-form :msgs"
+              action="#{computerDetailBean.reset()}"
+            />
+
+            <p:commandButton
+              value="Save"
+              update=":computer-form :msgs :novelties-report"
+              action="#{computerDetailBean.save()}"
+              disabled="#{!computerDetailBean.activateSaveButton}"
+            >
+              <p:confirm
+                header="Confirmation"
+                message="Are you sure?"
+                icon="pi pi-exclamation-triangle"
+              />
+            </p:commandButton>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+              <p:commandButton
+                value="Yes"
+                type="button"
+                styleClass="ui-confirmdialog-yes"
+                icon="pi pi-check"
+              />
+              <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no"
+                icon="pi pi-times"
+              />
+            </p:confirmDialog>
+          </h:panelGrid>
+        </p:panel>
+      </h:form>
+    </p:outputPanel>
+
+    <p:outputPanel id="novelties-report" deferred="true">
+      <p:dataTable var="novelty" value="#{computerDetailBean.noveltiesReport}">
+        <f:facet name="header">
+          <span style="text-align: center"><h1>Novelties Report</h1></span>
+        </f:facet>
+
+        <p:column headerText="Username">
+          <h:outputText value="#{novelty.user.username}" />
+        </p:column>
+
+        <p:column headerText="Element reference">
+          <h:outputText value="#{novelty.element.reference}" />
+        </p:column>
+
+        <p:column headerText="Computer reference">
+          <h:outputText value="#{novelty.computer.reference}" />
+        </p:column>
+
+        <p:column headerText="Lab name">
+          <h:outputText value="#{novelty.lab.name}" />
+        </p:column>
+
+        <p:column headerText="Timestamp">
+          <h:outputText value="#{novelty.timestamp}" />
+        </p:column>
+
+        <p:column headerText="Title">
+          <h:outputText value="#{novelty.title}" />
+        </p:column>
+
+        <p:column headerText="Detail">
+          <h:outputText value="#{novelty.detail}" />
+        </p:column>
+      </p:dataTable>
+    </p:outputPanel>
+
+    <br /><br />
+    <p:commandButton
+      actionListener="#{computerDetailBean.goBack()}"
+      value="Go back"
+    />
+  </f:view>
+</html>

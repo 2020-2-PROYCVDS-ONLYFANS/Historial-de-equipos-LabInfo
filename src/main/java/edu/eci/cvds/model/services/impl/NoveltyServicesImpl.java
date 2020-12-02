@@ -1,7 +1,9 @@
 package edu.eci.cvds.model.services.impl;
 
+import java.util.List;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.NoveltyDAO;
+import edu.eci.cvds.model.entities.Novelty;
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import edu.eci.cvds.model.services.*;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -25,8 +27,27 @@ public class NoveltyServicesImpl implements NoveltyServices {
     @Inject
     LabServices labServices;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(NoveltyServicesImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoveltyServicesImpl.class);
+
+    @Override
+    public List<Novelty> getByElementId(Long elementId) throws ServicesException {
+        try {
+            LOGGER.info("getByElementId");
+            return noveltyDAO.getByElementId(elementId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Novelty> getByComputerId(Long computerId) throws ServicesException {
+        try {
+            LOGGER.info("getByComputerId");
+            return noveltyDAO.getByComputerId(computerId);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
 
     @Override
     public void create(Long userId, Long elementId, Long computerId, Long labId, String title,

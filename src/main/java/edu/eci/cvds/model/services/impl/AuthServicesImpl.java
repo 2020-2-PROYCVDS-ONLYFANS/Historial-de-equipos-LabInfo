@@ -13,7 +13,7 @@ public class AuthServicesImpl implements AuthServices {
     @Inject
     private UserDAO userDAO;
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(AuthServicesImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthServicesImpl.class);
 
     @Override
     public Long getUserIdByUsername(String username) throws ServicesException {
@@ -22,6 +22,15 @@ public class AuthServicesImpl implements AuthServices {
             return userDAO.getIdByUsername(username);
         } catch (PersistenceException e) {
             LOGGER.info("loadIdByUsername - catch");
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public String getUsernameById(Long id) throws ServicesException {
+        try {
+            return userDAO.getUsernameById(id);
+        } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
         }
     }

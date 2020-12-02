@@ -10,7 +10,7 @@ public abstract class BasePageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Injector injector;
+    private transient Injector injector;
 
     public Injector getInjector() {
         if (injector == null) {

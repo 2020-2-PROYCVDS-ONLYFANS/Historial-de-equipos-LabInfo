@@ -19,6 +19,20 @@ public class Computer implements Serializable {
     private boolean available;
     private boolean discarded;
 
+    public Computer() {
+    }
+
+    public Computer(Computer another) {
+        this.id = another.id;
+        this.reference = another.reference;
+        this.computerCase = new Element(another.computerCase);
+        this.monitor = new Element(another.monitor);
+        this.keyboard = new Element(another.keyboard);
+        this.mouse = new Element(another.mouse);
+        this.available = another.available;
+        this.discarded = another.discarded;
+    }
+
     public Element getElement(ElementTypeName typeName) {
         switch (typeName) {
             case ETN_COMPUTER_CASE:
@@ -34,7 +48,23 @@ public class Computer implements Serializable {
         }
     }
 
-    public Computer() {
+    public void setElement(ElementTypeName typeName, Element element) {
+        switch (typeName) {
+            case ETN_COMPUTER_CASE:
+                computerCase = element;
+                break;
+            case ETN_MONITOR:
+                monitor = element;
+                break;
+            case ETN_KEYBOARD:
+                keyboard = element;
+                break;
+            case ETN_MOUSE:
+                mouse = element;
+                break;
+            default:
+                break;
+        }
     }
 
     public long getId() {

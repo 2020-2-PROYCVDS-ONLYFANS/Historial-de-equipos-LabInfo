@@ -24,8 +24,25 @@ public class ElementServicesImpl implements ElementServices {
     @Inject
     private NoveltyServices noveltyServices;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(ElementServicesImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElementServicesImpl.class);
+
+    @Override
+    public void registerElement(ElementTypeName typeName, String reference, Long userId)
+            throws ServicesException {
+        LOGGER.info("registerElement");
+        try {
+            LOGGER.info("registerElement - try");
+            Long elementTypeId = elementTypeDAO.getElementTypeIdByName(typeName);
+
+            elementDAO.registerElement(reference, elementTypeId);
+
+            Long elementId = elementDAO.getIdByReference(reference);
+            noveltyServices.create(userId, elementId, null, null, "Registered", null);
+        } catch (PersistenceException e) {
+            LOGGER.info("registerElement - catch");
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
 
     @Override
     public void registerElement(ElementTypeName typeName, String reference, String username)

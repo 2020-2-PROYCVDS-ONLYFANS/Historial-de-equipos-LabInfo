@@ -1,5 +1,6 @@
 package edu.eci.cvds.model.services.impl;
 
+import java.util.List;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.*;
 import edu.eci.cvds.model.entities.Computer;
@@ -27,8 +28,7 @@ public class ComputerServicesImpl implements ComputerServices {
     @Inject
     private LabServices labServices;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(ComputerServicesImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerServicesImpl.class);
 
     @Override
     public void registerComputerByReferences(String username, String reference,
@@ -37,19 +37,19 @@ public class ComputerServicesImpl implements ComputerServices {
             throws ServicesException {
         try {
             LOGGER.info("registerComputerByReferences - try");
-            if (!computerCasePair.getValue0()) {
+            if (!computerCasePair.getValue0().booleanValue()) {
                 elementServices.registerElement(ElementTypeName.ETN_COMPUTER_CASE,
                         computerCasePair.getValue1(), username);
             }
-            if (!monitorPair.getValue0()) {
+            if (!monitorPair.getValue0().booleanValue()) {
                 elementServices.registerElement(ElementTypeName.ETN_MONITOR,
                         monitorPair.getValue1(), username);
             }
-            if (!keyboardPair.getValue0()) {
+            if (!keyboardPair.getValue0().booleanValue()) {
                 elementServices.registerElement(ElementTypeName.ETN_KEYBOARD,
                         keyboardPair.getValue1(), username);
             }
-            if (!mousePair.getValue0()) {
+            if (!mousePair.getValue0().booleanValue()) {
                 elementServices.registerElement(ElementTypeName.ETN_MOUSE, mousePair.getValue1(),
                         username);
             }
@@ -122,11 +122,29 @@ public class ComputerServicesImpl implements ComputerServices {
     }
 
     @Override
+    public Computer getComputerById(Long id) throws ServicesException {
+        try {
+            return computerDAO.getComputerById(id);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Computer getComputerByReference(String reference) throws ServicesException {
         try {
             return computerDAO.getComputerByReference(reference);
         } catch (PersistenceException e) {
             throw new ServicesException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Computer> getActiveComputers() throws ServicesException {
+        try {
+            return computerDAO.getActiveComputers();
+        } catch (PersistenceException e) {
+            throw new PersistenceException(e.getMessage(), e);
         }
     }
 
@@ -159,6 +177,42 @@ public class ComputerServicesImpl implements ComputerServices {
                 setMouseIdByIds(userId, elementId, computer.getId());
                 break;
         }
+        elementServices.setAvailableById(elementId, false);
+    }
+
+    @Override
+    public void setElementIdByIds(ElementTypeName typeName, Long userId, Long elementId,
+            Long computerId) throws ServicesException {
+        switch (typeName) {
+            case ETN_COMPUTER_CASE:
+                setComputerCaseIdByIds(userId, elementId, computerId);
+                break;
+
+            case ETN_MONITOR:
+                setMonitorIdByIds(userId, elementId, computerId);
+                break;
+
+            case ETN_KEYBOARD:
+                setKeyboardIdByIds(userId, elementId, computerId);
+                break;
+
+            case ETN_MOUSE:
+                setMouseIdByIds(userId, elementId, computerId);
+                break;
+        }
+    }
+
+    @Override
+    public void setReferenceById(Long userId, String reference, Long computerId)
+            throws ServicesException {
+        try {
+            computerDAO.setReferenceById(reference, computerId);
+
+            Long labId = labServices.getLabIdByLinkedComputerId(computerId);
+            noveltyServices.create(userId, null, computerId, labId, "Update reference", null);
+        } catch (PersistenceException e) {
+            throw new ServicesException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -166,6 +220,7 @@ public class ComputerServicesImpl implements ComputerServices {
             throws ServicesException {
         try {
             computerDAO.setComputerCaseIdByIds(computerId, computerCaseId);
+            elementServices.setAvailableById(computerCaseId, false);
 
             noveltyServices.create(userId, computerCaseId, computerId,
                     labServices.getLabIdByLinkedComputerId(computerId), "Linked computer case",
@@ -180,6 +235,7 @@ public class ComputerServicesImpl implements ComputerServices {
             throws ServicesException {
         try {
             computerDAO.setMonitorIdByIds(computerId, monitorId);
+            elementServices.setAvailableById(monitorId, false);
 
             noveltyServices.create(userId, monitorId, computerId,
                     labServices.getLabIdByLinkedComputerId(computerId), "Linked monitor", null);
@@ -193,6 +249,7 @@ public class ComputerServicesImpl implements ComputerServices {
             throws ServicesException {
         try {
             computerDAO.setKeyboardIdByIds(computerId, keyboardId);
+            elementServices.setAvailableById(keyboardId, false);
 
             noveltyServices.create(userId, keyboardId, computerId,
                     labServices.getLabIdByLinkedComputerId(computerId), "Linked keyboard", null);
@@ -206,6 +263,7 @@ public class ComputerServicesImpl implements ComputerServices {
             throws ServicesException {
         try {
             computerDAO.setMouseIdByIds(computerId, mouseId);
+            elementServices.setAvailableById(mouseId, false);
 
             noveltyServices.create(userId, mouseId, computerId,
                     labServices.getLabIdByLinkedComputerId(computerId), "Linked mouse", null);

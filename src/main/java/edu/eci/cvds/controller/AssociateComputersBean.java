@@ -1,6 +1,5 @@
 package edu.eci.cvds.controller;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -27,18 +26,18 @@ public class AssociateComputersBean extends BasePageBean {
     private String computerRef;
 
     @Inject
-    private AuthServices authServices;
+    private transient AuthServices authServices;
 
     @Inject
-    private ComputerServices computerServices;
+    private transient ComputerServices computerServices;
 
     @Inject
-    private LabServices labServices;
+    private transient LabServices labServices;
 
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(AssociateComputersBean.class);
 
-    @PostConstruct
+    @Override
     public void init() {
         lab = new Lab();
         getInjector().injectMembers(this);

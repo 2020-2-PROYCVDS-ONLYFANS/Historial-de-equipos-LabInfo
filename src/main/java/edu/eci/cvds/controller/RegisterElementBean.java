@@ -20,7 +20,7 @@ public class RegisterElementBean extends BasePageBean {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    ElementServices elementServices;
+    private transient ElementServices elementServices;
 
     private ElementTypeName typeName;
 

@@ -16,8 +16,7 @@ public class GuiceShiroMyBatisBootstrap extends GuiceServletContextListener {
 
     private ServletContext servletContext; // to shiro
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(GuiceShiroMyBatisBootstrap.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GuiceShiroMyBatisBootstrap.class);
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -30,7 +29,6 @@ public class GuiceShiroMyBatisBootstrap extends GuiceServletContextListener {
     protected Injector getInjector() {
         LOGGER.info("getInjector");
         return Guice.createInjector(new ShiroWebModuleImpl(servletContext),
-                ShiroWebModule.guiceFilterModule(),
-                MyBatisModuleFactory.getInstance().getMyBatisDevModule());
+                ShiroWebModule.guiceFilterModule(), MyBatisModuleFactory.getMyBatisDevModule());
     }
 }

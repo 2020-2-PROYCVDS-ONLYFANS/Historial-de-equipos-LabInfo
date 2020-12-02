@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.eci.cvds.model.dao.mybatis.mappers.NoveltyMapper">
     <insert id="createElementNovelty">
@@ -17,19 +15,272 @@
                );
     </insert>
 
-    <resultMap id="NoveltyResultMap" type="Novelty">
-        <id column="id" property="id"/>
-        <result column="timestamp" property="timestamp" javaType="Date"/>
-        <result column="title" property="title"/>
-        <result column="detail" property="detail"/>
-        <association property="user" javaType="User" columnPrefix="USERS_"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.UserMapper.UserResultMap"/>
-        <association property="element" javaType="Element" columnPrefix="ELEMENTS_"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap"/>
-        <association property="computer" javaType="Computer" columnPrefix="COMPUTERS_"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap"/>
-        <association property="lab" javaType="Lab" columnPrefix="LABS_"
-                     resultMap="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper.LabResultMap"/>
+    <select id="getByElementId" resultMap="NoveltyResultMap">
+        SELECT
+            n.id AS id,
+            n.timestamp AS timestamp,
+            n.title AS title,
+            n.detail AS detail,
+            u.id AS USERS_id,
+            u.username AS "USERS_username",
+            u.email AS "USERS_email",
+            u.name AS "USERS_name",
+            e.id AS "ELEMENTS_id",
+            e.available AS "ELEMENTS_available",
+            e.discarded AS "ELEMENTS_discarded",
+            e.reference AS "ELEMENTS_reference",
+            et.id AS "ELEMENTS_ELEMENT_TYPES_id",
+            et."name" AS "ELEMENTS_ELEMENT_TYPES_name",
+            c.id AS "COMPUTERS_id",
+            c.reference AS "COMPUTERS_reference",
+            c.available AS "COMPUTERS_available",
+            c.discarded AS "COMPUTERS_discarded",
+            e_cc.id AS "ELEMENTS_computer_case_id",
+            e_cc.available AS "ELEMENTS_computer_case_available",
+            e_cc.discarded AS "ELEMENTS_computer_case_discarded",
+            e_cc.reference AS "ELEMENTS_computer_case_reference",
+            et_cc.id AS "ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            et_cc."name" AS "ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            e_mon.id AS "ELEMENTS_monitor_id",
+            e_mon.available AS "ELEMENTS_monitor_available",
+            e_mon.discarded AS "ELEMENTS_monitor_discarded",
+            e_mon.reference AS "ELEMENTS_monitor_reference",
+            et_mon.id AS "ELEMENTS_monitor_ELEMENT_TYPES_id",
+            et_mon."name" AS "ELEMENTS_monitor_ELEMENT_TYPES_name",
+            e_key.id AS "ELEMENTS_keyboard_id",
+            e_key.available AS "ELEMENTS_keyboard_available",
+            e_key.discarded AS "ELEMENTS_keyboard_discarded",
+            e_key.reference AS "ELEMENTS_keyboard_reference",
+            et_key.id AS "ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            et_key."name" AS "ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            e_mou.id AS "ELEMENTS_mouse_id",
+            e_mou.available AS "ELEMENTS_mouse_available",
+            e_mou.discarded AS "ELEMENTS_mouse_discarded",
+            e_mou.reference AS "ELEMENTS_mouse_reference",
+            et_mou.id AS "ELEMENTS_mouse_ELEMENT_TYPES_id",
+            et_mou."name" AS "ELEMENTS_mouse_ELEMENT_TYPES_name",
+            l.id AS "LABS_id",
+            l.name AS "LABS_name",
+            l.active AS "LABS_active",
+            l."openingDate" AS "LABS_openingDate",
+            l."closingDate" AS "LABS_closingDate",
+            l_c.id AS "COMPUTER_id",
+            l_c.reference AS "COMPUTER_reference",
+            l_c.available AS "COMPUTER_available",
+            l_c.discarded AS "COMPUTER_discarded",
+            l_e_cc.id AS "COMPUTER_ELEMENTS_computer_case_id",
+            l_e_cc.available AS "COMPUTER_ELEMENTS_computer_case_available",
+            l_e_cc.discarded AS "COMPUTER_ELEMENTS_computer_case_discarded",
+            l_e_cc.reference AS "COMPUTER_ELEMENTS_computer_case_reference",
+            l_et_cc.id AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            l_et_cc."name" AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            l_e_mon.id AS "COMPUTER_ELEMENTS_monitor_id",
+            l_e_mon.available AS "COMPUTER_ELEMENTS_monitor_available",
+            l_e_mon.discarded AS "COMPUTER_ELEMENTS_monitor_discarded",
+            l_e_mon.reference AS "COMPUTER_ELEMENTS_monitor_reference",
+            l_et_mon.id AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_id",
+            l_et_mon."name" AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_name",
+            l_e_key.id AS "COMPUTER_ELEMENTS_keyboard_id",
+            l_e_key.available AS "COMPUTER_ELEMENTS_keyboard_available",
+            l_e_key.discarded AS "COMPUTER_ELEMENTS_keyboard_discarded",
+            l_e_key.reference AS "COMPUTER_ELEMENTS_keyboard_reference",
+            l_et_key.id AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            l_et_key."name" AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            l_e_mou.id AS "COMPUTER_ELEMENTS_mouse_id",
+            l_e_mou.available AS "COMPUTER_ELEMENTS_mouse_available",
+            l_e_mou.discarded AS "COMPUTER_ELEMENTS_mouse_discarded",
+            l_e_mou.reference AS "COMPUTER_ELEMENTS_mouse_reference",
+            l_et_mou.id AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_id",
+            l_et_mou."name" AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_name"
+        FROM
+            "NOVELTIES" AS n
+                LEFT JOIN
+            "USERS" AS u ON u.id = n."USERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS e ON e.id = n."ELEMENTS_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" AS et ON et.id = e."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "COMPUTERS" AS c ON c.id = n."COMPUTERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_cc ON e_cc.id = c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_cc ON et_cc.id = e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mon ON e_mon.id = c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mon ON et_mon.id = e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_key ON e_key.id = c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_key ON et_key.id = e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mou ON e_mou.id = c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "LABS" AS l ON l.id = n."LABS_id"
+                LEFT JOIN
+            "LABS_COMPUTERS" AS l_l_c ON l_l_c."LABS_id" = l.id
+                LEFT JOIN
+            "COMPUTERS" AS l_c ON l_c.id = l_l_c."COMPUTERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_cc ON l_e_cc.id = l_c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_cc ON l_et_cc.id = l_e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_mon ON l_e_mon.id = l_c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_mon ON l_et_mon.id = l_e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_key ON l_e_key.id = l_c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_key ON l_et_key.id = l_e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_mou ON l_e_mou.id = l_c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_mou ON l_et_mou.id = l_e_mou."ELEMENT_TYPES_id"
+        WHERE
+            n."ELEMENTS_id" = #{elementId}
+    </select>
 
+    <select id="getByComputerId" resultMap="NoveltyResultMap">
+        SELECT
+            n.id AS id,
+            n.timestamp AS timestamp,
+            n.title AS title,
+            n.detail AS detail,
+            u.id AS USERS_id,
+            u.username AS "USERS_username",
+            u.email AS "USERS_email",
+            u.name AS "USERS_name",
+            e.id AS "ELEMENTS_id",
+            e.available AS "ELEMENTS_available",
+            e.discarded AS "ELEMENTS_discarded",
+            e.reference AS "ELEMENTS_reference",
+            et.id AS "ELEMENTS_ELEMENT_TYPES_id",
+            et."name" AS "ELEMENTS_ELEMENT_TYPES_name",
+            c.id AS "COMPUTERS_id",
+            c.reference AS "COMPUTERS_reference",
+            c.available AS "COMPUTERS_available",
+            c.discarded AS "COMPUTERS_discarded",
+            e_cc.id AS "ELEMENTS_computer_case_id",
+            e_cc.available AS "ELEMENTS_computer_case_available",
+            e_cc.discarded AS "ELEMENTS_computer_case_discarded",
+            e_cc.reference AS "ELEMENTS_computer_case_reference",
+            et_cc.id AS "ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            et_cc."name" AS "ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            e_mon.id AS "ELEMENTS_monitor_id",
+            e_mon.available AS "ELEMENTS_monitor_available",
+            e_mon.discarded AS "ELEMENTS_monitor_discarded",
+            e_mon.reference AS "ELEMENTS_monitor_reference",
+            et_mon.id AS "ELEMENTS_monitor_ELEMENT_TYPES_id",
+            et_mon."name" AS "ELEMENTS_monitor_ELEMENT_TYPES_name",
+            e_key.id AS "ELEMENTS_keyboard_id",
+            e_key.available AS "ELEMENTS_keyboard_available",
+            e_key.discarded AS "ELEMENTS_keyboard_discarded",
+            e_key.reference AS "ELEMENTS_keyboard_reference",
+            et_key.id AS "ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            et_key."name" AS "ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            e_mou.id AS "ELEMENTS_mouse_id",
+            e_mou.available AS "ELEMENTS_mouse_available",
+            e_mou.discarded AS "ELEMENTS_mouse_discarded",
+            e_mou.reference AS "ELEMENTS_mouse_reference",
+            et_mou.id AS "ELEMENTS_mouse_ELEMENT_TYPES_id",
+            et_mou."name" AS "ELEMENTS_mouse_ELEMENT_TYPES_name",
+            l.id AS "LABS_id",
+            l.name AS "LABS_name",
+            l.active AS "LABS_active",
+            l."openingDate" AS "LABS_openingDate",
+            l."closingDate" AS "LABS_closingDate",
+            l_c.id AS "COMPUTER_id",
+            l_c.reference AS "COMPUTER_reference",
+            l_c.available AS "COMPUTER_available",
+            l_c.discarded AS "COMPUTER_discarded",
+            l_e_cc.id AS "COMPUTER_ELEMENTS_computer_case_id",
+            l_e_cc.available AS "COMPUTER_ELEMENTS_computer_case_available",
+            l_e_cc.discarded AS "COMPUTER_ELEMENTS_computer_case_discarded",
+            l_e_cc.reference AS "COMPUTER_ELEMENTS_computer_case_reference",
+            l_et_cc.id AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_id",
+            l_et_cc."name" AS "COMPUTER_ELEMENTS_computer_case_ELEMENT_TYPES_name",
+            l_e_mon.id AS "COMPUTER_ELEMENTS_monitor_id",
+            l_e_mon.available AS "COMPUTER_ELEMENTS_monitor_available",
+            l_e_mon.discarded AS "COMPUTER_ELEMENTS_monitor_discarded",
+            l_e_mon.reference AS "COMPUTER_ELEMENTS_monitor_reference",
+            l_et_mon.id AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_id",
+            l_et_mon."name" AS "COMPUTER_ELEMENTS_monitor_ELEMENT_TYPES_name",
+            l_e_key.id AS "COMPUTER_ELEMENTS_keyboard_id",
+            l_e_key.available AS "COMPUTER_ELEMENTS_keyboard_available",
+            l_e_key.discarded AS "COMPUTER_ELEMENTS_keyboard_discarded",
+            l_e_key.reference AS "COMPUTER_ELEMENTS_keyboard_reference",
+            l_et_key.id AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_id",
+            l_et_key."name" AS "COMPUTER_ELEMENTS_keyboard_ELEMENT_TYPES_name",
+            l_e_mou.id AS "COMPUTER_ELEMENTS_mouse_id",
+            l_e_mou.available AS "COMPUTER_ELEMENTS_mouse_available",
+            l_e_mou.discarded AS "COMPUTER_ELEMENTS_mouse_discarded",
+            l_e_mou.reference AS "COMPUTER_ELEMENTS_mouse_reference",
+            l_et_mou.id AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_id",
+            l_et_mou."name" AS "COMPUTER_ELEMENTS_mouse_ELEMENT_TYPES_name"
+        FROM
+            "NOVELTIES" AS n
+                LEFT JOIN
+            "USERS" AS u ON u.id = n."USERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS e ON e.id = n."ELEMENTS_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" AS et ON et.id = e."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "COMPUTERS" AS c ON c.id = n."COMPUTERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_cc ON e_cc.id = c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_cc ON et_cc.id = e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mon ON e_mon.id = c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mon ON et_mon.id = e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_key ON e_key.id = c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_key ON et_key.id = e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS e_mou ON e_mou.id = c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" et_mou ON et_mou.id = e_mou."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "LABS" AS l ON l.id = n."LABS_id"
+                LEFT JOIN
+            "LABS_COMPUTERS" AS l_l_c ON l_l_c."LABS_id" = l.id
+                LEFT JOIN
+            "COMPUTERS" AS l_c ON l_c.id = l_l_c."COMPUTERS_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_cc ON l_e_cc.id = l_c."ELEMENTS_computer_case_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_cc ON l_et_cc.id = l_e_cc."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_mon ON l_e_mon.id = l_c."ELEMENTS_monitor_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_mon ON l_et_mon.id = l_e_mon."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_key ON l_e_key.id = l_c."ELEMENTS_keyboard_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_key ON l_et_key.id = l_e_key."ELEMENT_TYPES_id"
+                LEFT JOIN
+            "ELEMENTS" AS l_e_mou ON l_e_mou.id = l_c."ELEMENTS_mouse_id"
+                LEFT JOIN
+            "ELEMENT_TYPES" l_et_mou ON l_et_mou.id = l_e_mou."ELEMENT_TYPES_id"
+        WHERE
+            n."COMPUTERS_id" = #{computerId}
+    </select>
+
+    <resultMap id="NoveltyResultMap" type="Novelty">
+        <id column="id" property="id" />
+        <result column="timestamp" property="timestamp" javaType="Date" />
+        <result column="title" property="title" />
+        <result column="detail" property="detail" />
+        <association property="user" javaType="User" columnPrefix="USERS_" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.UserMapper.UserResultMap" />
+        <association property="element" javaType="Element" columnPrefix="ELEMENTS_" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ElementMapper.ElementResultMap" />
+        <association property="computer" javaType="Computer" columnPrefix="COMPUTERS_" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper.ComputerResultMap" />
+        <association property="lab" javaType="Lab" columnPrefix="LABS_" resultMap="edu.eci.cvds.model.dao.mybatis.mappers.LabMapper.LabResultMap" />
     </resultMap>
 </mapper>

@@ -24,7 +24,7 @@ public class RegisterNoveltyBean extends BasePageBean {
     private String detail;
 
     @Inject
-    private NoveltyServices noveltyServices;
+    private transient NoveltyServices noveltyServices;
 
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(RegisterNoveltyBean.class);
@@ -33,11 +33,16 @@ public class RegisterNoveltyBean extends BasePageBean {
         LOGGER.info("register");
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         try {
-            LOGGER.info("reference = " + reference);
-            LOGGER.info("type = " + type);
-            LOGGER.info("title = " + title);
-            LOGGER.info("detail = " + detail);
-            LOGGER.info("username = " + username);
+            String message = String.format("reference = %s", reference);
+            LOGGER.info(message);
+            message = String.format("type = %s", type);
+            LOGGER.info(message);
+            message = String.format("title = %s", title);
+            LOGGER.info(message);
+            message = String.format("detail = %s", detail);
+            LOGGER.info(message);
+            message = String.format("username = %s", username);
+            LOGGER.info(message);
 
             switch (type) {
                 case "computer":
@@ -65,6 +70,8 @@ public class RegisterNoveltyBean extends BasePageBean {
                     noveltyServices.createByElementReferenceAndUsername(ElementTypeName.ETN_MOUSE,
                             username, reference, title, detail);
                     break;
+                default:
+                    addMessage("Error", "System error!", FacesMessage.SEVERITY_ERROR);
             }
             addMessage("Done!", "Successful registration.", FacesMessage.SEVERITY_INFO);
         } catch (ServicesException e) {

@@ -1,6 +1,7 @@
 package edu.eci.cvds.model.dao.mybatis.mappers;
 
 import edu.eci.cvds.model.entities.Computer;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.guice.transactional.Transactional;
 
@@ -21,7 +22,14 @@ public interface ComputerMapper {
 
     Long getIdByMouseId(@Param("id") Long id);
 
+    Computer getComputerById(@Param("id") Long id);
+
     Computer getComputerByReference(@Param("reference") String reference);
+
+    List<Computer> getActiveComputers();
+
+    @Transactional
+    void setReferenceById(@Param("reference") String reference, @Param("id") Long id);
 
     @Transactional
     void setComputerCaseIdByIds(@Param("computerId") Long id,

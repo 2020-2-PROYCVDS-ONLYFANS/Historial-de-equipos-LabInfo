@@ -1,5 +1,6 @@
 package edu.eci.cvds.model.dao.mybatis;
 
+import java.util.List;
 import com.google.inject.Inject;
 import edu.eci.cvds.model.dao.ComputerDAO;
 import edu.eci.cvds.model.dao.mybatis.mappers.ComputerMapper;
@@ -8,13 +9,13 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("java:S1130")
 public class MyBatisComputerDAO implements ComputerDAO {
 
     @Inject
     private ComputerMapper computerMapper;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(MyBatisComputerDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisComputerDAO.class);
 
     @Override
     public void registerComputer(String reference, Long computerCaseId, Long monitorId,
@@ -85,11 +86,38 @@ public class MyBatisComputerDAO implements ComputerDAO {
     }
 
     @Override
+    public Computer getComputerById(Long id) throws PersistenceException {
+        try {
+            return computerMapper.getComputerById(id);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to get computer by id.", e);
+        }
+    }
+
+    @Override
     public Computer getComputerByReference(String reference) throws PersistenceException {
         try {
             return computerMapper.getComputerByReference(reference);
         } catch (PersistenceException e) {
             throw new PersistenceException("Fail to get computer by reference.", e);
+        }
+    }
+
+    @Override
+    public List<Computer> getActiveComputers() throws PersistenceException {
+        try {
+            return computerMapper.getActiveComputers();
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to get active computers.", e);
+        }
+    }
+
+    @Override
+    public void setReferenceById(String reference, Long id) throws PersistenceException {
+        try {
+            computerMapper.setReferenceById(reference, id);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to set reference by current reference.", e);
         }
     }
 

@@ -2,7 +2,6 @@ package edu.eci.cvds.controller;
 
 import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 import edu.eci.cvds.model.entities.role.RoleName;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -21,7 +20,7 @@ public class EnumsBean extends BasePageBean {
     private ElementTypeName keyboard;
     private ElementTypeName mouse;
 
-    @PostConstruct
+    @Override
     public void init() {
         roleUser = RoleName.ROLE_USER;
         roleAdmin = RoleName.ROLE_ADMIN;

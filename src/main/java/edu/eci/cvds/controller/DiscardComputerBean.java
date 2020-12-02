@@ -27,10 +27,10 @@ public class DiscardComputerBean extends BasePageBean {
     private boolean discardMouse;
 
     @Inject
-    private ComputerServices computerServices;
+    private transient ComputerServices computerServices;
 
     @Inject
-    private AuthServices authServices;
+    private transient AuthServices authServices;
 
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(DiscardComputerBean.class);

@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
+@SuppressWarnings("java:S1130")
 public class MyBatisUserDAO implements UserDAO {
 
     @Inject
     private UserMapper userMapper;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(UserDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisUserDAO.class);
 
     @Override
     public Long getIdByUsername(String username) throws PersistenceException {
@@ -42,14 +42,22 @@ public class MyBatisUserDAO implements UserDAO {
     }
 
     @Override
-    public Set<Role> getUserRolesByUsername(String username)
-            throws PersistenceException {
+    public Set<Role> getUserRolesByUsername(String username) throws PersistenceException {
         try {
             LOGGER.info("loadUserRolesByUsername - try");
             return userMapper.getUserRolesByUsername(username);
         } catch (PersistenceException e) {
             LOGGER.info("loadUserRolesByUsername - catch");
             throw new PersistenceException("Fail to load user roles for " + username, e);
+        }
+    }
+
+    @Override
+    public String getUsernameById(Long id) throws PersistenceException {
+        try {
+            return userMapper.getUsernameById(id);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Fail to get username by id.", e);
         }
     }
 }

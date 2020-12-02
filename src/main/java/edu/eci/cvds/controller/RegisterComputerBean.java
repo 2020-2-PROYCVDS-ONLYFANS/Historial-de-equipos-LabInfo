@@ -24,10 +24,10 @@ public class RegisterComputerBean extends BasePageBean {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private ComputerServices computerServices;
+    private transient ComputerServices computerServices;
 
     @Inject
-    private ElementServices elementServices;
+    private transient ElementServices elementServices;
 
     private String computerCaseReference;
     private String monitorReference;

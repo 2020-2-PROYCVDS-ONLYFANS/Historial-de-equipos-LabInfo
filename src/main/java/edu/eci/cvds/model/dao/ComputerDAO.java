@@ -1,8 +1,10 @@
 package edu.eci.cvds.model.dao;
 
 import edu.eci.cvds.model.entities.Computer;
+import java.util.List;
 import org.apache.ibatis.exceptions.PersistenceException;
 
+@SuppressWarnings("java:S1130")
 public interface ComputerDAO {
 
     void registerComputer(String reference, Long computerCaseId, Long monitorId, Long keyboardId,
@@ -18,7 +20,13 @@ public interface ComputerDAO {
 
     Long getIdByMouseId(Long id) throws PersistenceException;
 
+    Computer getComputerById(Long id) throws PersistenceException;
+
     Computer getComputerByReference(String reference) throws PersistenceException;
+
+    List<Computer> getActiveComputers() throws PersistenceException;
+
+    void setReferenceById(String reference, Long id) throws PersistenceException;
 
     void setComputerCaseIdByIds(Long computerId, Long computerCaseId) throws PersistenceException;
 

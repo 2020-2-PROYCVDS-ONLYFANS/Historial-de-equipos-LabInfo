@@ -18,6 +18,14 @@ public class Element implements Serializable {
     public Element() {
     }
 
+    public Element(Element another) {
+        this.id = another.id;
+        this.reference = another.reference;
+        this.type = another.type;
+        this.available = another.available;
+        this.discarded = another.discarded;
+    }
+
     public Element(ElementType type) {
         this.type = type;
     }
@@ -64,8 +72,8 @@ public class Element implements Serializable {
 
     @Override
     public String toString() {
-        return "Element{" + "id=" + id + ", type=" + type + ", available=" + available
-                + ", discarded=" + discarded + '}';
+        return "Element{" + "id=" + id + ", reference=" + reference + ", type=" + type
+                + ", available=" + available + ", discarded=" + discarded + '}';
     }
 
     @Override

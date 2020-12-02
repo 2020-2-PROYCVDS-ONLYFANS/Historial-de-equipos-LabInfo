@@ -7,7 +7,6 @@ import edu.eci.cvds.model.services.AuthServices;
 import edu.eci.cvds.model.services.ComputerServices;
 import edu.eci.cvds.model.services.LabServices;
 import edu.eci.cvds.model.services.ServicesException;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -27,17 +26,17 @@ public class RegisterLabBean extends BasePageBean {
     private Computer computer;
 
     @Inject
-    private AuthServices authServices;
+    private transient AuthServices authServices;
 
     @Inject
-    private ComputerServices computerServices;
+    private transient ComputerServices computerServices;
 
     @Inject
-    private LabServices labServices;
+    private transient LabServices labServices;
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(RegisterLabBean.class);
 
-    @PostConstruct
+    @Override
     public void init() {
         lab = new Lab();
         computer = new Computer();
@@ -48,10 +47,12 @@ public class RegisterLabBean extends BasePageBean {
         if (SecurityUtils.getSubject().isAuthenticated()) {
             try {
                 LOGGER.info("registerLab");
-                LOGGER.info(lab.toString());
+                String labToString = lab.toString();
+                LOGGER.info(labToString);
                 labServices.registerLab(authServices.getUserIdByUsername(
                         SecurityUtils.getSubject().getPrincipal().toString()), lab);
-                LOGGER.info(labServices.getLabByName(lab.getName()).toString());
+                labToString = labServices.getLabByName(lab.getName()).toString();
+                LOGGER.info(labToString);
                 addMessage("Done!", "Successful registration.", FacesMessage.SEVERITY_INFO);
                 reset();
             } catch (ServicesException e) {

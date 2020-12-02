@@ -12,7 +12,7 @@ public class ServicesFactory {
     private Injector guiceInjector;
 
     private Injector getTestInjector() {
-        return createInjector(MyBatisModuleFactory.getInstance().getMyBatisTestModule());
+        return createInjector(MyBatisModuleFactory.getMyBatisTestModule());
     }
 
     private ServicesFactory() {

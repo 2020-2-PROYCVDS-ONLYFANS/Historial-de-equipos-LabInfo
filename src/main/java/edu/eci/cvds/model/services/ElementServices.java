@@ -5,6 +5,9 @@ import edu.eci.cvds.model.entities.element.type.ElementTypeName;
 
 public interface ElementServices {
 
+    void registerElement(ElementTypeName typeName, String reference, Long userId)
+            throws ServicesException;
+
     void registerElement(ElementTypeName typeName, String reference, String username)
             throws ServicesException;
 

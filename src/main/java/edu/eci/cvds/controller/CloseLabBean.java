@@ -22,10 +22,10 @@ public class CloseLabBean extends BasePageBean {
     private String labName;
 
     @Inject
-    private LabServices labServices;
+    private transient LabServices labServices;
 
     @Inject
-    private AuthServices authServices;
+    private transient AuthServices authServices;
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(CloseLabBean.class);
 

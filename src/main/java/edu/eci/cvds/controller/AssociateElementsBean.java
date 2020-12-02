@@ -25,14 +25,16 @@ public class AssociateElementsBean extends BasePageBean {
 
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    ElementServices elementServices;
+    private static final String ERROR_MESSAGE_SUMMARY = "Error!";
 
     @Inject
-    ComputerServices computerServices;
+    private transient ElementServices elementServices;
 
     @Inject
-    AuthServices authServices;
+    private transient ComputerServices computerServices;
+
+    @Inject
+    private transient AuthServices authServices;
 
     private ElementTypeName elementTypeName;
     private String elementReference;
@@ -46,7 +48,7 @@ public class AssociateElementsBean extends BasePageBean {
 
     public void associate() {
         LOGGER.info("associate");
-        if (elementAvailable) {
+        if (Boolean.TRUE.equals(elementAvailable)) {
             String username = SecurityUtils.getSubject().getPrincipal().toString();
             try {
                 Computer computer = computerServices.getComputerByReference(computerReference);
@@ -56,14 +58,15 @@ public class AssociateElementsBean extends BasePageBean {
                             computer);
                     addMessage("Done!", "Successful association.", FacesMessage.SEVERITY_INFO);
                 } else {
-                    addMessage("Error!", "Computer not exists", FacesMessage.SEVERITY_ERROR);
+                    addMessage(ERROR_MESSAGE_SUMMARY, "Computer not exists",
+                            FacesMessage.SEVERITY_ERROR);
                 }
             } catch (ServicesException e) {
                 e.printStackTrace();
                 addMessage("System Error!", "Please try again later.", FacesMessage.SEVERITY_FATAL);
             }
         } else {
-            addMessage("Error!", "Element is not available or not exists.",
+            addMessage(ERROR_MESSAGE_SUMMARY, "Element is not available or not exists.",
                     FacesMessage.SEVERITY_ERROR);
         }
     }
@@ -74,14 +77,15 @@ public class AssociateElementsBean extends BasePageBean {
             Element element = elementServices.getElementByReference(elementReference);
             elementAvailable = element.isAvailable();
             elementId = element.getId();
-            if (elementAvailable) {
+            if (element.isAvailable() && !element.isDiscarded()) {
                 addElementMessage("Info", "Element is available.", FacesMessage.SEVERITY_INFO);
             } else {
-                addElementMessage("Warning!", "Element is not available.",
+                addElementMessage("Warning!", "Element is not available or has been discarded.",
                         FacesMessage.SEVERITY_WARN);
             }
         } catch (Exception e) {
-            addElementMessage("Error!", "Element not exists.", FacesMessage.SEVERITY_ERROR);
+            addElementMessage(ERROR_MESSAGE_SUMMARY, "Element not exists.",
+                    FacesMessage.SEVERITY_ERROR);
         }
     }
 

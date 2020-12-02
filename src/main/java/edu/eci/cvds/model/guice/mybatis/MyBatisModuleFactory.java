@@ -11,17 +11,14 @@ import org.slf4j.LoggerFactory;
 
 public class MyBatisModuleFactory {
 
-    private static final MyBatisModuleFactory instance = new MyBatisModuleFactory();
-
     private static XMLMyBatisModule myBatisModule;
 
-    private static final transient Logger LOGGER =
-            LoggerFactory.getLogger(MyBatisModuleFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisModuleFactory.class);
 
-    public MyBatisModuleFactory() {
+    private MyBatisModuleFactory() {
     }
 
-    private XMLMyBatisModule myBatisModule(String env, String pathResource) {
+    private static XMLMyBatisModule myBatisModule(String env, String pathResource) {
         return new XMLMyBatisModule() {
             @Override
             protected void initialize() {
@@ -46,24 +43,19 @@ public class MyBatisModuleFactory {
         };
     }
 
-    public XMLMyBatisModule getMyBatisDevModule() {
+    public static XMLMyBatisModule getMyBatisDevModule() {
         if (myBatisModule == null) {
             myBatisModule = myBatisModule("development", "development/mybatis-config.xml");
         }
         return myBatisModule;
     }
 
-    public XMLMyBatisModule getMyBatisTestModule() {
+    public static XMLMyBatisModule getMyBatisTestModule() {
         LOGGER.info("getMyBatisTestModule");
         if (myBatisModule == null) {
             LOGGER.info("getMyBatisTestModule - if myBatisModule == null");
             myBatisModule = myBatisModule("test", "mybatis-config-h2.xml");
         }
         return myBatisModule;
-    }
-
-    public static MyBatisModuleFactory getInstance() {
-        LOGGER.info("getInstance");
-        return instance;
     }
 }

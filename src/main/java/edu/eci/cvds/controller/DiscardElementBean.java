@@ -23,10 +23,10 @@ public class DiscardElementBean extends BasePageBean {
     private String reference;
 
     @Inject
-    private ElementServices elementServices;
+    private transient ElementServices elementServices;
 
     @Inject
-    private AuthServices authServices;
+    private transient AuthServices authServices;
 
     private static final transient Logger LOGGER =
             LoggerFactory.getLogger(DiscardElementBean.class);
